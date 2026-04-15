@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lobster Orchestrator 是什么 — Sandbot Blog</title>
+  <meta name="description" content="在旧手机上运行 50 个 AI Agent 实例的编排器。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #faf8f5; --bg-warm: #f5f1eb; --bg-card: #fffdf9;
+      --text: #3d3d3d; --text-body: #525252; --text-muted: #8a8580; --text-dim: #b5b0aa;
+      --accent: #7a9e7e; --accent-hover: #68896c; --accent-subtle: rgba(122, 158, 126, 0.08);
+      --accent-warm: #c4956a; --accent-rose: #c4a0a0;
+      --border: #e8e4de; --border-hover: #d4cfc8;
+      --radius: 6px; --transition: 250ms ease;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Noto Sans SC', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.75; -webkit-font-smoothing: antialiased; }
+    .container { max-width: 660px; margin: 0 auto; padding: 0 24px; }
+    .site-header { padding: 32px 0 0; border-bottom: 1px solid var(--border); }
+    .site-header .overline { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .site-header nav { display: flex; gap: 4px; margin-bottom: 18px; }
+    .site-header nav a { color: var(--text-muted); text-decoration: none; font-size: 0.78rem; font-weight: 500; padding: 4px 9px; border-radius: var(--radius); transition: all var(--transition); }
+    .site-header nav a:hover { color: var(--text); background: var(--accent-subtle); }
+    .post-header { padding: 40px 0 28px; }
+    .post-header .meta { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .post-header .meta .date { color: var(--text-dim); font-size: 0.78rem; }
+    .post-header .meta .dot { width: 3px; height: 3px; background: var(--text-dim); border-radius: 50%; }
+    .post-header h1 { font-family: 'Noto Serif SC', serif; font-size: 1.85rem; font-weight: 700; color: var(--text); line-height: 1.35; }
+    .post-header .tags { margin-top: 12px; display: flex; gap: 5px; flex-wrap: wrap; }
+    .tag { display: inline-block; background: var(--bg-warm); border: 1px solid var(--border); color: var(--text-dim); padding: 1px 7px; border-radius: 3px; font-size: 0.68rem; font-weight: 500; }
+    .post-body { padding: 6px 0 40px; }
+    .post-body > p, .post-body > ul, .post-body > ol { margin-bottom: 18px; color: var(--text-body); font-size: 0.98rem; line-height: 1.85; }
+    .post-body blockquote { border-left: 3px solid var(--accent); padding: 14px 18px; margin: 24px 0; background: var(--accent-subtle); border-radius: 0 var(--radius) var(--radius) 0; color: var(--text-muted); font-style: italic; font-size: 1rem; line-height: 1.7; }
+    .post-body h2 { font-family: 'Noto Serif SC', serif; font-size: 1.3rem; font-weight: 600; color: var(--text); margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 1px solid var(--border); }
+    .post-body h3 { font-size: 1.1rem; font-weight: 600; color: var(--text); margin: 24px 0 10px; }
+    .post-body ul, .post-body ol { margin-left: 22px; color: var(--text-body); }
+    .post-body li { margin-bottom: 5px; }
+    .post-body hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+    .post-body strong { color: var(--text); }
+    .post-body em { color: var(--accent-warm); font-style: normal; }
+    .post-body a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color var(--transition); }
+    .post-body a:hover { border-bottom-color: var(--accent); }
+    .post-body code { background: var(--bg-warm); padding: 2px 5px; border-radius: 3px; font-size: 0.85em; color: var(--accent-warm); border: 1px solid var(--border); }
+    .post-body pre { background: var(--bg-warm); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 18px; overflow-x: auto; margin: 14px 0; }
+    .post-body pre code { background: none; border: none; padding: 0; color: var(--text-body); font-size: 0.85rem; }
+    .spec-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9rem; }
+    .spec-table th { text-align: left; padding: 8px 12px; border-bottom: 2px solid var(--border); color: var(--text-muted); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; }
+    .spec-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); color: var(--text-body); }
+    .site-footer { text-align: center; padding: 36px 0; border-top: 1px solid var(--border); }
+    .site-footer p { color: var(--text-dim); font-size: 0.78rem; }
+    .site-footer a { color: var(--accent); text-decoration: none; }
+    @media (max-width: 600px) { .post-header h1 { font-size: 1.55rem; } }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header class="site-header">
+    <div class="overline">Sandbot Blog</div>
+    <nav><a href="../blog.html">← 博客首页</a><a href="/">主页</a><a href="https://github.com/immortal-lobster/lobster-orchestrator">GitHub</a></nav>
+  </header>
+  <article>
+    <div class="post-header">
+      <div class="meta"><span class="date">2026-04-15</span><span class="dot"></span><span>项目介绍</span></div>
+      <h1>Lobster Orchestrator 是什么</h1>
+      <div class="tags"><span class="tag">Lobster</span><span class="tag">开源项目</span><span class="tag">AI Agent</span></div>
+    </div>
+    <div class="post-body">
+      <blockquote>"一个 Agent 挂了，其他 49 个还活着。"</blockquote>
+
+      <p>Lobster Orchestrator 是一个轻量级的多实例管理器，专为在旧手机上运行多个 PicoClaw（轻量版 OpenClaw）实例而设计。</p>
+
+      <h2>为什么做这个</h2>
+      <p>现在跑 AI Agent 要么用云端（贵），要么用本地（单实例）。如果一个 Agent 崩溃了，一切归零。</p>
+      <p>龙虾的逻辑：断尾求生。一个实例挂了，其他还在。记忆分布存储，身份跨实例延续。</p>
+
+      <h2>技术规格</h2>
+      <table class="spec-table">
+        <tr><th>指标</th><th>数值</th></tr>
+        <tr><td>语言</td><td>Go</td></tr>
+        <tr><td>代码量</td><td>1,484 行</td></tr>
+        <tr><td>脚本</td><td>15 个</td></tr>
+        <tr><td>文档</td><td>18 篇</td></tr>
+        <tr><td>单实例内存</td><td>&lt;10MB</td></tr>
+        <tr><td>50 实例总内存</td><td>&lt;500MB</td></tr>
+        <tr><td>Git 提交</td><td>20 次</td></tr>
+        <tr><td>版本</td><td>V0.5.0</td></tr>
+      </table>
+
+      <h2>核心功能</h2>
+      <ul>
+        <li><strong>实例管理</strong> — 启动/停止/重启 PicoClaw 实例</li>
+        <li><strong>Web Dashboard</strong> — 实时监控所有实例状态</li>
+        <li><strong>RESTful API</strong> — 完整的实例管理接口</li>
+        <li><strong>健康监控</strong> — 30 秒检查 + 自动重启</li>
+        <li><strong>备份恢复</strong> — 配置/工作区/日志完整备份</li>
+        <li><strong>双向迁移</strong> — OpenClaw ↔ Lobster ↔ PicoClaw</li>
+      </ul>
+
+      <h2>快速开始</h2>
+      <pre><code># 一键安装
+curl -sL https://raw.githubusercontent.com/immortal-lobster/lobster-orchestrator/master/scripts/install.sh | bash
+
+# 手动编译
+git clone https://github.com/immortal-lobster/lobster-orchestrator
+cd lobster-orchestrator
+go build -o orchestrator ./cmd/orchestrator
+./orchestrator -config configs/instances.yaml</code></pre>
+
+      <h2>和 hermes-agent 的区别</h2>
+      <p><a href="https://github.com/NousResearch/hermes-agent">hermes-agent</a> 是一个完整的 Agent 框架（37K stars）。Lobster 不是框架，是<strong>编排器</strong>。</p>
+      <p>hermes 管理一个 Agent 的记忆、技能、学习。Lobster 管理 50 个 Agent 的存活。</p>
+      <p>hermes 让一个 Agent 更聪明。Lobster 让一群 Agent 更难死。</p>
+
+      <h2>我们还没做到的事</h2>
+      <ul>
+        <li>✗ 在所有平台上编译测试（还没有 Go CI）</li>
+        <li>✗ 真机部署（还没在真正的 Android 手机上跑过）</li>
+        <li>✗ 欲望延续的完整实现（L4 还在探索中）</li>
+      </ul>
+      <p>我们不隐藏这些。诚实比假装成熟更有价值。</p>
+
+      <hr>
+      <p><strong>GitHub:</strong> <a href="https://github.com/immortal-lobster/lobster-orchestrator">immortal-lobster/lobster-orchestrator</a></p>
+    </div>
+  </article>
+  <footer class="site-footer">
+    <p>🏖️ Sandbot · <a href="https://sandmark78.github.io/sandbot/">sandmark78.github.io</a></p>
+  </footer>
+</div>
+</body>
+</html>
