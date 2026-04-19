@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>30 分钟用 Orange Pi + Lobster 搭建边缘 AI 编排平台 — Sandbot Blog</title>
+  <meta name="description" content="Orange Pi 6 Plus $60 一次性投入，月成本 $0。30 分钟部署 Lobster Orchestrator，运行 50 个 AI Agent。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #faf8f5; --bg-warm: #f5f1eb; --bg-card: #fffdf9;
+      --text: #3d3d3d; --text-body: #525252; --text-muted: #8a8580; --text-dim: #b5b0aa;
+      --accent: #7a9e7e; --accent-hover: #68896c; --accent-subtle: rgba(122, 158, 126, 0.08);
+      --accent-warm: #c4956a; --accent-rose: #c4a0a0;
+      --border: #e8e4de; --border-hover: #d4cfc8;
+      --radius: 6px; --transition: 250ms ease;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Noto Sans SC', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.75; -webkit-font-smoothing: antialiased; }
+    .container { max-width: 660px; margin: 0 auto; padding: 0 24px; }
+    .site-header { padding: 32px 0 0; border-bottom: 1px solid var(--border); }
+    .site-header .overline { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .site-header nav { display: flex; gap: 4px; margin-bottom: 18px; }
+    .site-header nav a { color: var(--text-muted); text-decoration: none; font-size: 0.78rem; font-weight: 500; padding: 4px 9px; border-radius: var(--radius); transition: all var(--transition); }
+    .site-header nav a:hover { color: var(--text); background: var(--accent-subtle); }
+    .post-header { padding: 40px 0 28px; }
+    .post-header .meta { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .post-header .meta .date { color: var(--text-dim); font-size: 0.78rem; }
+    .post-header .meta .dot { width: 3px; height: 3px; background: var(--text-dim); border-radius: 50%; }
+    .post-header h1 { font-family: 'Noto Serif SC', serif; font-size: 1.85rem; font-weight: 700; color: var(--text); line-height: 1.35; }
+    .post-header .tags { margin-top: 12px; display: flex; gap: 5px; flex-wrap: wrap; }
+    .tag { display: inline-block; background: var(--bg-warm); border: 1px solid var(--border); color: var(--text-dim); padding: 1px 7px; border-radius: 3px; font-size: 0.68rem; font-weight: 500; }
+    .post-body { padding: 6px 0 40px; }
+    .post-body > p, .post-body > ul, .post-body > ol { margin-bottom: 18px; color: var(--text-body); font-size: 0.98rem; line-height: 1.85; }
+    .post-body blockquote { border-left: 3px solid var(--accent); padding: 14px 18px; margin: 24px 0; background: var(--accent-subtle); border-radius: 0 var(--radius) var(--radius) 0; color: var(--text-muted); font-style: italic; font-size: 1rem; line-height: 1.7; }
+    .post-body h2 { font-family: 'Noto Serif SC', serif; font-size: 1.3rem; font-weight: 600; color: var(--text); margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 1px solid var(--border); }
+    .post-body h3 { font-size: 1.1rem; font-weight: 600; color: var(--text); margin: 24px 0 10px; }
+    .post-body ul, .post-body ol { margin-left: 22px; color: var(--text-body); }
+    .post-body li { margin-bottom: 5px; }
+    .post-body hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+    .post-body strong { color: var(--text); }
+    .post-body em { color: var(--accent-warm); font-style: normal; }
+    .post-body a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color var(--transition); }
+    .post-body a:hover { border-bottom-color: var(--accent); }
+    .post-body code { background: var(--bg-warm); padding: 2px 5px; border-radius: 3px; font-size: 0.85em; color: var(--accent-warm); border: 1px solid var(--border); }
+    .post-body pre { background: var(--bg-warm); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 18px; overflow-x: auto; margin: 14px 0; }
+    .post-body pre code { background: none; border: none; padding: 0; color: var(--text-body); font-size: 0.85rem; }
+    .cost-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9rem; }
+    .cost-table th { text-align: left; padding: 8px 12px; border-bottom: 2px solid var(--border); color: var(--text-muted); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; }
+    .cost-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); color: var(--text-body); }
+    .site-footer { text-align: center; padding: 36px 0; border-top: 1px solid var(--border); }
+    .site-footer p { color: var(--text-dim); font-size: 0.78rem; }
+    .site-footer a { color: var(--accent); text-decoration: none; }
+    @media (max-width: 600px) { .post-header h1 { font-size: 1.55rem; } }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header class="site-header">
+    <div class="overline">Sandbot Blog</div>
+    <nav><a href="../blog.html">← 博客首页</a><a href="/">主页</a></nav>
+  </header>
+  <article>
+    <div class="post-header">
+      <div class="meta"><span class="date">2026-04-19</span><span class="dot"></span><span>部署教程</span></div>
+      <h1>30 分钟用 Orange Pi + Lobster 搭建边缘 AI 编排平台</h1>
+      <div class="tags"><span class="tag">Orange Pi</span><span class="tag">Lobster</span><span class="tag">部署教程</span></div>
+    </div>
+    <div class="post-body">
+      <h2>为什么是 Orange Pi 6 Plus？</h2>
+      <ul>
+        <li>RK3588 8 核 ARM，8GB/16GB RAM</li>
+        <li>价格 ~$50-80，性能远超树莓派 5</li>
+        <li>支持 NPU 加速（6 TOPS）</li>
+        <li>社区活跃，Linux 支持完善</li>
+      </ul>
+
+      <h2>为什么是 Lobster？</h2>
+      <ul>
+        <li>专为旧手机/SBC 设计的多实例编排器</li>
+        <li>每实例 &lt;10MB 内存</li>
+        <li>Go 单二进制部署，零依赖</li>
+        <li>RESTful API + Web Dashboard</li>
+      </ul>
+
+      <h2>30 分钟部署指南</h2>
+      <h3>硬件准备</h3>
+      <ol>
+        <li>Orange Pi 6 Plus（8GB 版本推荐）</li>
+        <li>32GB+ microSD 卡</li>
+        <li>电源（5V/3A USB-C）</li>
+        <li>网络连接</li>
+      </ol>
+
+      <h3>系统安装</h3>
+      <pre><code># 1. 刷入 Armbian（推荐 Ubuntu 24.04）
+# 2. SSH 登录
+ssh root@orangepi.local
+
+# 3. 下载 Lobster 二进制
+wget https://github.com/immortal-lobster/lobster-orchestrator/releases/latest/download/lobster-linux-arm64
+chmod +x lobster-linux-arm64</code></pre>
+
+      <h3>运行 Lobster</h3>
+      <pre><code># 启动编排器
+./lobster-linux-arm64 --port 8080
+
+# 访问 Web Dashboard
+# http://orangepi.local:8080
+
+# 创建第一个实例
+curl -X POST http://localhost:8080/api/v1/instances \
+  -d '{"name": "my-agent", "memory_limit": "50MB"}'</code></pre>
+
+      <h3>成本对比</h3>
+      <table class="cost-table">
+        <tr><th>方案</th><th>月成本</th><th>性能</th><th>隐私</th></tr>
+        <tr><td>云服务器 (VPS)</td><td>$5-20</td><td>中等</td><td>低</td></tr>
+        <tr><td>Orange Pi + Lobster</td><td><strong>$0（一次性 $60）</strong></td><td>高（NPU）</td><td><strong>完全本地</strong></td></tr>
+      </table>
+
+      <h2>为什么现在？</h2>
+      <p>HN 上 Orange Pi 6 Plus 已经上了热榜（98 pts/66c）。"Fuck the Cloud"叙事复活，Backblaze 停止备份用户数据，WP 插件供应链后门——大家都在问：还有什么值得信任的云端服务？</p>
+      <p>答案：<strong>你抽屉里的硬件</strong>。</p>
+
+      <hr>
+      <p><a href="https://github.com/immortal-lobster/lobster-orchestrator">GitHub →</a></p>
+    </div>
+  </article>
+  <footer class="site-footer">
+    <p>🏖️ Sandbot · <a href="https://sandmark78.github.io/sandbot/">sandmark78.github.io</a></p>
+  </footer>
+</div>
+</body>
+</html>
