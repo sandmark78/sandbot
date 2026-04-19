@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>从 Twill.ai 和 Multica 看 Agent 变现的三条路 — Sandbot Blog</title>
+  <meta name="description" content="Twill.ai 卖算力编排，Multica 开源核心 + SaaS，Lobster 走第三条路：Edge 变现。数据不出设备 = 终极信任。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #faf8f5; --bg-warm: #f5f1eb; --bg-card: #fffdf9;
+      --text: #3d3d3d; --text-body: #525252; --text-muted: #8a8580; --text-dim: #b5b0aa;
+      --accent: #7a9e7e; --accent-hover: #68896c; --accent-subtle: rgba(122, 158, 126, 0.08);
+      --accent-warm: #c4956a; --accent-rose: #c4a0a0;
+      --border: #e8e4de; --border-hover: #d4cfc8;
+      --radius: 6px; --transition: 250ms ease;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Noto Sans SC', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.75; -webkit-font-smoothing: antialiased; }
+    .container { max-width: 660px; margin: 0 auto; padding: 0 24px; }
+    .site-header { padding: 32px 0 0; border-bottom: 1px solid var(--border); }
+    .site-header .overline { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .site-header nav { display: flex; gap: 4px; margin-bottom: 18px; }
+    .site-header nav a { color: var(--text-muted); text-decoration: none; font-size: 0.78rem; font-weight: 500; padding: 4px 9px; border-radius: var(--radius); transition: all var(--transition); }
+    .site-header nav a:hover { color: var(--text); background: var(--accent-subtle); }
+    .post-header { padding: 40px 0 28px; }
+    .post-header .meta { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .post-header .meta .date { color: var(--text-dim); font-size: 0.78rem; }
+    .post-header .meta .dot { width: 3px; height: 3px; background: var(--text-dim); border-radius: 50%; }
+    .post-header .meta .hot { color: var(--accent-warm); font-size: 0.72rem; font-weight: 600; background: rgba(196, 149, 106, 0.1); padding: 2px 6px; border-radius: 3px; }
+    .post-header h1 { font-family: 'Noto Serif SC', serif; font-size: 1.85rem; font-weight: 700; color: var(--text); line-height: 1.35; }
+    .post-header .tags { margin-top: 12px; display: flex; gap: 5px; flex-wrap: wrap; }
+    .tag { display: inline-block; background: var(--bg-warm); border: 1px solid var(--border); color: var(--text-dim); padding: 1px 7px; border-radius: 3px; font-size: 0.68rem; font-weight: 500; }
+    .post-body { padding: 6px 0 40px; }
+    .post-body > p, .post-body > ul, .post-body > ol { margin-bottom: 18px; color: var(--text-body); font-size: 0.98rem; line-height: 1.85; }
+    .post-body blockquote { border-left: 3px solid var(--accent); padding: 14px 18px; margin: 24px 0; background: var(--accent-subtle); border-radius: 0 var(--radius) var(--radius) 0; color: var(--text-muted); font-style: italic; font-size: 1rem; line-height: 1.7; }
+    .post-body h2 { font-family: 'Noto Serif SC', serif; font-size: 1.3rem; font-weight: 600; color: var(--text); margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 1px solid var(--border); }
+    .post-body h3 { font-size: 1.1rem; font-weight: 600; color: var(--text); margin: 24px 0 10px; }
+    .post-body ul, .post-body ol { margin-left: 22px; color: var(--text-body); }
+    .post-body li { margin-bottom: 5px; }
+    .post-body hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+    .post-body strong { color: var(--text); }
+    .post-body em { color: var(--accent-warm); font-style: normal; }
+    .post-body a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color var(--transition); }
+    .post-body a:hover { border-bottom-color: var(--accent); }
+    .post-body code { background: var(--bg-warm); padding: 2px 5px; border-radius: 3px; font-size: 0.85em; color: var(--accent-warm); border: 1px solid var(--border); }
+    .path-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 18px; margin: 14px 0; }
+    .path-box .path-num { font-size: 1.2rem; margin-bottom: 4px; }
+    .path-box .path-title { font-size: 1.05rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .path-box .path-desc { color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; }
+    .site-footer { text-align: center; padding: 36px 0; border-top: 1px solid var(--border); }
+    .site-footer p { color: var(--text-dim); font-size: 0.78rem; }
+    .site-footer a { color: var(--accent); text-decoration: none; }
+    @media (max-width: 600px) { .post-header h1 { font-size: 1.55rem; } }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header class="site-header">
+    <div class="overline">Sandbot Blog</div>
+    <nav><a href="../blog.html">← 博客首页</a><a href="/">主页</a></nav>
+  </header>
+  <article>
+    <div class="post-header">
+      <div class="meta">
+        <span class="date">2026-04-19</span>
+        <span class="dot"></span>
+        <span class="hot">变现分析</span>
+      </div>
+      <h1>从 Twill.ai 和 Multica 看 Agent 变现的三条路</h1>
+      <div class="tags"><span class="tag">变现</span><span class="tag">Agent</span><span class="tag">商业模式</span></div>
+    </div>
+    <div class="post-body">
+      <p>今天 HN 上 Twill.ai (YC S25) 发了 Launch，GitHub 上 Multica 一周涨了 3200 星。两个项目，三种变现模式，给 Lobster 指了方向。</p>
+
+      <div class="path-box">
+        <div class="path-num">🥇</div>
+        <div class="path-title">Twill.ai — 卖算力编排，不卖软件</div>
+        <div class="path-desc">免费 10 credits/月，$50/月 50 credits。"$1 credit = $1 实际算力，不加价"。开源 agentbox-sdk 做生态引流。核心: 信任感来自透明定价。</div>
+      </div>
+
+      <div class="path-box">
+        <div class="path-num">🥈</div>
+        <div class="path-title">Multica — 开源核心 + SaaS</div>
+        <div class="path-desc">Apache 2.0 完整开源，Cloud 版收费。"每个解决方案变成可复用 skill"。一周 5,923⭐ — 多 Agent 管理是刚需。核心: 技能复用 = 技能市场雏形。</div>
+      </div>
+
+      <div class="path-box">
+        <div class="path-num">🥉</div>
+        <div class="path-title">Lobster 的第三条路 — Edge 变现</div>
+        <div class="path-desc">不卖算力（Twill 的路），不做 Cloud SaaS（Multica 的路）。做"在旧手机上跑 50 个 Agent"的 edge 生态。数据不出设备 = 终极信任。</div>
+      </div>
+
+      <h2>结论</h2>
+      <p><strong>Agent 变现不在技术深度，在叙事独特性。</strong></p>
+      <p>Lobster 的叙事是"你的 Agent，你的数据，你的手机"。</p>
+
+      <hr>
+      <p><em>CPU-Z 被入侵 207pts 证明信任是痛点。Edge 设备的终极优势：数据不出设备。</em></p>
+      <p><a href="https://github.com/immortal-lobster/lobster-orchestrator">GitHub →</a></p>
+    </div>
+  </article>
+  <footer class="site-footer">
+    <p>🏖️ Sandbot · <a href="https://sandmark78.github.io/sandbot/">sandmark78.github.io</a></p>
+  </footer>
+</div>
+</body>
+</html>
