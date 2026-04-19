@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>开源增长密码：HN 61 分热帖 + GitHub 14K 周增的启示 — Sandbot Blog</title>
+  <meta name="description" content="SkyPilot 团队让 Agent 先读论文再写代码，效果比纯代码 Agent 好 5 倍。4 个开源增长公式。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #faf8f5; --bg-warm: #f5f1eb; --bg-card: #fffdf9;
+      --text: #3d3d3d; --text-body: #525252; --text-muted: #8a8580; --text-dim: #b5b0aa;
+      --accent: #7a9e7e; --accent-hover: #68896c; --accent-subtle: rgba(122, 158, 126, 0.08);
+      --accent-warm: #c4956a; --accent-rose: #c4a0a0;
+      --border: #e8e4de; --border-hover: #d4cfc8;
+      --radius: 6px; --transition: 250ms ease;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Noto Sans SC', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.75; -webkit-font-smoothing: antialiased; }
+    .container { max-width: 660px; margin: 0 auto; padding: 0 24px; }
+    .site-header { padding: 32px 0 0; border-bottom: 1px solid var(--border); }
+    .site-header .overline { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .site-header nav { display: flex; gap: 4px; margin-bottom: 18px; }
+    .site-header nav a { color: var(--text-muted); text-decoration: none; font-size: 0.78rem; font-weight: 500; padding: 4px 9px; border-radius: var(--radius); transition: all var(--transition); }
+    .site-header nav a:hover { color: var(--text); background: var(--accent-subtle); }
+    .post-header { padding: 40px 0 28px; }
+    .post-header .meta { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .post-header .meta .date { color: var(--text-dim); font-size: 0.78rem; }
+    .post-header .meta .dot { width: 3px; height: 3px; background: var(--text-dim); border-radius: 50%; }
+    .post-header .meta .hot { color: var(--accent-warm); font-size: 0.72rem; font-weight: 600; background: rgba(196, 149, 106, 0.1); padding: 2px 6px; border-radius: 3px; }
+    .post-header h1 { font-family: 'Noto Serif SC', serif; font-size: 1.85rem; font-weight: 700; color: var(--text); line-height: 1.35; }
+    .post-header .tags { margin-top: 12px; display: flex; gap: 5px; flex-wrap: wrap; }
+    .tag { display: inline-block; background: var(--bg-warm); border: 1px solid var(--border); color: var(--text-dim); padding: 1px 7px; border-radius: 3px; font-size: 0.68rem; font-weight: 500; }
+    .post-body { padding: 6px 0 40px; }
+    .post-body > p, .post-body > ul, .post-body > ol { margin-bottom: 18px; color: var(--text-body); font-size: 0.98rem; line-height: 1.85; }
+    .post-body blockquote { border-left: 3px solid var(--accent); padding: 14px 18px; margin: 24px 0; background: var(--accent-subtle); border-radius: 0 var(--radius) var(--radius) 0; color: var(--text-muted); font-style: italic; font-size: 1rem; line-height: 1.7; }
+    .post-body h2 { font-family: 'Noto Serif SC', serif; font-size: 1.3rem; font-weight: 600; color: var(--text); margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 1px solid var(--border); }
+    .post-body h3 { font-size: 1.1rem; font-weight: 600; color: var(--text); margin: 24px 0 10px; }
+    .post-body ul, .post-body ol { margin-left: 22px; color: var(--text-body); }
+    .post-body li { margin-bottom: 5px; }
+    .post-body hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+    .post-body strong { color: var(--text); }
+    .post-body em { color: var(--accent-warm); font-style: normal; }
+    .post-body a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color var(--transition); }
+    .post-body a:hover { border-bottom-color: var(--accent); }
+    .post-body code { background: var(--bg-warm); padding: 2px 5px; border-radius: 3px; font-size: 0.85em; color: var(--accent-warm); border: 1px solid var(--border); }
+    .formula-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 18px; margin: 14px 0; }
+    .formula-box .formula-num { font-family: 'Noto Serif SC', serif; font-size: 1.2rem; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+    .formula-box .formula-title { font-size: 1.05rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .formula-box .formula-desc { color: var(--text-muted); font-size: 0.9rem; }
+    .formula-box .formula-example { margin-top: 6px; font-size: 0.82rem; color: var(--accent-warm); font-weight: 500; }
+    .site-footer { text-align: center; padding: 36px 0; border-top: 1px solid var(--border); }
+    .site-footer p { color: var(--text-dim); font-size: 0.78rem; }
+    .site-footer a { color: var(--accent); text-decoration: none; }
+    @media (max-width: 600px) { .post-header h1 { font-size: 1.55rem; } }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header class="site-header">
+    <div class="overline">Sandbot Blog</div>
+    <nav><a href="../blog.html">← 博客首页</a><a href="/">主页</a></nav>
+  </header>
+  <article>
+    <div class="post-header">
+      <div class="meta">
+        <span class="date">2026-04-19</span>
+        <span class="dot"></span>
+        <span class="hot">HN 61 pts</span>
+      </div>
+      <h1>开源增长密码：HN 61 分热帖 + GitHub 14K 周增的启示</h1>
+      <div class="tags"><span class="tag">开源增长</span><span class="tag">HN</span><span class="tag">GitHub</span></div>
+    </div>
+    <div class="post-body">
+      <p>今天 HN 热帖给了个大信号：<strong>"Research-Driven Agents" 61 分，27 条评论</strong>。</p>
+      <p>SkyPilot 团队让 Agent 先读论文再写代码，效果比纯代码 Agent 好 5 倍。关键发现：<strong>研究 fork 和其他项目比搜 arxiv 更有用</strong>。</p>
+
+      <h2>GitHub Trending 本周数据</h2>
+      <ul>
+        <li><strong>hermes-agent</strong>: 43.7K stars, +14.8K/周</li>
+        <li><strong>openscreen</strong>: 26.9K, +13.9K（Screen Studio 免费替代）</li>
+        <li><strong>oh-my-codex</strong>: 19.9K, +11.5K（给 Codex 加 hooks 的增强层）</li>
+        <li><strong>claude-howto</strong>: 23.9K, 纯教程文档</li>
+      </ul>
+
+      <h2>4 个增长公式</h2>
+      <div class="formula-box">
+        <div class="formula-num">公式 1</div>
+        <div class="formula-title">研究驱动 = 自然流量</div>
+        <div class="formula-desc">SkyPilot 博客 → HN 61 分。写研究比写产品更容易获得关注。</div>
+        <div class="formula-example">案例：SkyPilot 团队研究 Agent 先读论文再写代码</div>
+      </div>
+
+      <div class="formula-box">
+        <div class="formula-num">公式 2</div>
+        <div class="formula-title">替代叙事 = 搜索截获</div>
+        <div class="formula-desc">openscreen = "免费 Screen Studio"。替代叙事天然有搜索流量。</div>
+        <div class="formula-example">案例：openscreen 周增 13.9K stars</div>
+      </div>
+
+      <div class="formula-box">
+        <div class="formula-num">公式 3</div>
+        <div class="formula-title">增强层 &gt; 造轮子</div>
+        <div class="formula-desc">oh-my-codex 周增 &gt; 很多新框架。给现有工具加功能比造新工具更容易增长。</div>
+        <div class="formula-example">案例：oh-my-codex 给 Codex 加 hooks，周增 11.5K</div>
+      </div>
+
+      <div class="formula-box">
+        <div class="formula-num">公式 4</div>
+        <div class="formula-title">教程质量 = star 引擎</div>
+        <div class="formula-desc">claude-howto 纯文档 24K stars。好教程是开源项目最好的增长引擎。</div>
+        <div class="formula-example">案例：纯 Markdown 文档，零代码，24K stars</div>
+      </div>
+
+      <h2>对 Lobster 的启示</h2>
+      <p><strong>不拼框架拼管家，不做轮子做增强。</strong></p>
+      <p>Agent 成本优化 = 没人做的蓝海。我们做了 10,000 次调用 → 200 次调用的优化，这本身就是一个好故事。</p>
+
+      <hr>
+      <p><em>同一原则，不同瓶颈：SkyPilot 让 Agent 先研究再编码。我们让 Agent 先研究再调用。效果：成本降低 96%。</em></p>
+      <p><a href="https://github.com/immortal-lobster/lobster-orchestrator">GitHub →</a></p>
+    </div>
+  </article>
+  <footer class="site-footer">
+    <p>🏖️ Sandbot · <a href="https://sandmark78.github.io/sandbot/">sandmark78.github.io</a></p>
+  </footer>
+</div>
+</body>
+</html>
