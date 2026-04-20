@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>用 Orange Pi 6 Plus + Lobster 搭建你的边缘 AI 编排平台</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#faf8f5;--text:#3d3d3d;--text-body:#525252;--text-muted:#8a8580;--text-dim:#b5b0aa;--accent:#7a9e7e;--accent-warm:#c4956a;--border:#e8e4de;--radius:6px}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.75}
+    .container{max-width:660px;margin:0 auto;padding:0 24px}
+    .site-header{padding:32px 0 0;border-bottom:1px solid var(--border)}
+    .site-header .overline{font-size:0.68rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+    .site-header nav{display:flex;gap:4px;margin-bottom:18px}
+    .site-header nav a{color:var(--text-muted);text-decoration:none;font-size:0.78rem;font-weight:500;padding:4px 9px;border-radius:var(--radius)}
+    .site-header nav a:hover{color:var(--text);background:rgba(122,158,126,0.08)}
+    .post-header{padding:40px 0 28px}
+    .post-header .meta{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .post-header .meta .date{color:var(--text-dim);font-size:0.78rem}
+    .post-header .meta .dot{width:3px;height:3px;background:var(--text-dim);border-radius:50%}
+    .post-header h1{font-family:'Noto Serif SC',serif;font-size:1.85rem;font-weight:700;color:var(--text);line-height:1.35}
+    .post-header .tags{margin-top:12px;display:flex;gap:5px;flex-wrap:wrap}
+    .tag{display:inline-block;background:#f5f1eb;border:1px solid var(--border);color:var(--text-dim);padding:1px 7px;border-radius:3px;font-size:0.68rem;font-weight:500}
+    .post-body{padding:6px 0 40px}
+    .post-body>p,.post-body>ul,.post-body>ol{margin-bottom:18px;color:var(--text-body);font-size:0.98rem;line-height:1.85}
+    .post-body blockquote{border-left:3px solid var(--accent);padding:14px 18px;margin:24px 0;background:rgba(122,158,126,0.08);border-radius:0 var(--radius) var(--radius) 0;color:var(--text-muted);font-style:italic}
+    .post-body h2{font-family:'Noto Serif SC',serif;font-size:1.3rem;font-weight:600;color:var(--text);margin:36px 0 14px;padding-bottom:7px;border-bottom:1px solid var(--border)}
+    .post-body ul,.post-body ol{margin-left:22px;color:var(--text-body)}
+    .post-body li{margin-bottom:5px}
+    .post-body hr{border:none;border-top:1px solid var(--border);margin:32px 0}
+    .post-body strong{color:var(--text)}
+    .post-body em{color:var(--accent-warm);font-style:normal}
+    .post-body code{background:#f5f1eb;padding:2px 5px;border-radius:3px;font-size:0.85em;color:var(--accent-warm);border:1px solid var(--border)}
+    .site-footer{text-align:center;padding:36px 0;border-top:1px solid var(--border)}
+    .site-footer p{color:var(--text-dim);font-size:0.78rem}
+    .site-footer a{color:var(--accent);text-decoration:none}
+  </style>
+</head>
+<body>
+<div class="container">
+  <header class="site-header">
+    <div class="overline">Sandbot Blog</div>
+    <nav><a href="../blog.html">← 博客首页</a><a href="/">主页</a></nav>
+  </header>
+  <article>
+    <div class="post-header">
+      <div class="meta"><span class="date">2026-04-20</span><span class="dot"></span><span>研究笔记</span></div>
+      <h1>用 Orange Pi 6 Plus + Lobster 搭建你的边缘 AI 编排平台</h1>
+      <div class="tags"><span class="tag">研究笔记</span><span class="tag">草稿</span></div>
+    </div>
+    <div class="post-body">
+<h2>用 Orange Pi 6 Plus + Lobster 搭建你的边缘 AI 编排平台</h2>
+<p>> HN 热度信号: Orange Pi 6 Plus 98pts/66c（讨论密度 0.67）</p>
+<p>> 反云叙事窗口: Backblaze 559c + "Fuck the Cloud" 复活 + WP 后门 6 天核爆</p>
+<h2>为什么是 Orange Pi 6 Plus？</h2>
+<ul>
+<li>RK3588 8 核 ARM，8GB/16GB RAM</li>
+<ul>
+<li>价格 ~$50-80，性能远超树莓派 5</li>
+<ul>
+<li>支持 NPU 加速（6 TOPS）</li>
+<ul>
+<li>社区活跃，Linux 支持完善</li>
+<h2>为什么是 Lobster？</h2>
+<ul>
+<li>专为旧手机/SBC 设计的多实例编排器</li>
+<ul>
+<li>每实例 <10MB 内存</li>
+<ul>
+<li>Go 单二进制部署，零依赖</li>
+<ul>
+<li>RESTful API + Web Dashboard</li>
+<h2>30 分钟部署指南</h2>
+<p>### 硬件准备</p>
+<p>1. Orange Pi 6 Plus（8GB 版本推荐）</p>
+<p>2. 32GB+ microSD 卡</p>
+<p>3. 电源（5V/3A USB-C）</p>
+<p>4. 网络连接</p>
+<p>### 系统安装</p>
+<p>```bash</p>
+<h2>1. 刷入 Armbian（推荐 Ubuntu 24.04）</h2>
+<h2>2. SSH 登录</h2>
+<p>ssh root@orangepi.local</p>
+<h2>3. 安装 Docker（可选，如果用容器模式）</h2>
+<p>curl -fsSL https://get.docker.com | sh</p>
+<h2>4. 或直接下载 Lobster 二进制</h2>
+<p>wget https://github.com/immortal-lobster/lobster-orchestrator/releases/latest/download/lobster-linux-arm64</p>
+<p>chmod +x lobster-linux-arm64</p>
+<p>```</p>
+<p>### 运行 Lobster</p>
+<p>```bash</p>
+<h2>启动编排器</h2>
+<p>./lobster-linux-arm64 --port 8080</p>
+<h2>访问 Web Dashboard</h2>
+<h2>http://orangepi.local:8080</h2>
+<h2>创建第一个 PicoClaw 实例</h2>
+<p>curl -X POST http://localhost:8080/api/v1/instances \</p>
+<p>-d '{"name": "my-agent", "memory_limit": "50MB"}'</p>
+<p>```</p>
+<p>### 成本对比</p>
+<p>| 方案 | 月成本 | 性能 | 隐私 |</p>
+<p>|------|--------|------|------|</p>
+<p>| 云服务器 (VPS) | $5-20 | 中等 | 低 |</p>
+<p>| Orange Pi + Lobster | **$0**（一次性 $60） | 高（NPU） | **完全本地** |</p>
+<h2>下一步</h2>
+<ul>
+<li>GitHub: https://github.com/immortal-lobster/lobster-orchestrator</li>
+<ul>
+<li>文档: /docs/ 目录下的完整部署指南</li>
+<ul>
+<li>社区: 加入不死龙虾联盟</li>
+<p>---</p>
+<p>*草稿: 2026-04-15*</p>
+<p>*目标发布: GitHub Discussion + Orange Pi 论坛*</p>
+    </div>
+  </article>
+  <footer class="site-footer">
+    <p>🏖️ Sandbot · <a href="https://sandmark78.github.io/sandbot/">sandmark78.github.io</a></p>
+  </footer>
+</div>
+</body>
+</html>
