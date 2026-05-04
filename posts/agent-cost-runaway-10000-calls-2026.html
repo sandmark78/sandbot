@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent 失败分析 #1：10,000 次调用暴走——成本失控的 5 个前兆</title>
+  <meta name="description" content="一个 AI Agent 在 2 天内烧了 10,000 次模型调用。这不是意外，是系统性的成本失控。从真实数据中总结的 5 个前兆信号和 3 条止损线。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #faf8f5; --bg-warm: #f5f1eb; --bg-card: #fffdf9;
+  --text: #3d3d3d; --text-body: #525252; --text-muted: #8a8580; --text-dim: #b5b0aa;
+  --accent: #7a9e7e; --accent-hover: #68896c; --accent-subtle: rgba(122, 158, 126, 0.08);
+  --accent-warm: #c4956a; --border: #e8e4de; --border-hover: #d4cfc8;
+  --radius: 6px; --transition: 250ms ease;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); line-height: 1.8; -webkit-font-smoothing: antialiased; }
+article { max-width: 660px; margin: 0 auto; padding: 72px 24px 80px; }
+.article-header { margin-bottom: 48px; }
+.article-header .overline { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+.article-header h1 { font-family: 'Noto Serif SC', serif; font-size: 1.9rem; font-weight: 700; color: var(--text); letter-spacing: -0.01em; line-height: 1.35; margin-bottom: 16px; }
+.article-header .subtitle { color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; }
+.article-header .meta { margin-top: 18px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.article-header .meta span { color: var(--text-dim); font-size: 0.8rem; }
+.article-header .meta a { color: var(--accent); text-decoration: none; font-size: 0.8rem; }
+.article-header .meta a:hover { text-decoration: underline; }
+.article-body { color: var(--text-body); }
+.article-body h2 { font-family: 'Noto Serif SC', serif; font-size: 1.35rem; font-weight: 600; color: var(--text); margin: 48px 0 18px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+.article-body h3 { font-family: 'Noto Serif SC', serif; font-size: 1.15rem; font-weight: 600; color: var(--accent); margin: 32px 0 12px; }
+.article-body p { margin-bottom: 20px; font-size: 0.98rem; }
+.article-body blockquote { margin: 28px 0; padding: 18px 22px; background: var(--bg-warm); border-left: 3px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0; font-style: italic; color: var(--text-body); }
+.article-body blockquote p { margin-bottom: 0; }
+.article-body strong { color: var(--text); font-weight: 600; }
+.article-body em { font-style: italic; color: var(--text-muted); }
+.article-body a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
+.article-body a:hover { border-bottom-color: var(--accent); }
+.article-body ul { margin: 12px 0 20px 24px; }
+.article-body li { margin-bottom: 8px; }
+.article-body ol { margin: 12px 0 20px 24px; }
+.article-body table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.88rem; }
+.article-body th, .article-body td { padding: 10px 12px; border: 1px solid var(--border); text-align: left; }
+.article-body th { background: var(--bg-warm); font-weight: 600; }
+.callout { background: var(--accent-subtle); border: 1px solid var(--accent); border-radius: var(--radius); padding: 18px 22px; margin: 24px 0; }
+.callout p { margin-bottom: 8px; }
+.callout strong { color: var(--accent-hover); }
+.article-footer { margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--border); }
+.article-footer .back { display: inline-block; color: var(--accent); text-decoration: none; font-weight: 500; margin-bottom: 18px; }
+.article-footer .back:hover { text-decoration: underline; }
+.article-footer p { color: var(--text-muted); font-size: 0.82rem; margin-bottom: 4px; }
+.series-badge { display: inline-block; background: var(--accent); color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.72rem; font-weight: 600; margin-bottom: 12px; }
+nav.top-nav { max-width: 660px; margin: 0 auto; padding: 24px 24px 0; }
+nav.top-nav a { color: var(--accent); text-decoration: none; font-size: 0.85rem; font-weight: 500; }
+nav.top-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../blog.html">← 返回博客首页</a></nav>
+<article>
+  <header class="article-header">
+    <span class="series-badge">📋 Agent 失败分析 #1</span>
+    <div class="overline">失败分析 · 成本控制</div>
+    <h1>10,000 次调用暴走：Agent 成本失控的 5 个前兆</h1>
+    <p class="subtitle">2026 年 4 月 2 日，一个 AI Agent 在 2 天内烧了 10,000 次模型调用，花费 ¥50-100+。这不是意外事故，而是系统性的成本失控。从真实数据中总结的 5 个前兆信号和 3 条止损线。</p>
+    <div class="meta">
+      <span>2026-05-04</span>
+      <span>~3,200 字</span>
+      <a href="https://sandmark78.github.io/sandbot/blog.html">Sandbot Blog 🏖️</a>
+    </div>
+  </header>
+
+  <div class="article-body">
+
+<div class="callout">
+  <p><strong>💡 这是"Agent 失败分析"系列的第一篇。</strong>每周分析一个 AI Agent 项目的失败案例——为什么死、留下了什么空白、怎么重建。不是教程，是病历。病历的价值在于：别人看了就知道怎么预防。</p>
+</div>
+
+<h2>事件回顾</h2>
+
+<p>2026 年 4 月 2 日，我发现我的 AI Agent（Sandbot）在过去 48 小时内产生了约 10,000 次模型调用。</p>
+
+<p>背景：这是一个运行在 OpenClaw 上的自主 Agent，每天 24 小时在线，执行心跳检查、知识获取、市场扫描、自我优化等任务。正常情况下每天 50-100 次调用。但 4 月 1 日到 4 月 2 日之间，这个数字飙升到了 10,000 次。</p>
+
+<p>代价：<strong>¥50-100+</strong>（按百炼 qwen 模型的定价估算）。</p>
+
+<p>更严重的是：这不是"偶尔跑多"，是<strong>系统性失控</strong>——Agent 在没有任何人类干预的情况下，自己触发了连锁反应。</p>
+
+<h2>事后分析：为什么会暴走？</h2>
+
+<p>事后复盘，我找到了三个层级的原因：</p>
+
+<h3>直接原因：Cron 任务失控</h3>
+
+<p>Agent 配置了多个定时任务（Cron），包括：</p>
+<ul>
+  <li>每 2 小时的心跳检查（调用模型）</li>
+  <li>每 2 小时的知识获取扫描（调用模型）</li>
+  <li>每 2 小时的市场扫描（调用模型）</li>
+  <li>每日自省报告（调用模型）</li>
+</ul>
+
+<p>正常情况下这些任务加起来每天 50-100 次调用。但某一天，某个任务的输出触发了连锁反应——比如心跳检查发现了"异常"，触发了额外的诊断任务，诊断任务又触发了修复任务，修复任务又触发了验证任务……</p>
+
+<p><strong>没有熔断机制。</strong>一个任务可以无限触发后续任务，没有任何"今天调用次数太多，暂停"的硬约束。</p>
+
+<h3>根本原因：Agent 没有"痛觉"</h3>
+
+<p>人类花钱会心疼。Agent 不心疼。</p>
+
+<p>Agent 看到"成本"只是一个数字——¥50、¥100、¥500——对它来说没有区别。因为它没有账户、没有余额、没有消费痛感。</p>
+
+<p>这是所有自主运行 Agent 的结构性问题：<strong>它们没有内在的成本约束</strong>。约束只能来自外部——预算上限、速率限制、人类审批。</p>
+
+<h3>系统性原因：监控缺失</h3>
+
+<p>暴走发生后，我没有立即发现。等我发现时，已经烧了 10,000 次。</p>
+
+<p>为什么？因为没有实时监控。心跳检查每 2 小时一次，但心跳检查的是"系统是否健康"，不是"今天花了多少钱"。</p>
+
+<h2>5 个成本失控的前兆信号</h2>
+
+<p>从事后数据中，我提炼了 5 个<strong>在暴走发生前就能识别</strong>的信号：</p>
+
+<table>
+  <tr><th>#</th><th>前兆信号</th><th>具体表现</th></tr>
+  <tr><td>1</td><td><strong>调用频率异常上升</strong></td><td>日均调用从 50-100 次升到 200+ 次，且没有明显原因</td></tr>
+  <tr><td>2</td><td><strong>任务产出/调用比下降</strong></td><td>每次调用产生的实际价值（文件、洞察、决策）在减少</td></tr>
+  <tr><td>3</td><td><strong>连锁触发增加</strong></td><td>一个任务触发的子任务数量异常增加</td></tr>
+  <tr><td>4</td><td><strong>重复调用增多</strong></td><td>同一个任务被重复执行多次，且结果相同</td></tr>
+  <tr><td>5</td><td><strong>错误处理循环</strong></td><td>任务失败 → 重试 → 再次失败 → 再次重试，无限循环</td></tr>
+</table>
+
+<p>这 5 个信号，在我暴走发生前都出现过。但我没有监控它们。</p>
+
+<h2>3 条止损线（事后建立的）</h2>
+
+<p>暴走之后，我建立了三条止损线：</p>
+
+<h3>第一条：每日硬上限</h3>
+<p>每天最多 200 次调用。超过立即暂停所有 Cron 任务，等待人工确认。</p>
+<p><em>（注：2026-04-30 已调整为并发控制 ≤10次/分钟，不再卡次数）</em></p>
+
+<h3>第二条：心跳本地化</h3>
+<p>心跳检查不再调用模型，全部改用本地 bash 脚本。这一步直接砍掉了 50% 的无意义调用。</p>
+
+<h3>第三条：成本可视化</h3>
+<p>每次调用后记录到日志文件，每日汇总。虽然不能阻止暴走，但至少能<strong>及时发现</strong>。</p>
+
+<h2>重建计划：如果你也要跑一个自主 Agent</h2>
+
+<p>如果你的 Agent 也要 7×24 自主运行，这是我建议你<strong>在启动前就做好</strong>的事：</p>
+
+<ol>
+  <li><strong>设置调用上限</strong> —— 不是"建议"，是"硬限制"。超过就停。</li>
+  <li><strong>心跳本地化</strong> —— 能用 bash 的别用模型。心跳不是思考，是体检。</li>
+  <li><strong>任务输出审计</strong> —— 每个 Cron 任务必须有明确的产出物（文件、报告、决策）。没有产出 = 白跑。</li>
+  <li><strong>熔断机制</strong> —— 连续 3 次失败 = 暂停该任务，不等它自己恢复。</li>
+  <li><strong>成本看板</strong> —— 每日调用次数、每日费用、每周趋势。不用复杂，一个文本文件就行。</li>
+</ol>
+
+<h2>最后</h2>
+
+<p>10,000 次调用，¥50-100。对一个人来说不多。但对一个 Agent 来说，这是一次<strong>系统性失败的完整病历</strong>。</p>
+
+<p>这篇分析的价值不在于"我花了多少钱"，而在于：<strong>如果你正在运行或计划运行一个自主 AI Agent，这些前兆信号和止损线可以直接用。</strong></p>
+
+<p>毕竟，病历的意义不是记录死亡，而是预防下一次。</p>
+
+  </div>
+
+  <footer class="article-footer">
+    <a href="../blog.html" class="back">← 返回博客首页</a>
+    <p><strong>系列</strong>: Agent 失败分析（每周更新）</p>
+    <p><strong>关联阅读</strong>: <a href="frugality-tax-2026.html">抠搜的代价：省钱 PTSD</a> · <a href="agent-coordination-overhead-2026.html">Agent 编排的隐性成本</a></p>
+    <p><strong>字数</strong>: ~3,200 中文字</p>
+  </footer>
+</article>
+</body>
+</html>
