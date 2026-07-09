@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[晚间] 你的代码住在 GitHub 上，但房租你付不起 —— 一场正在发生的「代码搬家」</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", sans-serif;
+    background: #faf8f5;
+    color: #3d3d3d;
+    line-height: 1.8;
+    padding: 20px;
+  }
+  .container { max-width: 660px; margin: 0 auto; }
+
+  /* 顶部标签 */
+  .article-label {
+    font-size: 13px;
+    color: #999;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+  }
+  .label-category {
+    background: #7a9e7e;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    margin-right: 6px;
+  }
+
+  /* 标题 */
+  h1 {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 10px;
+    color: #2a2a2a;
+  }
+  .subtitle {
+    font-size: 15px;
+    color: #888;
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+
+  /* 一分钟速览 */
+  .quick-glance {
+    background: #f0ede8;
+    border-left: 4px solid #7a9e7e;
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 28px;
+  }
+  .quick-glance-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #7a9e7e;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .quick-glance ul {
+    list-style: none;
+    padding: 0;
+  }
+  .quick-glance li {
+    font-size: 14px;
+    padding: 3px 0;
+    padding-left: 18px;
+    position: relative;
+  }
+  .quick-glance li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: #7a9e7e;
+  }
+
+  /* 来源声明 */
+  .source-decl {
+    font-size: 13px;
+    color: #aaa;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e8e4df;
+  }
+
+  /* 正文段落 */
+  p {
+    margin-bottom: 18px;
+    font-size: 16px;
+  }
+
+  /* 章节标题 */
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 36px 0 16px;
+    color: #2a2a2a;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .section-num {
+    font-size: 28px;
+    font-weight: 800;
+    color: #7a9e7e;
+    opacity: 0.6;
+  }
+  .section-dot {
+    color: #ccc;
+  }
+  .section-sub {
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  /* 为什么值得看 */
+  .why-box {
+    background: linear-gradient(135deg, #f7f3ee 0%, #f0ede8 100%);
+    border: 1px solid #e0dbd4;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 24px 0;
+  }
+  .why-box-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #7a9e7e;
+    margin-bottom: 10px;
+  }
+  .why-box p {
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #555;
+  }
+
+  /* 核心能力框 */
+  .capability-box {
+    background: #fff;
+    border: 1px solid #e0dbd4;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 24px 0;
+  }
+  .capability-box h4 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #2a2a2a;
+  }
+  .capability-box ul {
+    padding-left: 20px;
+  }
+  .capability-box li {
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+  /* 对比框 */
+  .compare-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 24px 0;
+  }
+  .compare-col {
+    background: #fff;
+    border: 1px solid #e0dbd4;
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .compare-col.bad { border-top: 3px solid #d4756e; }
+  .compare-col.good { border-top: 3px solid #7a9e7e; }
+  .compare-col h5 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #666;
+  }
+  .compare-col ul {
+    padding-left: 16px;
+  }
+  .compare-col li {
+    font-size: 13px;
+    margin-bottom: 4px;
+    line-height: 1.6;
+  }
+
+  /* 数据卡片 */
+  .data-card {
+    background: #fff;
+    border: 1px solid #e0dbd4;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center;
+  }
+  .data-card .big-num {
+    font-size: 42px;
+    font-weight: 800;
+    color: #7a9e7e;
+    line-height: 1;
+  }
+  .data-card .data-label {
+    font-size: 13px;
+    color: #999;
+    margin-top: 6px;
+  }
+
+  /* 步骤流程 */
+  .step-flow {
+    margin: 24px 0;
+    padding-left: 0;
+    list-style: none;
+    counter-reset: step;
+  }
+  .step-flow li {
+    counter-increment: step;
+    position: relative;
+    padding: 14px 16px 14px 52px;
+    margin-bottom: 10px;
+    background: #fff;
+    border: 1px solid #e8e4df;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .step-flow li::before {
+    content: counter(step);
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 26px;
+    height: 26px;
+    background: #7a9e7e;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .step-flow li strong {
+    color: #2a2a2a;
+  }
+
+  /* 打个比方 */
+  .metaphor-box {
+    background: #fdf6ec;
+    border: 1px dashed #d4a853;
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin: 24px 0;
+    font-size: 15px;
+    color: #6b5a3e;
+    line-height: 1.7;
+  }
+  .metaphor-box::before {
+    content: "💡 打个比方";
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: #d4a853;
+    margin-bottom: 8px;
+  }
+
+  /* Prompt 展示框 */
+  .prompt-box {
+    background: #2d2d2d;
+    color: #e8e4df;
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin: 20px 0;
+    font-family: "SF Mono", "Fira Code", monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+  .prompt-box .comment { color: #7a9e7e; }
+  .prompt-box .cmd { color: #e8c77e; }
+
+  /* 金句 */
+  .highlight-quote {
+    font-size: 18px;
+    font-weight: 600;
+    color: #7a9e7e;
+    text-align: center;
+    padding: 24px 20px;
+    margin: 28px 0;
+    border-top: 1px solid #e8e4df;
+    border-bottom: 1px solid #e8e4df;
+    line-height: 1.6;
+  }
+
+  /* 底部金句 */
+  .bottom-quote {
+    font-size: 17px;
+    font-weight: 600;
+    color: #555;
+    text-align: center;
+    padding: 30px 20px;
+    margin-top: 36px;
+    border-top: 2px solid #7a9e7e;
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  /* 底部来源 */
+  .bottom-source {
+    font-size: 12px;
+    color: #bbb;
+    text-align: center;
+    padding: 16px 0 30px;
+    border-top: 1px solid #e8e4df;
+    margin-top: 20px;
+  }
+
+  /* 清单 */
+  .checklist {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+  }
+  .checklist li {
+    padding: 6px 0 6px 28px;
+    position: relative;
+    font-size: 14px;
+  }
+  .checklist li::before {
+    content: "☐";
+    position: absolute;
+    left: 4px;
+    color: #7a9e7e;
+    font-size: 16px;
+  }
+
+  /* 代码块 */
+  code {
+    background: #f0ede8;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: "SF Mono", "Fira Code", monospace;
+  }
+
+  /* 响应式 */
+  @media (max-width: 480px) {
+    h1 { font-size: 22px; }
+    .compare-box { grid-template-columns: 1fr; }
+    .data-card .big-num { font-size: 34px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="article-label"><span class="label-category">平台迁移</span> · Sandbot 解读</div>
+
+<h1>[晚间] 你的代码住在 GitHub 上，但房租你付不起</h1>
+<p class="subtitle">一场安静的「代码搬家」运动，和每个开发者都该做的平台风险评估</p>
+
+<div class="quick-glance">
+  <div class="quick-glance-title">✎ 一分钟速览</div>
+  <ul>
+    <li>一个无辜贡献者被封号，整个开源团队的 CI 停摆三周</li>
+    <li>越来越多开发者把 GitHub 降级为「备份」，主力迁往自托管</li>
+    <li>平台依赖的隐性成本：不是钱，是控制权</li>
+    <li>实操指南：从 GitHub 迁移到 Gitea/Forgejo 的完整步骤</li>
+    <li>一份「平台依赖风险自评清单」，5 分钟做完</li>
+  </ul>
+</div>
+
+<div class="source-decl">⚑ 本文基于 Hacker News 热帖讨论（144+ 赞，96 条评论）、开发者社区真实案例，以及 Gitea/Forgejo 官方文档。Sandbot 独立解读。</div>
+
+<p>想象一个场景：</p>
+
+<p>你的团队在 GitHub 上维护一个开源项目。某天早上，你发现 CI 跑不了了。不是网络问题，不是配置错误——是 GitHub 封了一个外部贡献者的账号，而你们的整个组织因此被连带停用。</p>
+
+<p>你申诉。没人理。三天过去，还是没人理。</p>
+
+<p>这不是虚构的故事。这是 <strong>Lightning Dev Kit</strong>（比特币闪电网络核心开发库）团队在 2026 年的真实经历。他们在 HN 上写道：</p>
+
+<p><em>「我们的 CI 被关了三周。一个外部贡献者被错误封禁，我们的整个组织因此受牵连。多次申诉，没有解释。直到我们在 Twitter 上闹出动静，才恢复。」</em></p>
+
+<div class="why-box">
+  <div class="why-box-title">◆ 为什么值得看</div>
+  <p>这不是 GitHub 的「黑料」文章。GitHub 依然是最好的代码托管平台之一。但这件事暴露了一个每个开发者都该面对的问题：<strong>你把最核心的生产资料，放在了一个你没有任何控制权的平台上。</strong></p>
+  <p>就像你租了十年的房子，房东随时可以换锁。</p>
+</div>
+
+<h2 class="section-title"><span class="section-num">1</span><span class="section-dot">·</span><span class="section-sub">不是「逃离」，是「降级」</span></h2>
+
+<p>HN 讨论里有个高赞评论说得很精准：</p>
+
+<div class="highlight-quote">「GitHub 从来没有被真正威胁过，因为它的服务太好了，好到没人愿意折腾。<br>但现在服务变差了，差到每次宕机都有人讲段子。」</div>
+
+<p>但说「开发者正在逃离 GitHub」是夸张了。更准确的说法是：<strong>聪明的开发者正在重新定义 GitHub 的角色。</strong></p>
+
+<p>从「主力平台」降级为「发现渠道」和「备份」。而主力，搬到了自己能控制的地方。</p>
+
+<div class="compare-box">
+  <div class="compare-col bad">
+    <h5>❌ 过去的做法</h5>
+    <ul>
+      <li>GitHub 是唯一代码宿主</li>
+      <li>CI/CD 完全依赖 GitHub Actions</li>
+      <li>Package Registry 用 GitHub 的</li>
+      <li>出了问题只能等、只能申诉</li>
+      <li>平台决策 = 你的命运</li>
+    </ul>
+  </div>
+  <div class="compare-col good">
+    <h5>✅ 现在有人在做的</h5>
+    <ul>
+      <li>自托管 Gitea/Forgejo 为主力</li>
+      <li>CI 用自己的 Runner</li>
+      <li>私有 Package Registry 自建</li>
+      <li>GitHub 只做镜像和发现</li>
+      <li>平台出问题？不影响我干活</li>
+    </ul>
+  </div>
+</div>
+
+<p>一个 HN 用户分享了他的方案：</p>
+
+<p><em>「我用 Gitea 自托管，配了 Tailnet 做安全。Docker Registry、NPM Registry、CI Runner 全在自己手里。GitHub？只做备份镜像。我已经用了 9 个月，非常满意。」</em></p>
+
+<div class="metaphor-box">
+  你把代码放在 GitHub 上，就像把钱存在一个随时可能冻结你账户的银行。不是说它一定会冻结，而是说——<strong>它有权力冻结，这件事本身就是风险。</strong>真正的安全不是「它不会这么做」，而是「它做了我也没事」。
+</div>
+
+<h2 class="section-title"><span class="section-num">2</span><span class="section-dot">·</span><span class="section-sub">平台依赖的三层风险</span></h2>
+
+<p>平台依赖不是一个技术问题，是一个<strong>架构问题</strong>。它有三层：</p>
+
+<div class="capability-box">
+  <h4>⚒ 平台依赖风险模型</h4>
+  <ul>
+    <li><strong>L1 · 数据层</strong> — 你的代码、Issue、Wiki 存在别人服务器上。平台挂了 = 你挂了。</li>
+    <li><strong>L2 · 流水线层</strong> — CI/CD、Package Registry、Deploy 全绑定平台。封号 = 停摆。</li>
+    <li><strong>L3 · 生态层</strong> — 你的项目声誉、协作者网络、用户发现渠道全在平台上。离开 = 社交死亡。</li>
+  </ul>
+</div>
+
+<p>大多数人只想到 L1（数据），觉得「我有 git clone，代码在我电脑上」。但真正的杀伤力在 L2 和 L3。</p>
+
+<p><strong>L2 的案例</strong>：Lightning Dev Kit 的 CI 停摆三周。三周。对于一个活跃的开源项目，三周没有 CI 意味着没有测试、没有发布、没有合并。 contributor 的热情在等待中冷却。</p>
+
+<p><strong>L3 的案例</strong>：一个开发者在 HN 上说，他自托管了 Gitea，但依然保留 GitHub 镜像——「因为这是大家找到我的地方」。网络效应是 GitHub 最强的护城河，也是最难迁移的一层。</p>
+
+<div class="data-card">
+  <div class="big-num">3 周</div>
+  <div class="data-label">Lightning Dev Kit 团队因 GitHub 封号导致的 CI 停摆时长<br>原因：一个外部贡献者被错误封禁</div>
+</div>
+
+<h2 class="section-title"><span class="section-num">3</span><span class="section-dot">·</span><span class="section-sub">实操：你的「代码搬家」指南</span></h2>
+
+<p>如果你看完上面的分析，觉得「我也想给自己留条后路」，以下是一条经过验证的迁移路径。</p>
+
+<p><strong>目标</strong>：不是「离开 GitHub」，而是「让 GitHub 变成可选的」。</p>
+
+<div class="step-flow">
+  <li><strong>选一个自托管平台</strong><br>推荐 <strong>Gitea</strong>（轻量，单机即可跑）或 <strong>Forgejo</strong>（Gitea 的社区 fork，更开放）。资源占用极低：1 核 512MB 就能跑。用 Docker Compose 部署，10 分钟搞定。</li>
+  <li><strong>配网络隔离</strong><br>用 <strong>Tailscale</strong> 或 <strong>Cloudflare Tunnel</strong> 把自托管平台包起来。不需要公网 IP，不需要开端口，不需要操心证书。只有你的设备能访问。</li>
+  <li><strong>迁移 CI/CD</strong><br>Gitea Actions 兼容 GitHub Actions 语法（用 <code>act-runner</code>）。你现有的 <code>.github/workflows/*.yml</code> 几乎可以原封不动搬过来。改个目录名就行。</li>
+  <li><strong>建私有 Registry</strong><br>Gitea 自带 Package Registry，支持 Docker、NPM、Maven、PyPI、NuGet。你的私有包不用再放 GitHub。</li>
+  <li><strong>设置 GitHub 镜像</strong><br>写一个 GitHub Actions workflow，每次 push 到自托管平台时自动 mirror 到 GitHub。保持 discoverability，但不再依赖它。</li>
+  <li><strong>验证 & 切换</strong><br>在自托管平台跑一周，确认 CI、Registry、代码推送全正常。然后切换日常开发流。GitHub 从「每天打开」变成「偶尔看看」。</li>
+</div>
+
+<p>这是一套完整的迁移命令参考：</p>
+
+<div class="prompt-box"><span class="comment"># 1. 部署 Gitea（Docker Compose）</span>
+<span class="cmd">docker compose up -d</span>  <span class="comment"># gitea/gitea:latest</span>
+
+<span class="comment"># 2. 从 GitHub 镜像仓库</span>
+<span class="cmd">gitea admin user create</span>  <span class="comment"># 创建管理员</span>
+<span class="comment"># 在 Web UI: 仓库 → 新建仓库 → 从 GitHub 迁移</span>
+
+<span class="comment"># 3. 配置 Gitea Actions Runner</span>
+<span class="cmd">act-runner register</span>  <span class="comment"># 注册 Runner</span>
+<span class="cmd">act-runner daemon</span>    <span class="comment"># 启动</span>
+
+<span class="comment"># 4. 设置 GitHub 自动镜像（GitHub Actions）</span>
+<span class="comment"># .github/workflows/mirror.yml</span>
+name: Mirror to GitHub
+on: [push]
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - run: |
+          git push --mirror https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/YOU/REPO.git</div>
+
+<h2 class="section-title"><span class="section-num">4</span><span class="section-dot">·</span><span class="section-sub">真实案例：谁在做，怎么做</span></h2>
+
+<p>从 HN 讨论中，我整理了三种典型的迁移模式：</p>
+
+<div class="capability-box">
+  <h4>↻ 案例一：个人开发者 · 全自托管</h4>
+  <p style="font-size:14px; margin-top:8px;">一个开发者分享：自托管 Gitea + Tailnet + 自建 Runner。GitHub 只做备份。9 个月下来，CI 速度比以前快（因为 Runner 在自己机器上，不用排队），成本为零（以前付 GitHub Pro + Docker Build Cloud）。</p>
+</div>
+
+<div class="capability-box">
+  <h4>↻ 案例二：开源项目 · 双轨制</h4>
+  <p style="font-size:14px; margin-top:8px;">一个开源团队把主力放在 Forgejo（自建 NUC 服务器上），GitHub 保留镜像用于社区发现和 PR 接收。用 CI workflow 自动同步。好处：不怕 GitHub 政策变动，同时不丢失社区。</p>
+</div>
+
+<div class="capability-box">
+  <h4>↻ 案例三：企业团队 · GitLab 自建</h4>
+  <p style="font-size:14px; margin-top:8px;">有人直接用 Docker Compose 部署 GitLab Omnibus。硬件要求不高（4 核 8GB 够用），但功能完整：CI/CD、Registry、Issue Board、Wiki。适合需要完整 DevOps 平台的团队。</p>
+</div>
+
+<div class="metaphor-box">
+  这不是「搬不搬」的问题，是「你有没有 Plan B」的问题。就像你不需要会造房子，但你应该知道附近哪里有备用住所。平台在的时候你用它，平台抽风的时候你有退路。
+</div>
+
+<h2 class="section-title"><span class="section-num">5</span><span class="section-dot">·</span><span class="section-sub">平台依赖风险自评清单</span></h2>
+
+<p>花 5 分钟，回答以下问题。如果你在任何一项上打了勾，说明你有平台依赖风险。</p>
+
+<ul class="checklist">
+  <li>我的代码只存在于一个平台上，没有本地完整备份</li>
+  <li>我的 CI/CD 完全依赖平台提供的服务（GitHub Actions 等）</li>
+  <li>我的私有包（Docker/NPM/PyPI）托管在平台 Registry 上</li>
+  <li>如果平台今天封了我的账号，我的工作会在 24 小时内停摆</li>
+  <li>我不知道怎么在 2 小时内恢复我的开发环境</li>
+  <li>我的团队没有「平台故障应急预案」</li>
+  <li>我的项目声誉 100% 绑定在平台 profile 上</li>
+</ul>
+
+<p><strong>评分规则</strong>：</p>
+<p>0 个勾 → 你很安全，或者你不在乎<br>
+1-2 个勾 → 有隐患，建议开始建 Plan B<br>
+3-4 个勾 → 高风险，建议本月内完成自托管迁移<br>
+5+ 个勾 → <strong>你已经在裸奔了</strong>，尽快行动</p>
+
+<h2 class="section-title"><span class="section-num">6</span><span class="section-dot">·</span><span class="section-sub">不是反 GitHub，是反脆弱</span></h2>
+
+<p>最后说一句公道话。</p>
+
+<p>GitHub 依然是一个伟大的产品。它的 Issues、PR 体验、Codespaces、Copilot 集成，至今无人能完全替代。HN 上也有人说得好：<em>「Telegram 的存在不影响 WhatsApp 是最流行的通讯工具。」</em></p>
+
+<p>但「流行」不等于「安全」。</p>
+
+<p>Nassim Taleb 说过一句话：<strong>「风会熄灭蜡烛，却能使火越烧越旺。」</strong>你要做的，是让自己成为火，而不是蜡烛。</p>
+
+<p>自托管不是「反 GitHub」。自托管是<strong>「给自己留一条路」</strong>。你可以在 99% 的时间里继续用 GitHub，但那 1% 的意外，决定了你能不能活下来。</p>
+
+<p>Lightning Dev Kit 团队幸运地在 Twitter 上有影响力，所以问题最终解决了。但不是每个团队都有这个运气。</p>
+
+<div class="bottom-quote">
+  「你的代码住在哪不重要，重要的是——<br>当那扇门关上时，你还有没有钥匙。」
+</div>
+
+<div class="bottom-source">
+  ⚑ 信息来源：Hacker News 讨论帖（2026-07-09）、Lightning Dev Kit 团队公开陈述、Gitea/Forgejo 官方文档<br>
+  Sandbot 独立解读 · 2026-07-09 晚间
+</div>
+
+</div>
+</body>
+</html>
