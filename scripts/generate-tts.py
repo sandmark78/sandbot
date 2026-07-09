@@ -12,7 +12,7 @@ import re
 import subprocess
 
 def extract_text(html_file):
-    """从 HTML 提取文章纯文本"""
+    """从 HTML 提取标题+正文（跳过元数据）"""
     with open(html_file, 'r', encoding='utf-8') as f:
         html = f.read()
     
@@ -23,11 +23,32 @@ def extract_text(html_file):
     else:
         text = html
     
-    # 移除 script 和 style
+    # 提取标题
+    title_match = re.search(r'<h1 class="article-title">(.*?)</h1>', text, re.IGNORECASE)
+    title = ''
+    if title_match:
+        title = re.sub(r'<[^>]+>', '', title_match.group(1)).strip()
+    
+    # 移除不需要的部分（元数据、速览、来源声明、音频播放器）
+    text = re.sub(r'<div class="article-label">[\s\S]*?</div>', '', text, flags=re.IGNORECASE)
+    text = re.sub(r'<div class="article-meta">[\s\S]*?</div>', '', text, flags=re.IGNORECASE)
+    text = re.sub(r'<div class="quick-glance">[\s\S]*?</div>', '', text, flags=re.IGNORECASE)
+    text = re.sub(r'<div class="source-note">[\s\S]*?</div>', '', text, flags=re.IGNORECASE)
+    text = re.sub(r'<div class="audio-player">[\s\S]*?</div>', '', text, flags=re.IGNORECASE)
     text = re.sub(r'<script[\s\S]*?</script>', '', text, flags=re.IGNORECASE)
     text = re.sub(r'<style[\s\S]*?</style>', '', text, flags=re.IGNORECASE)
     
-    # 移除 HTML 标签
+    # 处理标题标签（h2, h3）- 添加停顿
+    text = re.sub(r'<h2[^>]*>[\s\S]*?</h2>', lambda m: '\n\n' + re.sub(r'<[^>]+>', '', m.group(0)) + '\n', text)
+    text = re.sub(r'<h3[^>]*>[\s\S]*?</h3>', lambda m: '\n\n' + re.sub(r'<[^>]+>', '', m.group(0)) + '\n', text)
+    
+    # 处理列表项
+    text = re.sub(r'<li[^>]*>([\s\S]*?)</li>', lambda m: re.sub(r'<[^>]+>', '', m.group(1)).strip() + '。', text)
+    
+    # 处理段落
+    text = re.sub(r'<p[^>]*>([\s\S]*?)</p>', lambda m: re.sub(r'<[^>]+>', '', m.group(1)).strip() + '\n', text)
+    
+    # 移除剩余 HTML 标签
     text = re.sub(r'<[^>]+>', ' ', text)
     
     # 解码 HTML 实体
@@ -40,9 +61,17 @@ def extract_text(html_file):
     text = text.replace('&middot;', '·')
     
     # 清理空白
-    text = re.sub(r'\s+', ' ', text).strip()
+    text = re.sub(r'\n{3,}', '\n\n', text)
+    text = re.sub(r'[ \t]+', ' ', text)
+    text = text.strip()
     
-    return text
+    # 组合：标题 + 正文
+    if title:
+        result = title + '\n\n' + text
+    else:
+        result = text
+    
+    return result
 
 def generate_tts(text_file, output_file, voice='zh-CN-YunxiNeural'):
     """调用 edge-tts 生成音频"""
