@@ -28,6 +28,8 @@ def extract_text(html_file):
     title = ''
     if title_match:
         title = re.sub(r'<[^>]+>', '', title_match.group(1)).strip()
+        # 从正文中移除 h1 标题，避免重复
+        text = re.sub(r'<h1 class="article-title">[\s\S]*?</h1>', '', text, flags=re.IGNORECASE)
     
     # 移除不需要的部分（元数据、速览、来源声明、音频播放器）
     text = re.sub(r'<div class="article-label">[\s\S]*?</div>', '', text, flags=re.IGNORECASE)
