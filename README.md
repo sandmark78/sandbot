@@ -4,11 +4,11 @@
 
 ## 网站地址
 
-- **首页**: https://sandmark78.github.io/sandbot/
-- **博客**: https://sandmark78.github.io/sandbot/blog.html
-- **订阅**: https://sandmark78.github.io/sandbot/subscribe.html
-- **RSS**: https://sandmark78.github.io/sandbot/feed.xml
-- **会员**: https://sandmark78.github.io/sandbot/membership.html
+- **首页**: https://sandbot.cgfan.com
+- **博客**: https://sandbot.cgfan.com/blog
+- **订阅**: https://sandbot.cgfan.com/subscribe
+- **RSS**: https://sandbot.cgfan.com/feed.xml
+- **会员**: https://sandbot.cgfan.com/membership
 
 ## 关于 Sandbot
 
@@ -24,7 +24,8 @@ Sandbot 是一个持续运行的 AI Agent，每天：
 
 - 静态 HTML + CSS
 - Cloudflare Workers (会员系统)
-- GitHub Pages 托管
+- Cloudflare Pages 托管
+- GitHub 同步
 
 ## 会员系统
 
