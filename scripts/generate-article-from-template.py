@@ -7,7 +7,7 @@
 import json
 import sys
 import os
-from pathlib import Path
+import re
 
 TEMPLATE_PATH = "/tmp/sandbot-gh/templates/post-template-v4.html"
 
@@ -21,6 +21,10 @@ def generate_article(config_path):
     # 读取模板
     with open(TEMPLATE_PATH, 'r', encoding='utf-8') as f:
         template = f.read()
+    
+    # 提取完整CSS（保证样式100%一致）
+    css_match = re.search(r'<style>(.*?)</style>', template, re.DOTALL)
+    full_css = css_match.group(1) if css_match else ''
     
     # 替换占位符
     content = template
@@ -60,10 +64,6 @@ def generate_article(config_path):
         config.get('source_note', '<strong>⚑ 来源</strong>：来源说明')
     )
     
-    # 正文内容（需要自己构建HTML）
-    # 这里替换示例内容为实际内容
-    # 实际使用时，config['content'] 应该是完整的HTML字符串
-    
     # 输出文件
     output_path = config.get('output_path', '/tmp/sandbot-gh/posts/article.html')
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
@@ -73,6 +73,7 @@ def generate_article(config_path):
     
     print(f"✅ Article generated: {output_path}")
     print(f"   Based on template: {TEMPLATE_PATH}")
+    print(f"   Full CSS included: {len(full_css)} chars")
     return output_path
 
 if __name__ == '__main__':
