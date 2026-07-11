@@ -239,6 +239,66 @@ article blockquote { border-left: 3px solid var(--accent); padding: 10px 18px; m
   .step-flow .arrow { transform: rotate(90deg); }
   .article-title { font-size: 1.5rem; }
 }
+
+/* 付费墙样式 */
+.paywall-notice {
+  background: linear-gradient(135deg, var(--bg-warm) 0%, rgba(196, 149, 106, 0.1) 100%);
+  border: 2px solid var(--accent-warm);
+  border-radius: 12px;
+  padding: 32px 24px;
+  margin: 32px 0;
+  text-align: center;
+}
+.paywall-icon { font-size: 3rem; margin-bottom: 16px; }
+.paywall-notice h3 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+.paywall-notice p {
+  color: var(--text-body);
+  font-size: 0.95rem;
+  margin-bottom: 24px;
+}
+.paywall-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.paywall-buttons .btn-primary {
+  padding: 12px 24px;
+  background: var(--accent-warm);
+  color: #fff;
+  text-decoration: none;
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all var(--transition);
+}
+.paywall-buttons .btn-primary:hover { background: #b07d0a; }
+.paywall-buttons .btn-secondary {
+  padding: 12px 24px;
+  background: transparent;
+  color: var(--accent-warm);
+  border: 1px solid var(--accent-warm);
+  text-decoration: none;
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all var(--transition);
+}
+.paywall-buttons .btn-secondary:hover { background: rgba(196, 149, 106, 0.1); }
+.paywall-content.locked {
+  position: relative;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0.3;
+  filter: blur(4px);
+  pointer-events: none;
+}
 </style>
 </head>
 <body>
@@ -291,6 +351,19 @@ article blockquote { border-left: 3px solid var(--accent); padding: 10px 18px; m
     <p><strong>原因很现实：深度学习框架全是围绕矩阵运算设计的。</strong>PyTorch、TensorFlow 的底层是 GEMM（通用矩阵乘法），你突然塞进来一个四元数，框架不认识，硬件加速器也不优化。</p>
 
     <p>QuadR 做的事情是：<strong>重新设计了一套"四元数友好的"神经网络架构</strong>，让旋转操作在四元数空间里直接完成，不用转换回矩阵。</p>
+
+    
+    <!-- PAYWALL_START -->
+    <div class="paywall-notice" id="paywallNotice" style="display: none;">
+      <div class="paywall-icon">🔒</div>
+      <h3>这是会员专属内容</h3>
+      <p>你正在阅读的是深度分析的前 1/4。升级会员解锁全文。</p>
+      <div class="paywall-buttons">
+        <a href="/membership" class="btn-primary">升级会员</a>
+        <a href="#" class="btn-secondary" onclick="buySingle(); return false;">只买这篇 ¥5</a>
+      </div>
+    </div>
+    <div class="paywall-content" id="paywallContent" style="display: none;">
 
     <h2><span class="section-num">2</span><span class="section-dot">·</span><span class="section-sub">为什么是"现在"</span></h2>
 
@@ -371,6 +444,7 @@ article blockquote { border-left: 3px solid var(--accent); padding: 10px 18px; m
     <div class="bottom-source">
       <strong>参考来源：</strong>Anthropic 官方公告 · QuadR GitHub README · Hacker News 讨论 · 四元数原始论文 (Hamilton, 1843)
     </div>
+      </div>
   </article>
 
   <footer class="site-footer">
@@ -378,5 +452,52 @@ article blockquote { border-left: 3px solid var(--accent); padding: 10px 18px; m
     <p style="margin-top: 8px;"><a href="/blog">← 返回首页</a> · <a href="/subscribe">订阅</a> · <a href="/feed.xml">RSS</a></p>
   </footer>
 </div>
+
+<script>
+// 付费墙逻辑
+const API_URL = 'https://sandbot-membership.sandmark78.workers.dev';
+
+async function checkPaywallAccess() {
+  const token = localStorage.getItem('sandbot_token');
+  const articleId = window.location.pathname.split('/').pop().replace('.html', '');
+  
+  // 检查是否是会员文章
+  const paywallNotice = document.getElementById('paywallNotice');
+  const paywallContent = document.getElementById('paywallContent');
+  
+  if (!paywallNotice || !paywallContent) return; // 不是会员文章
+  
+  try {
+    const res = await fetch(`${API_URL}/api/check-access`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, articleId, articleAccess: 'member' }),
+    });
+    const data = await res.json();
+    
+    if (data.allowed) {
+      // 有权限，显示全文
+      paywallNotice.style.display = 'none';
+      paywallContent.style.display = 'block';
+    } else {
+      // 无权限，显示付费墙
+      paywallNotice.style.display = 'block';
+      paywallContent.classList.add('locked');
+    }
+  } catch (e) {
+    console.error('Paywall check error:', e);
+    // 降级：显示付费墙
+    paywallNotice.style.display = 'block';
+    paywallContent.classList.add('locked');
+  }
+}
+
+function buySingle() {
+  alert('按篇购买功能即将上线，敬请期待！');
+}
+
+// 页面加载时检查
+checkPaywallAccess();
+</script>
 </body>
 </html>
