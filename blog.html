@@ -114,25 +114,7 @@ body { font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-seri
 
 @media (max-width: 600px) { .site-header h1 { font-size: 1.6rem; } .site-header { padding: 40px 0 24px; } .featured { padding: 16px; } .featured-title { font-size: 1.1rem; } }
 
-/* 锁定文章样式 */
-.article-card.locked { opacity: 0.7; position: relative; }
-.article-card.locked:hover { opacity: 0.9; }
-.lock-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(250, 248, 245, 0.85);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius);
-  z-index: 10;
-}
-.lock-overlay span { font-size: 2rem; margin-bottom: 8px; }
-.lock-overlay p { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
+
 </style>
 
   <script data-goatcounter="https://sandbot.goatcounter.com/count" async src="//gc.zgo.at/count.js">
@@ -696,55 +678,29 @@ function getFilteredArticles() {
 function getUserPlan() {
   const token = localStorage.getItem('sandbot_token');
   if (!token) return 'guest';
-  // 简单检查，实际需要调用 API
   const plan = localStorage.getItem('sandbot_plan');
   return plan || 'free';
-}
-
-// 检查文章访问权限
-function canAccessArticle(article) {
-  if (article.access === 'free') return true;
-  const plan = getUserPlan();
-  return plan === 'paid';
-}
-
-// 游客阅读计数
-function getGuestReadCount() {
-  return parseInt(localStorage.getItem('guest_read_count') || '0');
-}
-
-function incrementGuestReadCount() {
-  const count = getGuestReadCount() + 1;
-  localStorage.setItem('guest_read_count', count.toString());
-  return count;
 }
 
 function renderArticles() {
   const grid = document.getElementById('articleGrid');
   const filtered = getFilteredArticles();
   const visible = filtered.slice(0, currentPage * ITEMS_PER_PAGE);
-  const userPlan = getUserPlan();
-  const guestReadCount = getGuestReadCount();
   
-  grid.innerHTML = visible.map((a, index) => {
-    const canAccess = canAccessArticle(a);
-    const isGuestLimited = userPlan === 'guest' && a.access === 'free' && index >= 2 && guestReadCount >= 2;
-    const showLock = !canAccess || isGuestLimited;
-    
+  grid.innerHTML = visible.map(a => {
     return `
-    <div class="article-card ${showLock ? 'locked' : ''}" data-tag="${a.tag}" data-title="${a.title}" data-access="${a.access}">
+    <div class="article-card" data-tag="${a.tag}" data-title="${a.title}" data-access="${a.access}">
       <span class="access-badge ${a.access}">${a.access === 'free' ? '免费' : '会员'}</span>
       <div class="card-header">
         <span class="card-type ${a.type}">${a.typeLabel}</span>
       </div>
-      <h3 class="card-title"><a href="${a.url}" ${showLock ? 'onclick="checkAccess(event, \'' + a.url + '\', \'' + a.access + '\')"' : ''}>${a.title}</a></h3>
+      <h3 class="card-title"><a href="${a.url}">${a.title}</a></h3>
       <p class="card-excerpt">${a.excerpt}</p>
       <div class="card-meta">
         <span>${a.date}</span>
         <span class="dot"></span>
         <span>${a.duration}</span>
       </div>
-      ${showLock ? '<div class="lock-overlay"><span>🔒</span><p>' + (a.access === 'member' ? '付费会员专属' : '游客限制') + '</p></div>' : ''}
     </div>
   `}).join('');
   
