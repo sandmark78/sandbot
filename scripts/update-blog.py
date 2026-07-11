@@ -58,8 +58,8 @@ def update_blog_html(blog_file, article_info):
     # 构建新文章条目
     new_entry = f'''  {{
     title: "{article_info['title']}",
-    type: "launch",
-    typeLabel: "LAUNCH",
+    type: "early",
+    typeLabel: "早鸟",
     tag: "{article_info['tag']}",
     date: "{article_info['date']}",
     url: "posts/{article_info['filename']}",
