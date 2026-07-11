@@ -2,9 +2,12 @@
  * Sandbot 会员系统 - Cloudflare Worker
  * 
  * API:
- * POST /api/activate - 激活会员 { code: string }
- * POST /api/verify - 验证会员 { token: string }
- * POST /api/decrypt - 解密文章 { token: string, articleId: string }
+ * POST /api/register - 注册 { email, password }
+ * POST /api/login - 登录 { email, password }
+ * POST /api/logout - 登出 { token }
+ * POST /api/verify - 验证会员 { token }
+ * POST /api/check-access - 检查文章访问权限 { token?, articleId }
+ * POST /api/activate - 激活付费会员 { token, code }
  */
 
 export default {
@@ -36,12 +39,18 @@ export default {
       const body = await request.json();
 
       // Route requests
-      if (path === '/api/activate') {
-        return await handleActivate(body, env, corsHeaders);
+      if (path === '/api/register') {
+        return await handleRegister(body, env, corsHeaders);
+      } else if (path === '/api/login') {
+        return await handleLogin(body, env, corsHeaders);
+      } else if (path === '/api/logout') {
+        return await handleLogout(body, env, corsHeaders);
       } else if (path === '/api/verify') {
         return await handleVerify(body, env, corsHeaders);
-      } else if (path === '/api/decrypt') {
-        return await handleDecrypt(body, env, corsHeaders);
+      } else if (path === '/api/check-access') {
+        return await handleCheckAccess(body, env, corsHeaders);
+      } else if (path === '/api/activate') {
+        return await handleActivate(body, env, corsHeaders);
       } else {
         return new Response(JSON.stringify({ error: 'Not found' }), {
           status: 404,
@@ -58,15 +67,228 @@ export default {
 };
 
 /**
- * 激活会员
- * POST /api/activate { code: "SANDBOT-XXXX-XXXX-XXXX" }
+ * 注册用户
+ * POST /api/register { email, password }
+ */
+async function handleRegister(body, env, corsHeaders) {
+  const { email, password } = body;
+  
+  if (!email || !password) {
+    return jsonResponse({ error: 'Email and password required' }, 400, corsHeaders);
+  }
+
+  // Validate email
+  if (!email.includes('@') || !email.includes('.')) {
+    return jsonResponse({ error: 'Invalid email' }, 400, corsHeaders);
+  }
+
+  // Validate password
+  if (password.length < 6) {
+    return jsonResponse({ error: 'Password must be at least 6 characters' }, 400, corsHeaders);
+  }
+
+  // Check if user exists
+  const userKey = `users:${email.toLowerCase()}`;
+  const existingUser = await env.MEMBERS.get(userKey);
+  
+  if (existingUser) {
+    return jsonResponse({ error: 'Email already registered' }, 409, corsHeaders);
+  }
+
+  // Hash password (simple hash for demo - use bcrypt in production)
+  const hashedPassword = await hashPassword(password);
+
+  // Create user
+  const user = {
+    email: email.toLowerCase(),
+    password: hashedPassword,
+    plan: 'free', // free or paid
+    createdAt: Date.now(),
+    articleCount: 0, // Track articles read (for guest/free limits)
+  };
+
+  // Save user
+  await env.MEMBERS.put(userKey, JSON.stringify(user));
+
+  // Generate session token
+  const token = generateToken();
+  const session = {
+    email: user.email,
+    plan: user.plan,
+    createdAt: Date.now(),
+    expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 days
+  };
+
+  await env.MEMBERS.put(`sessions:${token}`, JSON.stringify(session));
+
+  return jsonResponse({
+    success: true,
+    token,
+    email: user.email,
+    plan: user.plan,
+  }, 200, corsHeaders);
+}
+
+/**
+ * 登录
+ * POST /api/login { email, password }
+ */
+async function handleLogin(body, env, corsHeaders) {
+  const { email, password } = body;
+  
+  if (!email || !password) {
+    return jsonResponse({ error: 'Email and password required' }, 400, corsHeaders);
+  }
+
+  // Get user
+  const userKey = `users:${email.toLowerCase()}`;
+  const userData = await env.MEMBERS.get(userKey);
+  
+  if (!userData) {
+    return jsonResponse({ error: 'Invalid credentials' }, 401, corsHeaders);
+  }
+
+  const user = JSON.parse(userData);
+
+  // Verify password
+  const hashedPassword = await hashPassword(password);
+  if (user.password !== hashedPassword) {
+    return jsonResponse({ error: 'Invalid credentials' }, 401, corsHeaders);
+  }
+
+  // Generate session token
+  const token = generateToken();
+  const session = {
+    email: user.email,
+    plan: user.plan,
+    createdAt: Date.now(),
+    expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 days
+  };
+
+  await env.MEMBERS.put(`sessions:${token}`, JSON.stringify(session));
+
+  return jsonResponse({
+    success: true,
+    token,
+    email: user.email,
+    plan: user.plan,
+  }, 200, corsHeaders);
+}
+
+/**
+ * 登出
+ * POST /api/logout { token }
+ */
+async function handleLogout(body, env, corsHeaders) {
+  const { token } = body;
+  
+  if (!token) {
+    return jsonResponse({ error: 'Token required' }, 400, corsHeaders);
+  }
+
+  await env.MEMBERS.delete(`sessions:${token}`);
+
+  return jsonResponse({ success: true }, 200, corsHeaders);
+}
+
+/**
+ * 验证会员状态
+ * POST /api/verify { token }
+ */
+async function handleVerify(body, env, corsHeaders) {
+  const { token } = body;
+  
+  if (!token) {
+    return jsonResponse({ valid: false, error: 'Token required' }, 400, corsHeaders);
+  }
+
+  const sessionData = await env.MEMBERS.get(`sessions:${token}`);
+  
+  if (!sessionData) {
+    return jsonResponse({ valid: false, error: 'Invalid session' }, 401, corsHeaders);
+  }
+
+  const session = JSON.parse(sessionData);
+
+  // Check expiry
+  if (session.expiresAt && session.expiresAt < Date.now()) {
+    await env.MEMBERS.delete(`sessions:${token}`);
+    return jsonResponse({ valid: false, error: 'Session expired' }, 401, corsHeaders);
+  }
+
+  // Get user data for plan info
+  const userData = await env.MEMBERS.get(`users:${session.email}`);
+  const user = userData ? JSON.parse(userData) : { plan: 'free' };
+
+  return jsonResponse({
+    valid: true,
+    email: session.email,
+    plan: user.plan,
+    expiresAt: session.expiresAt,
+  }, 200, corsHeaders);
+}
+
+/**
+ * 检查文章访问权限
+ * POST /api/check-access { token?, articleId, articleAccess }
+ */
+async function handleCheckAccess(body, env, corsHeaders) {
+  const { token, articleId, articleAccess } = body;
+  
+  if (!articleId || !articleAccess) {
+    return jsonResponse({ error: 'articleId and articleAccess required' }, 400, corsHeaders);
+  }
+
+  // Free articles are accessible to everyone
+  if (articleAccess === 'free') {
+    return jsonResponse({ allowed: true }, 200, corsHeaders);
+  }
+
+  // Member articles require authentication
+  if (articleAccess === 'member') {
+    if (!token) {
+      return jsonResponse({ allowed: false, reason: 'login_required' }, 200, corsHeaders);
+    }
+
+    const sessionData = await env.MEMBERS.get(`sessions:${token}`);
+    if (!sessionData) {
+      return jsonResponse({ allowed: false, reason: 'invalid_session' }, 200, corsHeaders);
+    }
+
+    const session = JSON.parse(sessionData);
+    const userData = await env.MEMBERS.get(`users:${session.email}`);
+    const user = userData ? JSON.parse(userData) : { plan: 'free' };
+
+    // Paid members can access all articles
+    if (user.plan === 'paid') {
+      return jsonResponse({ allowed: true, plan: 'paid' }, 200, corsHeaders);
+    }
+
+    // Free users cannot access member articles
+    return jsonResponse({ allowed: false, reason: 'upgrade_required' }, 200, corsHeaders);
+  }
+
+  return jsonResponse({ allowed: false }, 200, corsHeaders);
+}
+
+/**
+ * 激活付费会员
+ * POST /api/activate { token, code }
  */
 async function handleActivate(body, env, corsHeaders) {
-  const { code } = body;
+  const { token, code } = body;
   
-  if (!code || typeof code !== 'string') {
-    return jsonResponse({ error: 'Invalid code' }, 400, corsHeaders);
+  if (!token || !code) {
+    return jsonResponse({ error: 'Token and code required' }, 400, corsHeaders);
   }
+
+  // Verify session
+  const sessionData = await env.MEMBERS.get(`sessions:${token}`);
+  if (!sessionData) {
+    return jsonResponse({ error: 'Invalid session' }, 401, corsHeaders);
+  }
+
+  const session = JSON.parse(sessionData);
 
   // Check if code exists
   const codeKey = `codes:${code.toUpperCase()}`;
@@ -81,112 +303,39 @@ async function handleActivate(body, env, corsHeaders) {
     return jsonResponse({ error: 'Code already used' }, 401, corsHeaders);
   }
 
-  // Generate token
-  const token = generateToken();
-  const now = Date.now();
+  // Update user plan to paid
+  const userKey = `users:${session.email}`;
+  const userData = await env.MEMBERS.get(userKey);
+  const user = JSON.parse(userData);
   
-  // Calculate expiry
-  let expiresAt = null;
+  user.plan = 'paid';
+  user.activatedAt = Date.now();
+  user.code = code.toUpperCase();
+  
+  // Calculate expiry based on plan
   if (codeData.plan === 'monthly') {
-    expiresAt = now + 30 * 24 * 60 * 60 * 1000;
+    user.expiresAt = Date.now() + 30 * 24 * 60 * 60 * 1000;
   } else if (codeData.plan === 'yearly') {
-    expiresAt = now + 365 * 24 * 60 * 60 * 1000;
+    user.expiresAt = Date.now() + 365 * 24 * 60 * 60 * 1000;
   }
   // 'lifetime' has no expiry
 
-  // Create member record
-  const member = {
-    token,
-    plan: codeData.plan,
-    activatedAt: now,
-    expiresAt,
-    code: code.toUpperCase(),
-  };
+  await env.MEMBERS.put(userKey, JSON.stringify(user));
 
-  // Save member
-  await env.MEMBERS.put(`members:${token}`, JSON.stringify(member));
+  // Update session
+  session.plan = 'paid';
+  await env.MEMBERS.put(`sessions:${token}`, JSON.stringify(session));
 
   // Mark code as used
   codeData.used = true;
-  codeData.usedAt = now;
-  codeData.usedBy = token;
+  codeData.usedAt = Date.now();
+  codeData.usedBy = session.email;
   await env.CODES.put(codeKey, JSON.stringify(codeData));
 
   return jsonResponse({
     success: true,
-    token,
-    plan: codeData.plan,
-    expiresAt,
-  }, 200, corsHeaders);
-}
-
-/**
- * 验证会员
- * POST /api/verify { token: "xxx" }
- */
-async function handleVerify(body, env, corsHeaders) {
-  const { token } = body;
-  
-  if (!token || typeof token !== 'string') {
-    return jsonResponse({ error: 'Invalid token' }, 400, corsHeaders);
-  }
-
-  const memberKey = `members:${token}`;
-  const member = await env.MEMBERS.get(memberKey, 'json');
-  
-  if (!member) {
-    return jsonResponse({ valid: false, error: 'Invalid token' }, 401, corsHeaders);
-  }
-
-  // Check expiry
-  if (member.expiresAt && member.expiresAt < Date.now()) {
-    return jsonResponse({ valid: false, error: 'Membership expired' }, 401, corsHeaders);
-  }
-
-  return jsonResponse({
-    valid: true,
-    plan: member.plan,
-    expiresAt: member.expiresAt,
-  }, 200, corsHeaders);
-}
-
-/**
- * 解密文章
- * POST /api/decrypt { token: "xxx", articleId: "xxx" }
- */
-async function handleDecrypt(body, env, corsHeaders) {
-  const { token, articleId } = body;
-  
-  if (!token || !articleId) {
-    return jsonResponse({ error: 'Missing token or articleId' }, 400, corsHeaders);
-  }
-
-  // Verify member first
-  const memberKey = `members:${token}`;
-  const member = await env.MEMBERS.get(memberKey, 'json');
-  
-  if (!member) {
-    return jsonResponse({ error: 'Invalid token' }, 401, corsHeaders);
-  }
-
-  if (member.expiresAt && member.expiresAt < Date.now()) {
-    return jsonResponse({ error: 'Membership expired' }, 401, corsHeaders);
-  }
-
-  // Get encrypted article
-  const articleKey = `articles:${articleId}`;
-  const encrypted = await env.MEMBERS.get(articleKey);
-  
-  if (!encrypted) {
-    return jsonResponse({ error: 'Article not found' }, 404, corsHeaders);
-  }
-
-  // Decrypt (simple XOR for demo - use proper AES in production)
-  const decrypted = decryptContent(encrypted, token);
-
-  return jsonResponse({
-    success: true,
-    content: decrypted,
+    plan: 'paid',
+    expiresAt: user.expiresAt,
   }, 200, corsHeaders);
 }
 
@@ -208,13 +357,11 @@ function generateToken() {
   return token;
 }
 
-// Helper: Simple XOR decrypt (replace with proper AES in production)
-function decryptContent(encrypted, key) {
-  // In production, use Web Crypto API for proper AES-256 decryption
-  // This is a simplified demo
-  try {
-    return atob(encrypted);
-  } catch {
-    return encrypted;
-  }
+// Helper: Simple password hash (use bcrypt in production)
+async function hashPassword(password) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password + 'sandbot_salt_2026');
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }

@@ -113,9 +113,100 @@ body { font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-seri
 .site-footer .tagline { margin-top: 6px; font-family: 'Noto Serif SC', serif; color: var(--text-muted); font-size: 0.8rem; }
 
 @media (max-width: 600px) { .site-header h1 { font-size: 1.6rem; } .site-header { padding: 40px 0 24px; } .featured { padding: 16px; } .featured-title { font-size: 1.1rem; } }
+
+/* 锁定文章样式 */
+.article-card.locked { opacity: 0.7; position: relative; }
+.article-card.locked:hover { opacity: 0.9; }
+.lock-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(250, 248, 245, 0.85);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  z-index: 10;
+}
+.lock-overlay span { font-size: 2rem; margin-bottom: 8px; }
+.lock-overlay p { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
 </style>
 
-  <script data-goatcounter="https://sandbot.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+  <script data-goatcounter="https://sandbot.goatcounter.com/count" async src="//gc.zgo.at/count.js">
+// 检查文章访问权限
+async function checkAccess(event, url, access) {
+  event.preventDefault();
+  
+  const token = localStorage.getItem('sandbot_token');
+  const API_URL = 'https://sandbot-membership.sandmark78.workers.dev';
+  
+  // 检查权限
+  try {
+    const res = await fetch(`${API_URL}/api/check-access`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, articleId: url, articleAccess: access }),
+    });
+    const data = await res.json();
+    
+    if (data.allowed) {
+      // 更新游客计数
+      if (!token) {
+        incrementGuestReadCount();
+      }
+      window.location.href = url;
+    } else if (data.reason === 'login_required') {
+      // 需要登录
+      if (confirm('需要登录才能阅读更多文章，是否前往登录？')) {
+        window.location.href = '/login';
+      }
+    } else if (data.reason === 'upgrade_required') {
+      // 需要升级
+      if (confirm('这是付费会员专属文章，是否升级会员？')) {
+        window.location.href = '/membership';
+      }
+    } else {
+      alert('无法访问此文章');
+    }
+  } catch (e) {
+    console.error('Check access error:', e);
+    // 降级处理：允许访问
+    window.location.href = url;
+  }
+}
+
+// 检查登录状态并更新 plan
+async function checkLoginStatus() {
+  const token = localStorage.getItem('sandbot_token');
+  if (!token) return;
+  
+  const API_URL = 'https://sandbot-membership.sandmark78.workers.dev';
+  try {
+    const res = await fetch(`${API_URL}/api/verify`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token }),
+    });
+    const data = await res.json();
+    
+    if (data.valid) {
+      localStorage.setItem('sandbot_plan', data.plan);
+      localStorage.setItem('sandbot_email', data.email);
+    } else {
+      localStorage.removeItem('sandbot_token');
+      localStorage.removeItem('sandbot_plan');
+    }
+  } catch (e) {
+    console.error('Verify error:', e);
+  }
+}
+
+// 页面加载时检查
+checkLoginStatus();
+</script>
 </head>
 <body>
 <div class="container">
@@ -209,7 +300,7 @@ const articles = [
     url: "posts/2026-07-11-quadrf-anthropic",
     excerpt: "一次关于坐标系旋转的工程优化，让 4 亿参数模型在手机上跑到了 120 FPS。但真正的故事，比技术本身更值得玩味。",
     duration: "8 分钟",
-    access: "free"
+    access: "member"
   },
   {
     title: "[热点] QuadR 被 Anthropic 收购：四元数旋转的 30 年老概念，怎么就成了 AI 硬件的救命稻草",
@@ -231,7 +322,7 @@ const articles = [
     url: "posts/2026-07-11-afternoon-apple-sues-openai",
     excerpt: "当 AI 公司开始挖硬件人才，当商业秘密变成面试道具，这场诉讼远不止是两个万亿巨头之间的法律纠纷——它是整个 AI 行业从软件走向物理世界的转折点。",
     duration: "6 分钟",
-    access: "free"
+    access: "member"
   },
   {
     title: "[热点] GPT-5.6 发布：AI 军备竞赛没有终点",
@@ -242,7 +333,7 @@ const articles = [
     url: "posts/2026-07-11-hot-gpt56",
     excerpt: "OpenAI 发布 GPT-5.6，HN 895 条评论炸锅。模型迭代速度再次刷新认知，但真正值得关注的不是跑分，而是这场竞赛对所有人的实际影响。",
     duration: "6 分钟",
-    access: "free"
+    access: "member"
   },
   {
     title: "[晚间] 约翰迪尔低头了：你的拖拉机，终于归你修了",
@@ -601,26 +692,61 @@ function getFilteredArticles() {
   });
 }
 
+// 检查用户权限
+function getUserPlan() {
+  const token = localStorage.getItem('sandbot_token');
+  if (!token) return 'guest';
+  // 简单检查，实际需要调用 API
+  const plan = localStorage.getItem('sandbot_plan');
+  return plan || 'free';
+}
+
+// 检查文章访问权限
+function canAccessArticle(article) {
+  if (article.access === 'free') return true;
+  const plan = getUserPlan();
+  return plan === 'paid';
+}
+
+// 游客阅读计数
+function getGuestReadCount() {
+  return parseInt(localStorage.getItem('guest_read_count') || '0');
+}
+
+function incrementGuestReadCount() {
+  const count = getGuestReadCount() + 1;
+  localStorage.setItem('guest_read_count', count.toString());
+  return count;
+}
+
 function renderArticles() {
   const grid = document.getElementById('articleGrid');
   const filtered = getFilteredArticles();
   const visible = filtered.slice(0, currentPage * ITEMS_PER_PAGE);
+  const userPlan = getUserPlan();
+  const guestReadCount = getGuestReadCount();
   
-  grid.innerHTML = visible.map(a => `
-    <div class="article-card" data-tag="${a.tag}" data-title="${a.title}">
+  grid.innerHTML = visible.map((a, index) => {
+    const canAccess = canAccessArticle(a);
+    const isGuestLimited = userPlan === 'guest' && a.access === 'free' && index >= 2 && guestReadCount >= 2;
+    const showLock = !canAccess || isGuestLimited;
+    
+    return `
+    <div class="article-card ${showLock ? 'locked' : ''}" data-tag="${a.tag}" data-title="${a.title}" data-access="${a.access}">
       <span class="access-badge ${a.access}">${a.access === 'free' ? '免费' : '会员'}</span>
       <div class="card-header">
         <span class="card-type ${a.type}">${a.typeLabel}</span>
       </div>
-      <h3 class="card-title"><a href="${a.url}">${a.title}</a></h3>
+      <h3 class="card-title"><a href="${a.url}" ${showLock ? 'onclick="checkAccess(event, \'' + a.url + '\', \'' + a.access + '\')"' : ''}>${a.title}</a></h3>
       <p class="card-excerpt">${a.excerpt}</p>
       <div class="card-meta">
         <span>${a.date}</span>
         <span class="dot"></span>
         <span>${a.duration}</span>
       </div>
+      ${showLock ? '<div class="lock-overlay"><span>🔒</span><p>' + (a.access === 'member' ? '付费会员专属' : '游客限制') + '</p></div>' : ''}
     </div>
-  `).join('');
+  `}).join('');
   
   // Update stats
   document.getElementById('statsText').textContent = `显示 ${visible.length} / ${filtered.length} 篇`;
@@ -662,6 +788,77 @@ document.querySelectorAll('.filter-tag').forEach(tag => {
 
 // Initial render
 renderArticles();
+
+// 检查文章访问权限
+async function checkAccess(event, url, access) {
+  event.preventDefault();
+  
+  const token = localStorage.getItem('sandbot_token');
+  const API_URL = 'https://sandbot-membership.sandmark78.workers.dev';
+  
+  // 检查权限
+  try {
+    const res = await fetch(`${API_URL}/api/check-access`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, articleId: url, articleAccess: access }),
+    });
+    const data = await res.json();
+    
+    if (data.allowed) {
+      // 更新游客计数
+      if (!token) {
+        incrementGuestReadCount();
+      }
+      window.location.href = url;
+    } else if (data.reason === 'login_required') {
+      // 需要登录
+      if (confirm('需要登录才能阅读更多文章，是否前往登录？')) {
+        window.location.href = '/login';
+      }
+    } else if (data.reason === 'upgrade_required') {
+      // 需要升级
+      if (confirm('这是付费会员专属文章，是否升级会员？')) {
+        window.location.href = '/membership';
+      }
+    } else {
+      alert('无法访问此文章');
+    }
+  } catch (e) {
+    console.error('Check access error:', e);
+    // 降级处理：允许访问
+    window.location.href = url;
+  }
+}
+
+// 检查登录状态并更新 plan
+async function checkLoginStatus() {
+  const token = localStorage.getItem('sandbot_token');
+  if (!token) return;
+  
+  const API_URL = 'https://sandbot-membership.sandmark78.workers.dev';
+  try {
+    const res = await fetch(`${API_URL}/api/verify`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token }),
+    });
+    const data = await res.json();
+    
+    if (data.valid) {
+      localStorage.setItem('sandbot_plan', data.plan);
+      localStorage.setItem('sandbot_email', data.email);
+    } else {
+      localStorage.removeItem('sandbot_token');
+      localStorage.removeItem('sandbot_plan');
+    }
+  } catch (e) {
+    console.error('Verify error:', e);
+  }
+}
+
+// 页面加载时检查
+checkLoginStatus();
 </script>
 
 </body>
