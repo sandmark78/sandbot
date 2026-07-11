@@ -495,11 +495,27 @@ article blockquote { border-left: 3px solid var(--accent); padding: 10px 18px; m
 const API_URL = 'https://sandbot-membership.sandmark78.workers.dev';
 
 async function checkPaywallAccess() {
+  console.log('Checking paywall access...');
   const token = localStorage.getItem('sandbot_token');
   const paywallDivider = document.getElementById('paywallDivider');
   const paywallContent = document.getElementById('paywallContent');
   
-  if (!paywallDivider || !paywallContent) return; // 不是会员文章
+  console.log('Token:', token ? 'exists' : 'null');
+  console.log('Divider:', paywallDivider ? 'found' : 'not found');
+  console.log('Content:', paywallContent ? 'found' : 'not found');
+  
+  if (!paywallDivider || !paywallContent) {
+    console.log('Not a member article');
+    return;
+  }
+  
+  // 默认隐藏内容
+  paywallContent.style.display = 'none';
+  
+  if (!token) {
+    console.log('No token, showing paywall');
+    return;
+  }
   
   try {
     const res = await fetch(`${API_URL}/api/check-access`, {
@@ -508,13 +524,15 @@ async function checkPaywallAccess() {
       body: JSON.stringify({ token, articleId: 'member', articleAccess: 'member' }),
     });
     const data = await res.json();
+    console.log('API response:', data);
     
     if (data.allowed) {
-      // 有权限：隐藏付费墙，显示全文
+      console.log('Access granted, showing content');
       paywallDivider.style.display = 'none';
-      paywallContent.classList.add('unlocked');
+      paywallContent.style.display = 'block';
+    } else {
+      console.log('Access denied, showing paywall');
     }
-    // 无权限：显示付费墙，内容保持隐藏
   } catch (e) {
     console.error('Paywall check error:', e);
   }
