@@ -51,22 +51,44 @@ def extract_article_info(article_file):
         'tag': tag
     }
 
+def escape_js_string(text):
+    """转义 JavaScript 字符串中的特殊字符"""
+    if not text:
+        return ""
+    # 转义双引号
+    text = text.replace('"', '\\"')
+    # 转义中文引号（防止被误解析）
+    text = text.replace('"', '\u201c')  # 左中文引号 → Unicode 转义
+    text = text.replace('"', '\u201d')  # 右中文引号 → Unicode 转义
+    # 转义单引号
+    text = text.replace("'", "\\'")
+    # 转义反斜杠
+    text = text.replace('\\', '\\\\')
+    # 转义换行
+    text = text.replace('\n', '\\n')
+    text = text.replace('\r', '\\r')
+    return text
+
 def update_blog_html(blog_file, article_info):
     """更新 blog.html"""
     with open(blog_file, 'r', encoding='utf-8') as f:
         content = f.read()
     
+    # 转义所有字段
+    title_escaped = escape_js_string(article_info['title'])
+    subtitle_escaped = escape_js_string(article_info['subtitle'])
+    
     # 构建新文章条目
     # Cloudflare Pages: 文件名用 .html，但链接用无后缀格式
     url_filename = article_info['filename'].replace('.html', '')
     new_entry = f'''  {{
-    title: "{article_info['title']}",
+    title: "{title_escaped}",
     type: "early",
     typeLabel: "早鸟",
     tag: "{article_info['tag']}",
     date: "{article_info['date']}",
     url: "posts/{url_filename}",
-    excerpt: "{article_info['subtitle']}",
+    excerpt: "{subtitle_escaped}",
     duration: "6 分钟",
     access: "free"
   }}'''
