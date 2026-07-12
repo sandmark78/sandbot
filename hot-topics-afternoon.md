@@ -1,23 +1,37 @@
-# 下午热点素材 (生成时间: 2026-07-11 07:15 UTC)
+# 下午热点素材 (生成时间: 2026-07-12 07:15 UTC)
+
+> 来源: Hacker News 首页 | 今日无 500+ 帖子，取分数最高前 3
 
 ## 话题 1
-- 标题: Apple sues OpenAI, accuses ex-employees of stealing trade secrets
-- 分数: 928 points
-- URL: https://9to5mac.com/2026/07/10/apple-sues-openai-trade-secret-theft/
-- 描述: Apple 起诉 OpenAI，指控其前员工窃取商业秘密。诉讼指出，前 iPhone/Apple Watch 设计副总裁 Tang Tan 利用 Apple 内部项目代号面试候选人，并要求仍在 Apple 工作的候选人携带实际硬件组件进行"展示"。另一名前工程师 Chang Liu 被指控利用安全漏洞在离职后下载机密工程文件。此案发生在 OpenAI 正准备推出首款消费硬件设备之际，背景是 OpenAI 以 65 亿美元收购了 Jony Ive 的 io 公司。
-- 图片1: https://i0.wp.com/9to5mac.com/wp-content/uploads/sites/6/2026/05/apple-openai.jpg?resize=1200%2C628&quality=82&strip=all&ssl=1
+- 标题: Prefer Strict Tables in SQLite
+- 分数: 263 points (129 comments)
+- URL: https://evanhahn.com/prefer-strict-tables-in-sqlite/
+- 描述: 作者强烈推荐使用 SQLite 的 STRICT 表模式。STRICT 表能防止类型不匹配的插入（如把文本塞进 INTEGER 列），阻止无效列类型（如 DATETIME、UUID 等伪类型），同时保留 ANY 类型作为灵活逃生口。需要 SQLite 3.37.0+。作者承认 SQLite 官方偏好灵活类型，但他认为"错误应该大声爆炸"而非静默接受。性能影响可忽略不计。
+- 图片1: 无（纯文本博客，无配图）
 
 ## 话题 2
-- 标题: Show HN: Getting GLM 5.2 running on my slow computer
-- 分数: 846 points
-- URL: https://github.com/JustVugg/colibri
-- 描述: 开源项目 Colibri 实现了在仅 25GB RAM 的消费级机器上运行 GLM-5.2 (744B 参数 MoE 模型)。纯 C 语言编写，零依赖，无需 GPU。核心原理：744B MoE 模型每个 token 仅激活约 40B 参数，其中仅约 11GB 的路由专家需要频繁更新。密集部分 (~17B 参数, int4 约 9.9GB) 常驻内存，21,504 个路由专家 (~370GB 磁盘) 按需流式加载，配合 LRU 缓存。单 C 文件约 2,400 行代码。
-- 图片1: https://opengraph.githubassets.com/7ab83f046e464f88379cb8d981a13d73e1a957c44a100777b8a80c4c9463b311/JustVugg/colibri
+- 标题: Show HN: Ant – A JavaScript Runtime and Ecosystem
+- 分数: 240 points (102 comments)
+- URL: https://antjs.org
+- 描述: Ant 是一个轻量 JavaScript 运行时 + 完整生态系统，包含自研 JS 引擎、包管理器（ants.land 注册中心）、应用部署平台、以及类似 Electron 的桌面应用框架（Ant Desktop）。目标是作为现有 JS 技术栈的端到端替代方案，同时兼容更广泛的 JS 生态。此前曾以纯运行时形式在 HN 展示，现已扩展为完整平台。
+- 图片1: 无（官网极简，仅标题）
 
 ## 话题 3
-- 标题: QuadRF can spot drones and see WiFi through my wall
-- 分数: 536 points
-- URL: https://www.jeffgeerling.com/blog/2026/quadrf-can-spot-drones-and-see-wifi-through-my-wall/
-- 描述: Jeff Geerling 评测 QuadRF——一款基于 Raspberry Pi 5 和 FPGA 的相控阵无线电设备，具备皮秒级时序精度。该设备可穿透墙壁可视化 WiFi 信号，并追踪飞行中的无人机。工作频率 4.9-6 GHz，利用 Pi 5 的 MIPI 通道实现超过 5 Gbps 的低延迟 SDR 流传输。基础套件 Crowd Supply 预售价 $499。开源硬件，可多模块级联，最高支持 1.15 MW EIRP。
-- 图片1: https://www.jeffgeerling.com/blog/2026/quadrf-can-spot-drones-and-see-wifi-through-my-wall/quadrf-antennna-array.jpeg
-- 图片2: https://www.jeffgeerling.com/blog/2026/quadrf-can-spot-drones-and-see-wifi-through-my-wall/quadrf-drone-flying-blob.jpg
+- 标题: Nvidia, CoreWeave, and Nebius: Inside the Circular Financing of the GPU Boom
+- 分数: 230 points (75 comments)
+- URL: https://io-fund.com/ai-stocks/nvidia-coreweave-nebius-circular-financing-gpu-boom
+- 描述: 深度分析 AI 基础设施"新云"（Neocloud）商业模式。核心观点：微软和 Meta 已向 CoreWeave/Nebius 承诺超 $1220 亿（约 AWS TTM 收入的 90%），但这些新云公司远未盈利，依赖 Nvidia 投资+GPU 担保债务的循环融资结构。CoreWeave 和 Nebius 各签约 3.5GW 电力，但大部分尚未上线。Nvidia 向两家各投资 $20 亿，形成"Nvidia 投资→新云买 Nvidia GPU→Nvidia 收入"的循环。文章质疑这种模式的可持续性。
+- 图片1: 无（readability 提取未获取 og:image）
+
+---
+
+## 其他值得关注 (100-200 points)
+| 标题 | 分数 | URL |
+|------|------|-----|
+| We Scaled PgBouncer to 4x Throughput | 200 | https://clickhouse.com/blog/pgbouncer-clickhouse-managed-postgres |
+| Mesh LLM: Distributed AI Computing on iroh | 195 | https://www.iroh.computer/blog/mesh-llm |
+| UPI: Anatomy of a Payment Transaction | 158 | https://timeseriesofindia.com/economy/reads/upi-architecture/ |
+| Show HN: Learn by Rebuilding Redis, Git, a Database | 154 | https://shipthatcode.com |
+| How Doctors Die. It's Not Like the Rest of Us (2016) | 131 | https://archive.cancerworld.net/featured/how-doctors-die/ |
+| Biff.graph: Structure Your Clojure Codebase as a Queryable Graph | 127 | https://github.com/jacobobryant/biff/tree/v2.x/libs/graph |
+| RISCBoy: Open-Source Portable Games Console | 116 | https://github.com/Wren6991/RISCBoy |

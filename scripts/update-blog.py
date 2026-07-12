@@ -56,13 +56,15 @@ def update_blog_html(blog_file, article_info):
         content = f.read()
     
     # 构建新文章条目
+    # Cloudflare Pages: 文件名用 .html，但链接用无后缀格式
+    url_filename = article_info['filename'].replace('.html', '')
     new_entry = f'''  {{
     title: "{article_info['title']}",
     type: "early",
     typeLabel: "早鸟",
     tag: "{article_info['tag']}",
     date: "{article_info['date']}",
-    url: "posts/{article_info['filename']}",
+    url: "posts/{url_filename}",
     excerpt: "{article_info['subtitle']}",
     duration: "6 分钟",
     access: "free"
