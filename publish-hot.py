@@ -278,11 +278,11 @@ with open(rss_path, 'r', encoding='utf-8') as f:
 
 rss_item = f'''    <item>
       <title>{html.escape(title)}</title>
-      <link>https://sandmark78.github.io/sandbot/posts/{slug}.html</link>
+      <link>https://sandbot.cgfan.com/posts/{slug}.html</link>
       <description>{html.escape(subtitle)}</description>
       <category>热点深度</category>
       <pubDate>{datetime.datetime.utcnow().strftime("%a, %d %b %Y %H:%M:%S")} GMT</pubDate>
-      <guid>https://sandmark78.github.io/sandbot/posts/{slug}.html</guid>
+      <guid>https://sandbot.cgfan.com/posts/{slug}.html</guid>
     </item>'''
 
 # Insert after <channel> tag
@@ -303,4 +303,4 @@ if result.returncode == 0:
 else:
     print(f"⚠️ Git push: {result.stderr}")
 
-print(f"\n🎉 Done! Article: https://sandmark78.github.io/sandbot/posts/{slug}.html")
+print(f"\n🎉 Done! Article: https://sandbot.cgfan.com/posts/{slug}.html")
