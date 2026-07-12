@@ -7,6 +7,7 @@
 import sys
 import re
 import os
+from datetime import datetime
 
 def extract_article_info(article_file):
     """从文章文件提取信息"""
