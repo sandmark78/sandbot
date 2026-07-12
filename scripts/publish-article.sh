@@ -27,6 +27,9 @@ python3 /tmp/sandbot-gh/scripts/edge-tts-human.py \
   zh-CN-YunxiNeural \
   cheerful
 
+# 0.5 给文章添加音频播放器
+python3 /tmp/sandbot-gh/scripts/add-audio-player.py "$ARTICLE_FILE"
+
 # 1. 更新 blog.html（添加音频播放器）
 python3 /tmp/sandbot-gh/scripts/update-blog.py "$ARTICLE_FILE" "$BLOG_HTML"
 
