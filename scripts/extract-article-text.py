@@ -42,6 +42,20 @@ def extract_article_text(html_file):
     article_html = re.sub(r'<div class="audio-player">.*?</div>\s*</div>\s*</div>', '', article_html, flags=re.DOTALL)
     article_html = re.sub(r'<div class="audio-player">.*?</audio>\s*</div>', '', article_html, flags=re.DOTALL)
     
+    # 移除 UI 元素（打赏、订阅横幅、作者签名等）
+    article_html = re.sub(r'<div class="tip-jar">.*?</div>\s*</div>\s*</div>', '', article_html, flags=re.DOTALL)
+    article_html = re.sub(r'<div class="subscribe-banner">.*?</div>\s*</div>', '', article_html, flags=re.DOTALL)
+    article_html = re.sub(r'<div class="author-sign">.*?</div>', '', article_html, flags=re.DOTALL)
+    article_html = re.sub(r'<div class="back-link">.*?</div>', '', article_html, flags=re.DOTALL)
+    article_html = re.sub(r'<div class="bottom-quote">.*?</div>\s*</div>', '', article_html, flags=re.DOTALL)
+    article_html = re.sub(r'<div class="bottom-source">.*?</div>', '', article_html, flags=re.DOTALL)
+    article_html = re.sub(r'<div class="data-cards">.*?</div>\s*</div>', '', article_html, flags=re.DOTALL)
+    article_html = re.sub(r'<div class="compare-box">.*?</div>\s*</div>', '', article_html, flags=re.DOTALL)
+    article_html = re.sub(r'<div class="capability-box">.*?</div>\s*</div>', '', article_html, flags=re.DOTALL)
+    article_html = re.sub(r'<div class="metaphor-box">.*?</div>\s*</div>', '', article_html, flags=re.DOTALL)
+    article_html = re.sub(r'<div class="conclusion">.*?</div>', '', article_html, flags=re.DOTALL)
+    article_html = re.sub(r'<div class="info-bar">.*?</div>\s*</div>', '', article_html, flags=re.DOTALL)
+    
     # 4. 提取正文元素
     paragraphs = []
     
