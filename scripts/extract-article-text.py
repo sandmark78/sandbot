@@ -38,6 +38,10 @@ def extract_article_text(html_file):
     article_html = re.sub(r'<nav.*?</nav>', '', article_html, flags=re.DOTALL)
     article_html = re.sub(r'<footer.*?</footer>', '', article_html, flags=re.DOTALL)
     
+    # 移除音频播放器
+    article_html = re.sub(r'<div class="audio-player">.*?</div>\s*</div>\s*</div>', '', article_html, flags=re.DOTALL)
+    article_html = re.sub(r'<div class="audio-player">.*?</audio>\s*</div>', '', article_html, flags=re.DOTALL)
+    
     # 4. 提取正文元素
     paragraphs = []
     
