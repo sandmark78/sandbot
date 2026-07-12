@@ -47,7 +47,7 @@ def extract_articles():
 
 def generate_rss(articles, max_items=30):
     """生成 RSS XML"""
-    base_url = 'https://sandmark78.github.io/sandbot'
+    base_url = 'https://sandbot.cgfan.com'
     
     items = []
     for a in articles[:max_items]:
