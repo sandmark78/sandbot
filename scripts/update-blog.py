@@ -76,11 +76,36 @@ def update_blog_html(blog_file, article_info):
     replacement = r'\1' + new_entry + ',\n'
     content = re.sub(pattern, replacement, content)
     
+    # 同时更新今日精选部分
+    # 更新标题
+    content = re.sub(
+        r'<h2 class="featured-title"><a href="[^"]*">[^<]*</a></h2>',
+        f'<h2 class="featured-title"><a href="posts/{url_filename}">{article_info["title"].replace("[热点] ", "").replace("[早鸟] ", "").replace("[晚间] ", "").replace("[下午] ", "")}</a></h2>',
+        content
+    )
+    
+    # 更新摘要
+    content = re.sub(
+        r'<p class="featured-excerpt">[^<]*</p>',
+        f'<p class="featured-excerpt">{article_info["subtitle"]}</p>',
+        content
+    )
+    
+    # 更新今日精选的日期和时长
+    # 找到 featured-meta 部分并更新
+    content = re.sub(
+        r'(<div class="featured-meta">\s*<span class="tag">[^<]*</span>\s*<span class="dot"></span>\s*)<span>\d{4}-\d{2}-\d{2}</span>',
+        rf'\1<span>{article_info["date"]}</span>',
+        content
+    )
+    
     # 写回文件
     with open(blog_file, 'w', encoding='utf-8') as f:
         f.write(content)
     
     print(f"✅ 已更新 {blog_file}")
+    print(f"   - articles 数组：已添加 {article_info['title']}")
+    print(f"   - 今日精选：已更新为 {article_info['title']}")
 
 if __name__ == '__main__':
     if len(sys.argv) < 3:
