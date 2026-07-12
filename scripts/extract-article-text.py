@@ -70,22 +70,28 @@ def extract_article_text(html_file):
             if not any(x in text for x in skip_words):
                 paragraphs.append(text)
     
-    # 提取标题（h2, h3）
+    # 提取标题（h2, h3）- 只提取正文中的标题，过滤结构性标题
     for h_match in re.finditer(r'<h([23])[^>]*>(.*?)</h\1>', article_html, re.DOTALL):
         level = h_match.group(1)
         text = re.sub(r'<[^>]+>', '', h_match.group(2)).strip()
         # 清理标题中的数字标记
         text = re.sub(r'^\d+\s*·\s*', '', text)
         # 过滤掉不需要的标题
-        skip_titles = ['速览', '来源', '会员专属', '后面约', 'MEMBERS', '深层', '信号', 'Agent 视点']
+        skip_titles = ['速览', '来源', '会员专属', '后面约', 'MEMBERS', '深层', '信号', 'Agent 视点', '机制', '数据飞轮', '真正价值', '不安']
+        # 过滤中文数字开头的标题（一、二、三...）
+        if re.match(r'^[一二三四五六七八九十]+、', text):
+            continue
         if text and not any(x in text for x in skip_titles):
             paragraphs.append(f"\n{text}\n")
     
-    # 提取列表项（只提取正文中的列表）
+    # 提取列表项（只提取正文中的列表，过滤结构性列表）
     for li_match in re.finditer(r'<li[^>]*>(.*?)</li>', article_html, re.DOTALL):
         text = re.sub(r'<[^>]+>', '', li_match.group(1)).strip()
         if text and len(text) > 15:
             if not any(x in text for x in ['升级', '登录', '购买', '会员']):
+                # 过滤太短的列表项（可能是目录项）
+                if len(text) < 50:
+                    continue
                 paragraphs.append(f"· {text}")
     
     # 5. 组合
