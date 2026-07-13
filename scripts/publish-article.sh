@@ -15,34 +15,62 @@ ARTICLE_DIR=$(dirname "$ARTICLE_FILE")
 AUDIO_DIR="$ARTICLE_DIR/audio"
 mkdir -p "$AUDIO_DIR"
 
-# 0. 生成语音版本（人味 Edge TTS）
-echo "🎙️  生成语音版本..."
-# 提取纯正文（过滤导航、按钮、会员提示等）
-python3 /tmp/sandbot-gh/scripts/extract-article-text.py "$ARTICLE_FILE" /tmp/tts-input.txt
+# 0. 检查是否需要生成语音
+# 规则：早鸟文章不生成语音；其他文章 >= 3000 字才生成语音
+GENERATE_AUDIO=false
 
-# 生成语音（男声欢快风格）
-python3 /tmp/sandbot-gh/scripts/edge-tts-human.py \
-  /tmp/tts-input.txt \
-  "$AUDIO_DIR/$ARTICLE_BASE.mp3" \
-  zh-CN-YunxiNeural \
-  cheerful
+if [[ "$ARTICLE_BASE" == *"-morning-"* ]] || [[ "$ARTICLE_BASE" == *"-early-"* ]]; then
+  echo "⏭️  早鸟文章，跳过语音生成"
+else
+  # 提取文本并检查字数
+  python3 /tmp/sandbot-gh/scripts/extract-article-text.py "$ARTICLE_FILE" /tmp/tts-input.txt
+  TEXT_LENGTH=$(wc -c < /tmp/tts-input.txt)
+  
+  if [ "$TEXT_LENGTH" -ge 3000 ]; then
+    echo "✅ 文章字数: $TEXT_LENGTH 字符 (>= 3000)，生成语音"
+    GENERATE_AUDIO=true
+  else
+    echo "⏭️  文章字数: $TEXT_LENGTH 字符 (< 3000)，跳过语音生成"
+  fi
+fi
 
-# 0.5 给文章添加音频播放器
-python3 /tmp/sandbot-gh/scripts/add-audio-player.py "$ARTICLE_FILE"
+# 1. 生成语音版本（如果需要）
+if [ "$GENERATE_AUDIO" = true ]; then
+  echo "🎙️  生成语音版本..."
+  # 生成语音（男声欢快风格）
+  python3 /tmp/sandbot-gh/scripts/edge-tts-human.py \
+    /tmp/tts-input.txt \
+    "$AUDIO_DIR/$ARTICLE_BASE.mp3" \
+    zh-CN-YunxiNeural \
+    cheerful
+  
+  # 给文章添加音频播放器
+  python3 /tmp/sandbot-gh/scripts/add-audio-player.py "$ARTICLE_FILE"
+fi
 
-# 1. 更新 blog.html（添加音频播放器）
+# 2. 更新 blog.html
 python3 /tmp/sandbot-gh/scripts/update-blog.py "$ARTICLE_FILE" "$BLOG_HTML"
 
-# 2. 更新RSS
+# 3. 更新RSS
 python3 /tmp/sandbot-gh/scripts/update-rss.py
 
-# 3. Git操作（合并）
+# 4. Git操作
 cd /tmp/sandbot-gh
-git add "$ARTICLE_FILE" "$BLOG_HTML" feed.xml "$AUDIO_DIR/$ARTICLE_BASE.mp3"
-git commit -m "📝 发布文章: $ARTICLE_BASE (带语音)"
+if [ "$GENERATE_AUDIO" = true ]; then
+  git add "$ARTICLE_FILE" "$BLOG_HTML" feed.xml "$AUDIO_DIR/$ARTICLE_BASE.mp3"
+  git commit -m "📝 发布文章: $ARTICLE_BASE (带语音)"
+else
+  git add "$ARTICLE_FILE" "$BLOG_HTML" feed.xml
+  git commit -m "📝 发布文章: $ARTICLE_BASE (无语音)"
+fi
 git push origin main
 
-echo "✅ 发布完成（含语音版本）"
+echo ""
+if [ "$GENERATE_AUDIO" = true ]; then
+  echo "✅ 发布完成（含语音版本）"
+else
+  echo "✅ 发布完成（无语音版本）"
+fi
 echo ""
 echo "📎 文章完整 URL："
 echo "https://sandbot.cgfan.com/posts/${ARTICLE_BASE}"
