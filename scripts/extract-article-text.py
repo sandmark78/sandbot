@@ -6,6 +6,160 @@
 
 import re
 import sys
+from html.parser import HTMLParser
+
+class ArticleTextExtractor(HTMLParser):
+    """HTML 解析器，提取文章正文"""
+    
+    def __init__(self):
+        super().__init__()
+        self.result = []
+        self.current_tag = None
+        self.skip_depth = 0
+        self.in_article = False
+        self.article_depth = 0
+        self.skip_h1_title = False  # 专门用于跳过 h1.article-title
+        
+        # 需要跳过的 class
+        self.skip_classes = {
+            'article-meta', 'quick-glance', 'source-note', 'article-img',
+            'why-box', 'paywall', 'article-label', 'audio-player',
+            'tip-jar', 'subscribe-banner', 'author-sign', 'back-link',
+            'bottom-quote', 'bottom-source', 'data-cards', 'compare-box',
+            'capability-box', 'metaphor-box', 'conclusion', 'info-bar',
+            'site-header', 'site-footer', 'featured'
+        }
+        
+    def handle_starttag(self, tag, attrs):
+        attrs_dict = dict(attrs)
+        
+        # 进入 article 标签
+        if tag == 'article':
+            self.in_article = True
+            self.article_depth = 1
+            return
+        
+        if not self.in_article:
+            return
+            
+        # 跟踪 article 内的嵌套深度
+        if tag == 'article':
+            self.article_depth += 1
+        
+        # 检查是否需要跳过
+        if 'class' in attrs_dict:
+            classes = attrs_dict['class'].split()
+            if any(c in self.skip_classes for c in classes):
+                self.skip_depth += 1
+                return
+        
+        # 如果正在跳过，增加深度计数
+        if self.skip_depth > 0 and tag == 'div':
+            self.skip_depth += 1
+            return
+        
+        # 如果正在跳过，不处理其他标签
+        if self.skip_depth > 0:
+            return
+        
+        # 跳过文章主标题（h1.article-title）
+        if tag == 'h1' and 'class' in attrs_dict and 'article-title' in attrs_dict['class']:
+            self.skip_h1_title = True
+            return
+        
+        self.current_tag = tag
+        
+        # 处理段落
+        if tag == 'p':
+            self.result.append('\n')
+        
+        # 处理标题
+        elif tag in ['h2', 'h3']:
+            self.result.append('\n\n')
+        
+        # 处理列表项
+        elif tag == 'li':
+            self.result.append('\n· ')
+        
+        # 处理引用
+        elif tag == 'blockquote':
+            self.result.append('\n')
+    
+    def handle_endtag(self, tag):
+        if not self.in_article:
+            return
+        
+        # 离开 article 标签
+        if tag == 'article':
+            self.article_depth -= 1
+            if self.article_depth == 0:
+                self.in_article = False
+            return
+        
+        # 如果正在跳过 h1 标题
+        if self.skip_h1_title and tag == 'h1':
+            self.skip_h1_title = False
+            return
+        
+        # 如果正在跳过，减少深度
+        if self.skip_depth > 0:
+            if tag == 'div':
+                self.skip_depth -= 1
+            return
+        
+        # 处理段落结束
+        if tag == 'p':
+            self.result.append('\n')
+        
+        # 处理标题结束
+        elif tag in ['h2', 'h3']:
+            self.result.append('\n')
+        
+        # 处理列表项结束
+        elif tag == 'li':
+            self.result.append('\n')
+    
+    def handle_data(self, data):
+        if not self.in_article or self.skip_depth > 0 or self.skip_h1_title:
+            return
+        
+        text = data.strip()
+        if text:
+            # 过滤音频播放器控制文字
+            if re.match(r'^\d+:\d+/', text):
+                return
+            self.result.append(text)
+    
+    def get_text(self):
+        text = ''.join(self.result)
+        # 清理多余空行
+        text = re.sub(r'\n{3,}', '\n\n', text)
+        # 清理章节编号（如 "1·" "2·"）
+        text = re.sub(r'(\n\n)\d+·', r'\1', text)
+        # 移除副标题（如果和标题重复）
+        lines = text.split('\n')
+        if len(lines) > 1:
+            # 找到第一个非空行
+            first_line = ''
+            for line in lines:
+                if line.strip():
+                    first_line = line.strip()
+                    break
+            # 如果第二行和第一行相同，移除第二行
+            new_lines = []
+            found_first = False
+            for line in lines:
+                if line.strip() == first_line and not found_first:
+                    found_first = True
+                    new_lines.append(line)
+                elif line.strip() == first_line and found_first:
+                    # 跳过重复的标题
+                    continue
+                else:
+                    new_lines.append(line)
+            text = '\n'.join(new_lines)
+        return text.strip()
+
 
 def extract_article_text(html_file):
     """提取文章正文"""
@@ -18,105 +172,30 @@ def extract_article_text(html_file):
         title_match = re.search(r'<h1[^>]*>(.*?)</h1>', html, re.DOTALL)
     title = re.sub(r'<[^>]+>', '', title_match.group(1)).strip() if title_match else ""
     
-    # 2. 提取 article 标签内的内容
-    article_match = re.search(r'<article[^>]*>(.*?)</article>', html, re.DOTALL)
-    if article_match:
-        article_html = article_match.group(1)
-    else:
-        article_html = html
+    # 2. 使用 HTML 解析器提取正文
+    parser = ArticleTextExtractor()
+    parser.feed(html)
+    text = parser.get_text()
     
-    # 3. 移除不需要的区块
-    article_html = re.sub(r'<div class="article-meta">.*?</div>', '', article_html, flags=re.DOTALL)
-    article_html = re.sub(r'<div class="quick-glance">.*?</div>', '', article_html, flags=re.DOTALL)
-    article_html = re.sub(r'<div class="source-note">.*?</div>', '', article_html, flags=re.DOTALL)
-    article_html = re.sub(r'<div class="article-img">.*?</div>', '', article_html, flags=re.DOTALL)
-    article_html = re.sub(r'<div class="why-box">.*?</div>', '', article_html, flags=re.DOTALL)
-    article_html = re.sub(r'<div class="paywall.*?".*?</div>', '', article_html, flags=re.DOTALL)
-    article_html = re.sub(r'<!-- PAYWALL.*?-->', '', article_html, flags=re.DOTALL)
-    article_html = re.sub(r'<div class="article-label">.*?</div>', '', article_html, flags=re.DOTALL)
-    article_html = re.sub(r'<p class="article-subtitle">.*?</p>', '', article_html, flags=re.DOTALL)
-    article_html = re.sub(r'<nav.*?</nav>', '', article_html, flags=re.DOTALL)
-    article_html = re.sub(r'<footer.*?</footer>', '', article_html, flags=re.DOTALL)
-    
-    # 移除音频播放器
-    article_html = re.sub(r'<div class="audio-player">.*?</div>\s*</div>\s*</div>', '', article_html, flags=re.DOTALL)
-    article_html = re.sub(r'<div class="audio-player">.*?</audio>\s*</div>', '', article_html, flags=re.DOTALL)
-    
-    # 移除 UI 元素（打赏、订阅横幅、作者签名等）
-    article_html = re.sub(r'<div class="tip-jar">.*?</div>\s*</div>\s*</div>', '', article_html, flags=re.DOTALL)
-    article_html = re.sub(r'<div class="subscribe-banner">.*?</div>\s*</div>', '', article_html, flags=re.DOTALL)
-    article_html = re.sub(r'<div class="author-sign">.*?</div>', '', article_html, flags=re.DOTALL)
-    article_html = re.sub(r'<div class="back-link">.*?</div>', '', article_html, flags=re.DOTALL)
-    article_html = re.sub(r'<div class="bottom-quote">.*?</div>\s*</div>', '', article_html, flags=re.DOTALL)
-    article_html = re.sub(r'<div class="bottom-source">.*?</div>', '', article_html, flags=re.DOTALL)
-    article_html = re.sub(r'<div class="data-cards">.*?</div>\s*</div>', '', article_html, flags=re.DOTALL)
-    article_html = re.sub(r'<div class="compare-box">.*?</div>\s*</div>', '', article_html, flags=re.DOTALL)
-    article_html = re.sub(r'<div class="capability-box">.*?</div>\s*</div>', '', article_html, flags=re.DOTALL)
-    article_html = re.sub(r'<div class="metaphor-box">.*?</div>\s*</div>', '', article_html, flags=re.DOTALL)
-    article_html = re.sub(r'<div class="conclusion">.*?</div>', '', article_html, flags=re.DOTALL)
-    article_html = re.sub(r'<div class="info-bar">.*?</div>\s*</div>', '', article_html, flags=re.DOTALL)
-    
-    # 4. 提取正文元素
-    paragraphs = []
-    
-    # 提取段落
-    for p_match in re.finditer(r'<p[^>]*>(.*?)</p>', article_html, re.DOTALL):
-        text = re.sub(r'<[^>]+>', '', p_match.group(1)).strip()
-        # 过滤掉付费提示、元数据等
-        if text and len(text) > 10:
-            skip_words = ['升级会员', '只买这篇', '已是会员', '登录', '购买', '分钟', 
-                         '免费部分', '墙内还有', '这是会员专属', '后面约', 'MEMBERS ONLY',
-                         '约 5 分钟', '数据卡片', 'Agent 视点']
-            if not any(x in text for x in skip_words):
-                paragraphs.append(text)
-    
-    # 提取标题（h2, h3）- 只提取正文中的标题，过滤结构性标题
-    for h_match in re.finditer(r'<h([23])[^>]*>(.*?)</h\1>', article_html, re.DOTALL):
-        level = h_match.group(1)
-        text = re.sub(r'<[^>]+>', '', h_match.group(2)).strip()
-        # 清理标题中的数字标记
-        text = re.sub(r'^\d+\s*·\s*', '', text)
-        # 过滤掉不需要的标题
-        skip_titles = ['速览', '来源', '会员专属', '后面约', 'MEMBERS', '深层', '信号', 'Agent 视点', '机制', '数据飞轮', '真正价值', '不安']
-        # 过滤中文数字开头的标题（一、二、三...）
-        if re.match(r'^[一二三四五六七八九十]+、', text):
-            continue
-        if text and not any(x in text for x in skip_titles):
-            paragraphs.append(f"\n{text}\n")
-    
-    # 提取列表项（只提取正文中的列表，过滤结构性列表）
-    for li_match in re.finditer(r'<li[^>]*>(.*?)</li>', article_html, re.DOTALL):
-        text = re.sub(r'<[^>]+>', '', li_match.group(1)).strip()
-        if text and len(text) > 15:
-            if not any(x in text for x in ['升级', '登录', '购买', '会员']):
-                # 过滤太短的列表项（可能是目录项）
-                if len(text) < 50:
-                    continue
-                paragraphs.append(f"· {text}")
-    
-    # 5. 组合
-    text = '\n\n'.join(paragraphs)
-    
-    # 6. 清理残留
+    # 3. 清理残留
     text = re.sub(r'🔒.*', '', text)
     text = re.sub(r'MEMBERS ONLY.*', '', text)
     text = re.sub(r'本文发布 \d+ 天后免费开放全文。', '', text)
-    text = re.sub(r'诉讼 · 到底发生了什么$', '', text)  # 去掉末尾重复标题
-    text = re.sub(r'\n{3,}', '\n\n', text)
     text = re.sub(r'[ \t]+', ' ', text)
     text = text.strip()
     
-    # 7. 组合标题和正文
+    # 4. 组合标题和正文
     if title:
         full_text = f"{title}\n\n{text}"
     else:
         full_text = text
     
-    # 8. 限制长度（约 8000 字符 ≈ 5-6 分钟音频）
+    # 5. 限制长度（约 8000 字符 ≈ 5-6 分钟音频）
     if len(full_text) > 8000:
         full_text = full_text[:8000] + "\n\n今天就聊到这里。"
     
     return full_text
+
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
