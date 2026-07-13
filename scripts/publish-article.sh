@@ -16,27 +16,19 @@ AUDIO_DIR="$ARTICLE_DIR/audio"
 mkdir -p "$AUDIO_DIR"
 
 # 0. 检查是否需要生成语音
-# 规则：早鸟文章不生成语音；其他文章 >= 3000 字才生成语音
+# 规则：所有文章 >= 3000 字都生成语音（包括早鸟）
 GENERATE_AUDIO=false
 
-# 检查是否是早鸟文章（文件名包含 -morning- 或 -early-）
-case "$ARTICLE_BASE" in
-  *-morning-*|*-early-*)
-    echo "⏭️  早鸟文章，跳过语音生成"
-    ;;
-  *)
-    # 提取文本并检查字数
-    python3 /tmp/sandbot-gh/scripts/extract-article-text.py "$ARTICLE_FILE" /tmp/tts-input.txt
-    TEXT_LENGTH=$(wc -c < /tmp/tts-input.txt)
-    
-    if [ "$TEXT_LENGTH" -ge 3000 ]; then
-      echo "✅ 文章字数: $TEXT_LENGTH 字符 (>= 3000)，生成语音"
-      GENERATE_AUDIO=true
-    else
-      echo "⏭️  文章字数: $TEXT_LENGTH 字符 (< 3000)，跳过语音生成"
-    fi
-    ;;
-esac
+# 提取文本并检查字数
+python3 /tmp/sandbot-gh/scripts/extract-article-text.py "$ARTICLE_FILE" /tmp/tts-input.txt
+TEXT_LENGTH=$(wc -c < /tmp/tts-input.txt)
+
+if [ "$TEXT_LENGTH" -ge 3000 ]; then
+  echo "✅ 文章字数: $TEXT_LENGTH 字符 (>= 3000)，生成语音"
+  GENERATE_AUDIO=true
+else
+  echo "⏭️  文章字数: $TEXT_LENGTH 字符 (< 3000)，跳过语音生成"
+fi
 
 # 1. 生成语音版本（如果需要）
 if [ "$GENERATE_AUDIO" = true ]; then
