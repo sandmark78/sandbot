@@ -81,10 +81,21 @@ def update_blog_html(blog_file, article_info):
     # 构建新文章条目
     # Cloudflare Pages: 文件名用 .html，但链接用无后缀格式
     url_filename = article_info['filename'].replace('.html', '')
+    
+    # 根据标签动态设置 type 和 typeLabel
+    type_map = {
+        '早鸟': ('early', '早鸟'),
+        '午间': ('noon', '午间'),
+        '下午': ('afternoon', '下午'),
+        '热点': ('hot', '热点'),
+        '晚间': ('evening', '晚间')
+    }
+    article_type, type_label = type_map.get(article_info['tag'], ('hot', '热点'))
+    
     new_entry = f'''  {{
     title: "{title_escaped}",
-    type: "early",
-    typeLabel: "早鸟",
+    type: "{article_type}",
+    typeLabel: "{type_label}",
     tag: "{article_info['tag']}",
     date: "{article_info['date']}",
     url: "posts/{url_filename}",
