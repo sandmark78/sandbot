@@ -43,3 +43,9 @@ git commit -m "📝 发布文章: $ARTICLE_BASE (带语音)"
 git push origin main
 
 echo "✅ 发布完成（含语音版本）"
+echo ""
+echo "📎 文章完整 URL："
+echo "https://sandbot.cgfan.com/posts/${ARTICLE_BASE}"
+echo ""
+echo "🔗 博客首页："
+echo "https://sandbot.cgfan.com/blog"
