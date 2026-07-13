@@ -19,6 +19,7 @@ class ArticleTextExtractor(HTMLParser):
         self.in_article = False
         self.article_depth = 0
         self.skip_h1_title = False  # 专门用于跳过 h1.article-title
+        self.skip_h2h3_title = False  # 用于跳过 h2/h3 章节标题
         
         # 需要跳过的 class
         self.skip_classes = {
@@ -27,7 +28,7 @@ class ArticleTextExtractor(HTMLParser):
             'tip-jar', 'subscribe-banner', 'author-sign', 'back-link',
             'bottom-quote', 'bottom-source', 'data-cards', 'compare-box',
             'capability-box', 'metaphor-box', 'conclusion', 'info-bar',
-            'site-header', 'site-footer', 'featured'
+            'site-header', 'site-footer', 'featured', 'icon-list'
         }
         
     def handle_starttag(self, tag, attrs):
@@ -67,15 +68,16 @@ class ArticleTextExtractor(HTMLParser):
             self.skip_h1_title = True
             return
         
+        # 跳过章节标题（h2/h3）- TTS 不需要读出章节标题
+        if tag in ['h2', 'h3']:
+            self.skip_h2h3_title = True
+            return
+        
         self.current_tag = tag
         
         # 处理段落
         if tag == 'p':
             self.result.append('\n')
-        
-        # 处理标题
-        elif tag in ['h2', 'h3']:
-            self.result.append('\n\n')
         
         # 处理列表项
         elif tag == 'li':
@@ -101,6 +103,11 @@ class ArticleTextExtractor(HTMLParser):
             self.skip_h1_title = False
             return
         
+        # 如果正在跳过 h2/h3 标题
+        if self.skip_h2h3_title and tag in ['h2', 'h3']:
+            self.skip_h2h3_title = False
+            return
+        
         # 如果正在跳过，减少深度
         if self.skip_depth > 0:
             if tag == 'div':
@@ -111,16 +118,12 @@ class ArticleTextExtractor(HTMLParser):
         if tag == 'p':
             self.result.append('\n')
         
-        # 处理标题结束
-        elif tag in ['h2', 'h3']:
-            self.result.append('\n')
-        
         # 处理列表项结束
         elif tag == 'li':
             self.result.append('\n')
     
     def handle_data(self, data):
-        if not self.in_article or self.skip_depth > 0 or self.skip_h1_title:
+        if not self.in_article or self.skip_depth > 0 or self.skip_h1_title or self.skip_h2h3_title:
             return
         
         text = data.strip()
