@@ -161,6 +161,15 @@ class ArticleTextExtractor(HTMLParser):
                 else:
                     new_lines.append(line)
             text = '\n'.join(new_lines)
+        
+        # 过滤英文单词（保留中文和中文标点）
+        # 移除连续的英文字母（单词）
+        text = re.sub(r'[a-zA-Z]+', '', text)
+        # 移除英文标点
+        text = re.sub(r'[.,;:!?()\[\]{}"\'\-/\\]', '', text)
+        # 保留中文标点和空格
+        text = re.sub(r'[ \t]+', ' ', text)
+        
         return text.strip()
 
 
@@ -187,11 +196,9 @@ def extract_article_text(html_file):
     text = re.sub(r'[ \t]+', ' ', text)
     text = text.strip()
     
-    # 4. 组合标题和正文
-    if title:
-        full_text = f"{title}\n\n{text}"
-    else:
-        full_text = text
+    # 4. 不添加标题（标题已经在 HTML <title> 中，TTS 不需要再读）
+    # 直接返回正文
+    full_text = text
     
     # 5. 限制长度（约 8000 字符 ≈ 5-6 分钟音频）
     if len(full_text) > 8000:
