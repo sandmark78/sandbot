@@ -162,12 +162,8 @@ class ArticleTextExtractor(HTMLParser):
                     new_lines.append(line)
             text = '\n'.join(new_lines)
         
-        # 过滤英文单词（保留中文和中文标点）
-        # 移除连续的英文字母（单词）
-        text = re.sub(r'[a-zA-Z]+', '', text)
-        # 移除英文标点
-        text = re.sub(r'[.,;:!?()\[\]{}"\'\-/\\]', '', text)
-        # 保留中文标点和空格
+        # 不过滤英文（保留原文）
+        # 只合并多个空格
         text = re.sub(r'[ \t]+', ' ', text)
         
         return text.strip()
