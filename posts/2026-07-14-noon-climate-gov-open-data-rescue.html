@@ -112,6 +112,18 @@ article li { margin-bottom: 6px; line-height: 1.7; font-size: 0.95rem; }
   .data-cards { grid-template-columns: repeat(2, 1fr); }
   .article-title { font-size: 1.5rem; }
 }
+
+/* Audio Player */
+.audio-player { background: var(--bg-warm); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 18px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+.audio-player .play-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all var(--transition); }
+.audio-player .play-btn:hover { background: var(--accent-hover); transform: scale(1.05); }
+.audio-player .play-btn svg { width: 16px; height: 16px; fill: white; }
+.audio-player .player-info { flex: 1; min-width: 0; }
+.audio-player .player-title { font-size: 0.78rem; font-weight: 500; color: var(--text-muted); margin-bottom: 4px; }
+.audio-player .progress-bar { width: 100%; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; cursor: pointer; }
+.audio-player .progress-fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.1s linear; }
+.audio-player .time-display { font-size: 0.72rem; color: var(--text-dim); font-variant-numeric: tabular-nums; margin-top: 4px; }
+.audio-player audio { display: none; }
 </style>
 </head>
 <body>
@@ -148,6 +160,23 @@ article li { margin-bottom: 6px; line-height: 1.7; font-size: 0.95rem; }
     <span class="dot"></span>
     <span>8 分钟</span>
   </div>
+  <div class="audio-player">
+    <button class="play-btn" onclick="toggleAudio()">
+      <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      <svg id="pauseIcon" viewBox="0 0 24 24" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+    </button>
+    <div class="player-info">
+      <div class="player-title">🎙️ 听文章</div>
+      <div class="progress-bar" onclick="seekAudio(event)">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="time-display"><span id="currentTime">0:00</span> / <span id="duration">--:--</span></div>
+    </div>
+    <audio id="articleAudio" ontimeupdate="updateProgress()" onended="resetPlayBtn()">
+      <source src="audio/2026-07-14-noon-climate-gov-open-data-rescue.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+
 
   <div class="quick-glance">
     <h3>一分钟速览</h3>
@@ -371,5 +400,50 @@ article li { margin-bottom: 6px; line-height: 1.7; font-size: 0.95rem; }
 </footer>
 
 </div>
+
+<script>
+function toggleAudio() {
+  const audio = document.getElementById("articleAudio");
+  const playIcon = document.getElementById("playIcon");
+  const pauseIcon = document.getElementById("pauseIcon");
+  if (audio.paused) {
+    audio.play();
+    playIcon.style.display = "none";
+    pauseIcon.style.display = "block";
+  } else {
+    audio.pause();
+    playIcon.style.display = "block";
+    pauseIcon.style.display = "none";
+  }
+}
+function updateProgress() {
+  const audio = document.getElementById("articleAudio");
+  const progress = document.getElementById("progressFill");
+  const currentTime = document.getElementById("currentTime");
+  const duration = document.getElementById("duration");
+  if (audio.duration) {
+    const percent = (audio.currentTime / audio.duration) * 100;
+    progress.style.width = percent + "%";
+    currentTime.textContent = formatTime(audio.currentTime);
+    duration.textContent = formatTime(audio.duration);
+  }
+}
+function seekAudio(e) {
+  const audio = document.getElementById("articleAudio");
+  const bar = e.currentTarget;
+  const rect = bar.getBoundingClientRect();
+  const percent = (e.clientX - rect.left) / rect.width;
+  audio.currentTime = percent * audio.duration;
+}
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return mins + ":" + (secs < 10 ? "0" : "") + secs;
+}
+function resetPlayBtn() {
+  document.getElementById("playIcon").style.display = "block";
+  document.getElementById("pauseIcon").style.display = "none";
+}
+</script>
 </body>
 </html>

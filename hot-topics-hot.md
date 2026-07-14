@@ -1,27 +1,18 @@
-# 热点文章素材 (生成时间: 2026-07-12 09:15)
+# 热点文章素材 (生成时间: 2026-07-13 09:15)
 
 ## 话题 1
-- 标题: 18 Words — Daily Word Challenge
-- 分数: 1125 points
-- URL: https://18words.com/
-- HN讨论: https://news.ycombinator.com/item?id=48845049 (355 comments)
-- 描述: 一款每日文字挑战小游戏，由 Show HN 用户 pompomsheep 发布。作者还做了另一款游戏 Zanagrams。简单的文字拼图玩法引爆 HN 社区，2 天内收获 1125 分。
-- 图片1: https://18words.com/og-image.png
+- 标题: Ask HN: Add flag for AI-generated articles
+- 分数: 639 points
+- URL: https://news.ycombinator.com/item?id=48886741
+- 详细描述: HN 社区正在激烈讨论是否应该为 AI 生成的文章添加标记。HN 官方政策已禁止 AI 生成的评论和帖子，但对外部链接文章尚无类似规则。Dang（HN 编辑）指出社区对 AI 内容普遍反感——读者正在发展出对 LLM 语言的"过敏性反应"，一旦识别出 AI 写作风格，文章立刻被归入低地位类别。这形成了一个有趣的"军备竞赛"：AI 在训练人类数据，人类也在训练自己识别 AI。文中引用了 Paul Graham 的"writes and write-nots"概念，提出了一种新的阶层划分——使用 AI 写作 vs 不使用 AI 写作的分野。有趣的是，这反而给了人类作者一个优势：如果你想让读者把你的文章归为高地位，最简单的办法就是自己写。同时 Dang 强调这并非否定 LLM 技术本身——HN 重度依赖 AI 技术，问题在于如何正确使用它。
+- 图片: N/A (Ask HN 帖子，无原始页面图片)
 
 ## 话题 2
-- 标题: Show HN: Getting GLM 5.2 running on my slow computer (Colibri)
-- 分数: 899 points
-- URL: https://github.com/JustVugg/colibri
-- HN讨论: https://news.ycombinator.com/item?id=48842459 (230 comments)
-- 描述: 用纯 C 语言（零依赖、无 GPU）在仅 25GB RAM 的消费级机器上运行 GLM-5.2（744B 参数 MoE 模型）。核心思路：744B 模型每 token 仅激活 ~40B 参数，其中 ~17B 密集部分常驻内存（int4 约 9.9GB），21504 个路由专家（每个 ~19MB）存储在磁盘上按需流式加载。单文件 C 实现（~2400 行），支持 MLA 注意力、MTP 投机解码、DSA 稀疏注意力等。冷启动解码约 11GB 磁盘读取/token。
-- 图片1: https://opengraph.githubassets.com/7effb8b8dad1b28d7283740fb9f156657321c6d1e965db2e05d6363dfd486bec/JustVugg/colibri
-- 图片2: https://raw.githubusercontent.com/JustVugg/colibri/main/assets/colibri.svg
+- 标题: GhostLock — 存在 15 年的 Linux 内核 stack-UAF 漏洞 (CVE-2026-43499)
+- 分数: 264 points
+- URL: https://nebusec.ai/research/ionstack-part-2/
+- 详细描述: Nebula Security 的 VEGA 项目发现了一个影响所有 Linux 发行版长达 15 年的内核漏洞 GhostLock (CVE-2026-43499)。该漏洞存在于 rtmutex（实时互斥锁）子系统中，自 Linux 2.6.39（2011年）引入，直到 2026 年 4 月才在 Linux 7.1 中修复。漏洞根源在于 remove_waiter() 函数在代理路径（proxy path）上错误地清除了 current->pi_blocked_on，导致内核栈上出现悬空指针（Use-After-Free）。攻击者可以利用常规线程系统调用触发此漏洞，实现 97% 稳定性的权限提升和容器逃逸。唯一要求是 CONFIG_FUTEX_PI=y，不需要任何特殊权限或用户命名空间。Google 在 kernelCTF 中为此漏洞奖励了 $92,337。该漏洞影响从 v2.6.39-rc1 到 v7.1-rc1 的所有 Linux 内核版本。
+- 图片: N/A (readability 提取未获取 og:image)
 
-## 话题 3
-- 标题: QuadRF can spot drones and see WiFi through my wall
-- 分数: 734 points
-- URL: https://www.jeffgeerling.com/blog/2026/quadrf-can-spot-drones-and-see-wifi-through-my-wall/
-- HN讨论: https://news.ycombinator.com/item?id=48861717 (231 comments)
-- 描述: Jeff Geerling 测评 QuadRF —— 一款基于 Raspberry Pi 5 + FPGA 的相控阵无线电设备（4.9-6 GHz）。它能透过墙壁可视化 WiFi 信号，追踪飞行中的无人机。创新点：利用 Pi 5 的 MIPI 通道实现 >5Gbps 低延迟 SDR 流传输。Crowd Supply 众筹价 $499。AR 可视化模式可将射频信号以彩色"斑点"叠加在摄像头画面上。
-- 图片1: https://www.jeffgeerling.com/blog/2026/quadrf-can-spot-drones-and-see-wifi-through-my-wall/quadrf-antennna-array.jpeg
-- 图片2: https://www.jeffgeerling.com/blog/2026/quadrf-can-spot-drones-and-see-wifi-through-my-wall/quadrf-drone-flying-blob.jpg
+---
+*抓取完成: 2 个话题 | 耗时 ~20s | 无超时*

@@ -1,37 +1,80 @@
-# 下午热点素材 (生成时间: 2026-07-12 07:15 UTC)
+# 下午热点素材 (生成时间: 2026-07-13 07:15)
 
-> 来源: Hacker News 首页 | 今日无 500+ 帖子，取分数最高前 3
+## 话题 1: Claude Code 每次请求发送 33k tokens，而 OpenCode 只发 7k
 
-## 话题 1
-- 标题: Prefer Strict Tables in SQLite
-- 分数: 263 points (129 comments)
-- URL: https://evanhahn.com/prefer-strict-tables-in-sqlite/
-- 描述: 作者强烈推荐使用 SQLite 的 STRICT 表模式。STRICT 表能防止类型不匹配的插入（如把文本塞进 INTEGER 列），阻止无效列类型（如 DATETIME、UUID 等伪类型），同时保留 ANY 类型作为灵活逃生口。需要 SQLite 3.37.0+。作者承认 SQLite 官方偏好灵活类型，但他认为"错误应该大声爆炸"而非静默接受。性能影响可忽略不计。
-- 图片1: 无（纯文本博客，无配图）
+- **标题**: Claude Code sends 33k tokens before reading the prompt; OpenCode sends 7k
+- **分数**: 549 points | 310 comments
+- **HN 链接**: https://news.ycombinator.com/item?id=48883275
+- **原始 URL**: https://systima.ai (原文已 404，Cloudflare 拦截镜像站)
+- **图片**: N/A (原始站点不可访问)
 
-## 话题 2
-- 标题: Show HN: Ant – A JavaScript Runtime and Ecosystem
-- 分数: 240 points (102 comments)
-- URL: https://antjs.org
-- 描述: Ant 是一个轻量 JavaScript 运行时 + 完整生态系统，包含自研 JS 引擎、包管理器（ants.land 注册中心）、应用部署平台、以及类似 Electron 的桌面应用框架（Ant Desktop）。目标是作为现有 JS 技术栈的端到端替代方案，同时兼容更广泛的 JS 生态。此前曾以纯运行时形式在 HN 展示，现已扩展为完整平台。
-- 图片1: 无（官网极简，仅标题）
+### 详细描述
 
-## 话题 3
-- 标题: Nvidia, CoreWeave, and Nebius: Inside the Circular Financing of the GPU Boom
-- 分数: 230 points (75 comments)
-- URL: https://io-fund.com/ai-stocks/nvidia-coreweave-nebius-circular-financing-gpu-boom
-- 描述: 深度分析 AI 基础设施"新云"（Neocloud）商业模式。核心观点：微软和 Meta 已向 CoreWeave/Nebius 承诺超 $1220 亿（约 AWS TTM 收入的 90%），但这些新云公司远未盈利，依赖 Nvidia 投资+GPU 担保债务的循环融资结构。CoreWeave 和 Nebius 各签约 3.5GW 电力，但大部分尚未上线。Nvidia 向两家各投资 $20 亿，形成"Nvidia 投资→新云买 Nvidia GPU→Nvidia 收入"的循环。文章质疑这种模式的可持续性。
-- 图片1: 无（readability 提取未获取 og:image）
+Systima 团队在 agentic coding 工具（Claude Code 和 OpenCode）与 Anthropic API 端点之间加入了日志记录，捕获了所有请求及返回的 usage 数据。
+
+**核心发现**：
+- **Claude Code** 在读取用户 prompt 之前就发送约 **33,000 tokens** 的系统开销（包括 subagent 配置、MCP 工具定义、缓存重写、指令文件等）
+- **OpenCode** 同样场景下只发送约 **7,000 tokens**
+- Claude Code 的缓存策略和 harness token 使用效率远低于 OpenCode
+
+**社区讨论热点**（310 条评论）：
+- 企业用户应该记录和监控 AI 编码工具的实际 token 消耗
+- Subagent、MCP 工具链和指令文件会让 token 开销成倍增长
+- 这直接影响企业的 AI 编码工具账单成本
+- 对 Anthropic 的缓存定价模型提出质疑
+
+**写作角度建议**：
+- "AI 编码工具的隐形成本：你付的钱有多少花在了系统 prompt 上？"
+- 对比分析各 AI 编码工具的 token 效率
+- 企业如何优化 AI 编码工具的成本
 
 ---
 
-## 其他值得关注 (100-200 points)
-| 标题 | 分数 | URL |
-|------|------|-----|
-| We Scaled PgBouncer to 4x Throughput | 200 | https://clickhouse.com/blog/pgbouncer-clickhouse-managed-postgres |
-| Mesh LLM: Distributed AI Computing on iroh | 195 | https://www.iroh.computer/blog/mesh-llm |
-| UPI: Anatomy of a Payment Transaction | 158 | https://timeseriesofindia.com/economy/reads/upi-architecture/ |
-| Show HN: Learn by Rebuilding Redis, Git, a Database | 154 | https://shipthatcode.com |
-| How Doctors Die. It's Not Like the Rest of Us (2016) | 131 | https://archive.cancerworld.net/featured/how-doctors-die/ |
-| Biff.graph: Structure Your Clojure Codebase as a Queryable Graph | 127 | https://github.com/jacobobryant/biff/tree/v2.x/libs/graph |
-| RISCBoy: Open-Source Portable Games Console | 116 | https://github.com/Wren6991/RISCBoy |
+## 话题 2: GhostLock — 潜伏在所有 Linux 发行版 15 年的内核漏洞
+
+- **标题**: GhostLock, a stack-UAF that has existed in all Linux distributions for 15 years
+- **分数**: 226 points | 83 comments
+- **HN 链接**: https://news.ycombinator.com/ (首页第 2 位)
+- **原始 URL**: https://nebusec.ai/research/ionstack-part-2/
+- **图片**: N/A (站点无公开 og:image)
+
+### 详细描述
+
+**GhostLock (CVE-2026-43499)** 是 Nebula Security 的 VEGA 团队发现的 Linux 内核漏洞，存在于自 2011 年以来的每个主要 Linux 发行版中。
+
+**漏洞影响**：
+- 无需特殊内核配置或权限即可触发
+- 可实现 **97% 稳定性的权限提升和容器逃逸**
+- Google 在 kernelCTF 中为此漏洞奖励了 **$92,337**
+
+**技术细节**：
+- 漏洞类型：Stack Use-After-Free (stack-UAF)
+- 引入版本：Linux 2.6.39 (rtmutex 重构)
+- 修复版本：Linux 7.1
+- 影响范围：v2.6.39-rc1 到 v7.1-rc1
+- 唯一前提条件：`CONFIG_FUTEX_PI=y`（大多数发行版默认开启）
+
+**攻击链**：
+1. 通过常规 threading syscalls 获取指向内核栈内存的悬空指针
+2. 向几乎任意地址写入指针
+3. 劫持函数表实现控制流劫持，最终获取 root 权限
+
+**根本原因**：`remove_waiter()` 在 `kernel/locking/rtmutex.c` 中清除 `current->pi_blocked_on`，在正常慢速路径上是正确的，但在代理路径（proxy path）上是错误的——`rt_mutex_start_proxy_lock()` 代表另一个任务入队 rt_mutex_waiter，此时 current 是重排队者而非实际拥有者。
+
+**写作角度建议**：
+- "一个 15 年的 Linux 内核漏洞如何影响你所有的服务器"
+- 容器安全：Docker/K8s 环境下的容器逃逸风险
+- 开源安全审计的重要性：为什么代码审查不能只靠社区
+
+---
+
+## 其他值得关注的话题
+
+| 排名 | 话题 | 分数 | 评论数 |
+|------|------|------|--------|
+| #6 | Ask HN: Add flag for AI-generated articles | 496 | 256 |
+| #28 | What xAI's Grok CLI sends to xAI: wire-level analysis | 457 | 169 |
+| #10 | How to read more books | 309 | 168 |
+| #23 | Vint Cerf, "father of the Internet", is retiring | 302 | 177 |
+| #18 | LARP – Revenue infrastructure for serious founders | 220 | 46 |
+| #16 | Migrating production AI agent to GPT-5.6: 2.2x faster, 27% cheaper | 193 | 76 |

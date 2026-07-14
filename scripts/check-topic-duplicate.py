@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 """
-选题去重检查器
+选题去重检查器（改进版）
 用法: python3 check-topic-duplicate.py <关键词1> [关键词2] ...
 
 检查历史文章是否已经写过类似选题
+支持两种检查：
+1. 关键词匹配（精确匹配）
+2. 主题相似度（语义匹配）
 """
 
 import sys
@@ -13,10 +16,34 @@ from datetime import datetime, timedelta
 
 POSTS_DIR = "/tmp/sandbot-gh/posts"
 
+# 主题分类映射
+TOPIC_CATEGORIES = {
+    'ai-coding': ['ai 编程', 'ai 代码', '编程助手', 'coding agent', 'claude code', 'copilot', 'cursor', 'grok', 'opencode'],
+    'ai-security': ['ai 安全', '数据安全', '隐私', '泄露', 'security', 'privacy'],
+    'ai-agent': ['ai agent', '智能体', 'agent', '自治'],
+    'llm': ['llm', '大模型', 'gpt', 'claude', 'gemini', '模型'],
+    'open-source': ['开源', 'open source', 'github', '社区'],
+}
+
+def get_topic_category(text):
+    """识别文本的主题分类"""
+    text_lower = text.lower()
+    categories = []
+    for category, keywords in TOPIC_CATEGORIES.items():
+        for keyword in keywords:
+            if keyword in text_lower:
+                categories.append(category)
+                break
+    return list(set(categories))
+
 def check_duplicate(keywords, days=7):
     """检查过去 N 天是否写过类似选题"""
     duplicates = []
     cutoff_date = datetime.now() - timedelta(days=days)
+    
+    # 获取输入关键词的主题分类
+    input_text = ' '.join(keywords)
+    input_categories = get_topic_category(input_text)
     
     for filename in os.listdir(POSTS_DIR):
         if not filename.endswith('.html'):
@@ -52,11 +79,20 @@ def check_duplicate(keywords, days=7):
             if keyword.lower() in check_text:
                 matched_keywords.append(keyword)
         
-        # 如果匹配 2 个以上关键词，认为是重复
-        if len(matched_keywords) >= 2:
+        # 检查主题相似度
+        file_categories = get_topic_category(check_text)
+        category_overlap = set(input_categories) & set(file_categories)
+        
+        # 判断是否重复：
+        # 1. 匹配 2 个以上关键词
+        # 2. 或者主题分类重叠 2 个以上（说明主题非常接近）
+        is_duplicate = len(matched_keywords) >= 2 or len(category_overlap) >= 2
+        
+        if is_duplicate:
             duplicates.append({
                 'file': filename,
                 'keywords': matched_keywords,
+                'categories': list(category_overlap),
                 'title': title[:80]
             })
     
