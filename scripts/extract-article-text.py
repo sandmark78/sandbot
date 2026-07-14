@@ -20,6 +20,7 @@ class ArticleTextExtractor(HTMLParser):
         self.article_depth = 0
         self.skip_h1_title = False  # 专门用于跳过 h1.article-title
         self.skip_h2h3_title = False  # 用于跳过 h2/h3 章节标题
+        self.skip_script = False  # 用于跳过 script/style 标签
         
         # 需要跳过的 class
         self.skip_classes = {
@@ -63,6 +64,11 @@ class ArticleTextExtractor(HTMLParser):
         if self.skip_depth > 0:
             return
         
+        # 跳过 script 和 style 标签
+        if tag in ['script', 'style']:
+            self.skip_script = True
+            return
+        
         # 跳过文章主标题（h1.article-title）
         if tag == 'h1' and 'class' in attrs_dict and 'article-title' in attrs_dict['class']:
             self.skip_h1_title = True
@@ -89,6 +95,11 @@ class ArticleTextExtractor(HTMLParser):
     
     def handle_endtag(self, tag):
         if not self.in_article:
+            return
+        
+        # 结束 script/style 标签
+        if tag in ['script', 'style']:
+            self.skip_script = False
             return
         
         # 离开 article 标签
@@ -123,7 +134,7 @@ class ArticleTextExtractor(HTMLParser):
             self.result.append('\n')
     
     def handle_data(self, data):
-        if not self.in_article or self.skip_depth > 0 or self.skip_h1_title or self.skip_h2h3_title:
+        if not self.in_article or self.skip_depth > 0 or self.skip_h1_title or self.skip_h2h3_title or self.skip_script:
             return
         
         text = data.strip()
