@@ -32,16 +32,23 @@ fi
 
 # 1. 生成语音版本（如果需要）
 if [ "$GENERATE_AUDIO" = true ]; then
-  echo "🎙️  生成语音版本..."
-  # 生成语音（男声欢快风格）
-  python3 /tmp/sandbot-gh/scripts/edge-tts-human.py \
-    /tmp/tts-input.txt \
-    "$AUDIO_DIR/$ARTICLE_BASE.mp3" \
-    zh-CN-YunxiNeural \
-    cheerful
-  
-  # 给文章添加音频播放器
-  python3 /tmp/sandbot-gh/scripts/add-audio-player.py "$ARTICLE_FILE"
+  # 先验证文本
+  echo "🔍 验证 TTS 文本..."
+  if python3 /tmp/sandbot-gh/scripts/validate-tts-text.py /tmp/tts-input.txt; then
+    echo "🎙️  生成语音版本..."
+    # 生成语音（男声欢快风格）
+    python3 /tmp/sandbot-gh/scripts/edge-tts-human.py \
+      /tmp/tts-input.txt \
+      "$AUDIO_DIR/$ARTICLE_BASE.mp3" \
+      zh-CN-YunxiNeural \
+      cheerful
+    
+    # 给文章添加音频播放器
+    python3 /tmp/sandbot-gh/scripts/add-audio-player.py "$ARTICLE_FILE"
+  else
+    echo "❌ TTS 文本验证失败，跳过语音生成"
+    GENERATE_AUDIO=false
+  fi
 fi
 
 # 2. 更新 blog.html
