@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Edge TTS 人味版 - 带情感和自然停顿
+Edge TTS 人味版 - 纯文本模式
 用法: python3 edge-tts-human.py <input.txt> <output.mp3> [voice] [style]
 
 语音:
@@ -23,41 +23,10 @@ import sys
 import asyncio
 import edge_tts
 
-def build_ssml(text, style='cheerful'):
-    """构建带情感和停顿的 SSML"""
-    # 自动添加停顿
-    text = text.replace('。', '。<break time="500ms"/>')
-    text = text.replace('！', '！<break time="500ms"/>')
-    text = text.replace('？', '？<break time="500ms"/>')
-    text = text.replace('.', '.<break time="500ms"/>')
-    text = text.replace('!', '!<break time="500ms"/>')
-    text = text.replace('?', '?<break time="500ms"/>')
-    text = text.replace('；', '；<break time="300ms"/>')
-    text = text.replace('，', '，<break time="200ms"/>')
-    text = text.replace(',', ',<break time="200ms"/>')
-    
-    # 分段（段落间更长停顿）
-    paragraphs = [p.strip() for p in text.split('\n') if p.strip()]
-    text_with_paragraphs = '<break time="800ms"/>'.join(paragraphs)
-    
-    ssml = f"""<speak version='1.0' xml:lang='zh-CN'>
-  <voice name='{{voice}}'>
-    <mstts:express-as style='{style}' styledegree='1.5'>
-      <prosody rate='-10%' pitch='+2Hz' volume='+5%'>
-        {text_with_paragraphs}
-      </prosody>
-    </mstts:express-as>
-  </voice>
-</speak>"""
-    return ssml
-
 async def text_to_speech(text, output_file, voice='zh-CN-YunxiNeural', style='cheerful'):
-    """生成语音"""
-    ssml = build_ssml(text, style)
-    # 替换 voice 占位符
-    ssml = ssml.replace('{voice}', voice)
-    
-    communicate = edge_tts.Communicate(ssml, voice=voice)
+    """生成语音（纯文本模式，不使用 SSML）"""
+    # 直接使用纯文本，不添加 SSML 标签
+    communicate = edge_tts.Communicate(text, voice=voice, rate='-10%', pitch='+2Hz')
     await communicate.save(output_file)
     return True
 
