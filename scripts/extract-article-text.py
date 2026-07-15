@@ -18,8 +18,6 @@ class ArticleTextExtractor(HTMLParser):
         self.skip_depth = 0
         self.in_article = False
         self.article_depth = 0
-        self.skip_h1_title = False  # 专门用于跳过 h1.article-title
-        self.skip_h2h3_title = False  # 用于跳过 h2/h3 章节标题
         self.skip_script = False  # 用于跳过 script/style 标签
         
         # 需要跳过的 class
@@ -69,14 +67,14 @@ class ArticleTextExtractor(HTMLParser):
             self.skip_script = True
             return
         
-        # 跳过文章主标题（h1.article-title）
+        # 保留文章主标题（h1.article-title）- 用于 TTS 朗读
         if tag == 'h1' and 'class' in attrs_dict and 'article-title' in attrs_dict['class']:
-            self.skip_h1_title = True
+            self.result.append('\n\n')  # 标题前加空行
             return
         
-        # 跳过章节标题（h2/h3）- TTS 不需要读出章节标题
+        # 保留章节标题（h2/h3）- 用于 TTS 朗读
         if tag in ['h2', 'h3']:
-            self.skip_h2h3_title = True
+            self.result.append('\n\n')  # 章节标题前加空行
             return
         
         self.current_tag = tag
@@ -109,16 +107,6 @@ class ArticleTextExtractor(HTMLParser):
                 self.in_article = False
             return
         
-        # 如果正在跳过 h1 标题
-        if self.skip_h1_title and tag == 'h1':
-            self.skip_h1_title = False
-            return
-        
-        # 如果正在跳过 h2/h3 标题
-        if self.skip_h2h3_title and tag in ['h2', 'h3']:
-            self.skip_h2h3_title = False
-            return
-        
         # 如果正在跳过，减少深度
         if self.skip_depth > 0:
             if tag == 'div':
@@ -129,12 +117,16 @@ class ArticleTextExtractor(HTMLParser):
         if tag == 'p':
             self.result.append('\n')
         
+        # 处理标题结束（h1/h2/h3）
+        elif tag in ['h1', 'h2', 'h3']:
+            self.result.append('\n')
+        
         # 处理列表项结束
         elif tag == 'li':
             self.result.append('\n')
     
     def handle_data(self, data):
-        if not self.in_article or self.skip_depth > 0 or self.skip_h1_title or self.skip_h2h3_title or self.skip_script:
+        if not self.in_article or self.skip_depth > 0 or self.skip_script:
             return
         
         text = data.strip()
