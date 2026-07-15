@@ -1,20 +1,20 @@
-# 早间文章素材 (生成时间: 2026-07-15 21:15)
+# 早间文章素材 (生成时间: 2026-07-16 00:23 UTC)
 
 ## 今日已有文章（避免重复）
-- 2026-07-15-evening-colibri-glm52-local-inference (本地推理)
-- 2026-07-15-hot-cursor-0day-security (Cursor 安全漏洞)
-- 2026-07-15-noon-app-vs-webpage (App vs 网页)
+- 2026-07-15-early-app-vs-webpage (App vs 网页)
+- 2026-07-15-evening-colibri-glm52-local-inference (Colibri GLM5.2 本地推理)
+- 2026-07-15-hot-cursor-0day-security (Cursor 0day 安全漏洞)
 
 ---
 
 ## 话题 1: Inkling 开放权重模型
 - 标题: Inkling: Our Open-Weights Model
-- 分数: 350 points
-- 评论: 91 comments
+- 分数: 539 points
+- 评论: 134 comments
 - URL: https://thinkingmachines.ai/news/introducing-inkling/
 - HN: https://news.ycombinator.com/item?id=48924912
 - 详细描述:
-  Thinking Machines Lab 发布了名为 Inkling 的开放权重模型。这是一个 Mixture-of-Experts 架构的 transformer，总参数 975B，活跃参数 41B，支持高达 1M tokens 的上下文窗口。模型在 45 万亿 tokens（包含文本、图像、音频和视频）上进行了预训练。
+  Thinking Machines Lab 发布了 Inkling 开放权重模型，这是一个 Mixture-of-Experts (MoE) 架构的 transformer，总参数 975B，活跃参数 41B，支持高达 1M tokens 的上下文窗口。模型在 45 万亿 tokens（包含文本、图像、音频和视频）上进行了预训练。
 
   Inkling 能够原生地对文本、图像和音频进行推理，并通过高效可控的思考力度来平衡成本与性能。该模型并非当前最强的开放或闭源模型，但其组合作用使其成为良好的开放权重基础：多模态能力、高效思考、以及可在 Tinker 平台上进行微调。
 
@@ -27,52 +27,43 @@
 
 ---
 
-## 话题 2: Stripe 和 Advent 联合收购 PayPal
-- 标题: Stripe and Advent have made a joint offer to acquire PayPal
-- 分数: 235 points
-- 评论: 117 comments
-- URL: https://www.reuters.com/business/finance/stripe-advent-offer-buy-paypal-more-than-53-billion-sources-say-2026-07-15/ (需 JS，无法抓取)
-- HN: https://news.ycombinator.com/item?id=48915953
+## 话题 2: Grok Build 开源
+- 标题: Grok Build is open source
+- 分数: 174 points
+- 评论: 194 comments
+- URL: https://github.com/xai-org/grok-build
+- HN: https://news.ycombinator.com/item?id=48926590
 - 详细描述:
-  据 Reuters 报道，支付巨头 Stripe 和私募股权公司 Advent 已联合提出收购 PayPal 的要约，报价超过 530 亿美元。这是金融科技领域的一笔重磅交易。
+  xAI 宣布 Grok Build 开源。Grok Build 是 xAI 的 AI 编程助手，此前因安全漏洞（工作区 git.exe 执行问题）而备受关注。现在 xAI 选择将其开源，可能是为了增加透明度和社区审查。
 
-  PayPal 作为在线支付的先驱，近年来面临来自 Apple Pay、Stripe 等新兴支付方式的激烈竞争。此次收购要约反映了支付行业整合的趋势。
+  这个决定很有意思：在一个 AI 编程工具因安全问题被曝光后，公司选择开源而不是闭门修复。这体现了"阳光是最好的消毒剂"的理念——让社区审查代码，发现潜在问题。
 
-  HN 社区讨论热烈（117 条评论），可能涉及：支付行业格局变化、Stripe 从支付处理商向全能金融机构的转变、以及 PayPal 的未来走向。
+  194 条评论说明社区对此高度关注，讨论可能涉及：开源的意义、安全性、与 Cursor/Claude Code 的竞争等。
 
-- 图片: 无法获取（Reuters 需要 JS）
-- 写作角度: 金融科技大并购、支付行业格局变化、530 亿美元的交易逻辑
+- 图片: https://opengraph.githubassets.com/1/xai-org/grok-build
+- 写作角度: 开源策略、安全透明、AI 编程工具竞争格局
 
 ---
 
-## 话题 3: misa77 - 比 LZ4 快 2 倍的编解码器
-- 标题: misa77 - a codec that decodes 2x faster than LZ4 (at better ratios)
-- 分数: 107 points
-- 评论: 35 comments
-- URL: https://github.com/welcome-to-the-sunny-side/misa77
-- HN: https://news.ycombinator.com/item?id=48922838
+## 话题 3: 在 13 年老 Xeon 上跑 Gemma 4 26B
+- 标题: Running Gemma 4 26B at 5 tokens/sec on a 13-year-old Xeon with no GPU
+- 分数: 211 points
+- 评论: 137 comments
+- URL: https://www.neomindlabs.com/2026/06/08/running-gemma-4-26b-at-5-tokens-sec-on-a-13-year-old-xeon-with-no-gpu/
+- HN: https://news.ycombinator.com/item?id=48922434
 - 详细描述:
-  misa77 是一个基于 LZ 的编解码器，专为"写一次、读多次"的场景设计。其核心特点：
+  NeoMind Labs 展示了在 13 年前的 Intel Xeon CPU（无 GPU）上运行 Google Gemma 4 26B 模型的能力，达到 5 tokens/sec 的推理速度。
 
-  **极致解压速度**：单线程解压速度比 LZ4 快 1.5-3 倍（同时压缩率更好！）
-  **恒定内存使用**：无论输入大小，内存占用恒定（代价是压缩较慢）
-  **越压缩越快的特性**：高压缩率的文件解压反而更快，形成良性循环
+  这是一个令人印象深刻的工程成就，证明了：
+  1. 现代 LLM 可以在老旧硬件上运行
+  2. CPU 推理并非不可行（虽然慢）
+  3. 边缘计算和本地推理的可能性
 
-  技术细节：
-  - 两个压缩级别：level 0（更快解压、稍差压缩率）和 level 1（默认，平衡）
-  - 没有熵后端，所以不能与 zstd 比较，但在 LZ4 高压缩级别上是很好的参考点
-  - 跨平台支持：Intel x86-64、AMD x86-64、ARM64
-  - 在大多数数据类型上处于解压速度 vs 压缩率的帕累托前沿
+  137 条评论说明社区对低成本 AI 推理的高度兴趣。讨论可能涉及：量化技术、内存优化、实际应用场景等。
 
-  这个项目展示了在特定场景下（如游戏资源、静态内容分发），极致解压速度的价值。
-
-- 图片: GitHub 项目无 og:image
-- 写作角度: 性能优化、LZ 算法新突破、Show HN 项目
+- 图片: 未找到 og:image
+- 写作角度: 低成本 AI、边缘计算、硬件限制突破
 
 ---
 
-## 抓取总结
-- 成功抓取: 2 个详细内容 (Inkling, misa77)
-- 使用 HN 描述: 1 个 (Stripe/PayPal，Reuters 需 JS)
-- 跳过: Telegram 数据中心 (Cloudflare 403), Digital Clock Designs (无内容)
-- 话题与今日已有文章无重复 ✅
+## 话题与今日已有文章无重复 ✅
