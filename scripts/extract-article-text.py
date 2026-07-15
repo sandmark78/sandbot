@@ -174,6 +174,29 @@ class ArticleTextExtractor(HTMLParser):
             text = '\n'.join(new_lines)
         
         # 不过滤英文（保留原文）
+        # 过滤 emoji 符号（TTS 不需要读出）
+        emoji_pattern = re.compile(
+            "["
+            "\U0001F600-\U0001F64F"  # emoticons
+            "\U0001F300-\U0001F5FF"  # symbols & pictographs
+            "\U0001F680-\U0001F6FF"  # transport & map symbols
+            "\U0001F1E0-\U0001F1FF"  # flags (iOS)
+            "\U00002702-\U000027B0"
+            "\U000024C2-\U0001F251"
+            "\U0001f926-\U0001f937"
+            "\U00010000-\U0010ffff"
+            "\u2640-\u2642"
+            "\u2600-\u2B55"
+            "\u200d"
+            "\u23cf"
+            "\u23e9"
+            "\u231a"
+            "\ufe0f"
+            "\u3030"
+            "]+",
+            flags=re.UNICODE
+        )
+        text = emoji_pattern.sub('', text)
         # 只合并多个空格
         text = re.sub(r'[ \t]+', ' ', text)
         
