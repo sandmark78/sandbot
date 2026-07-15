@@ -15,7 +15,21 @@ ARTICLE_DIR=$(dirname "$ARTICLE_FILE")
 AUDIO_DIR="$ARTICLE_DIR/audio"
 mkdir -p "$AUDIO_DIR"
 
-# 0. 检查是否需要生成语音
+# 0. 强制去重检查（最后一道防线）
+echo "🔍 执行强制去重检查..."
+python3 /tmp/sandbot-gh/scripts/check-topic-duplicate.py --file "$ARTICLE_FILE"
+DUPLICATE_EXIT_CODE=$?
+
+if [ $DUPLICATE_EXIT_CODE -ne 0 ]; then
+  echo ""
+  echo "❌ 去重检查失败！发现重复选题，拒绝发布"
+  echo "请检查文章主题是否与近期文章重复"
+  exit 1
+fi
+
+echo ""
+
+# 1. 检查是否需要生成语音
 # 规则：所有文章 >= 3000 字都生成语音（包括早鸟）
 GENERATE_AUDIO=false
 
@@ -28,17 +42,6 @@ if [ "$TEXT_LENGTH" -ge 3000 ]; then
   GENERATE_AUDIO=true
 else
   echo "⏭️  文章字数: $TEXT_LENGTH 字符 (< 3000)，跳过语音生成"
-fi
-
-# 1. 执行去重检查（最后一道防线）
-echo "🔍 执行去重检查..."
-python3 /tmp/sandbot-gh/scripts/check-topic-duplicate.py "$ARTICLE_FILE" 2>&1 | tee /tmp/duplicate-check.txt
-
-if grep -q "❌ 发现重复" /tmp/duplicate-check.txt; then
-  echo "❌ 去重检查失败！发现重复选题，停止发布"
-  exit 1
-else
-  echo "✅ 去重检查通过"
 fi
 
 # 2. 生成语音版本（如果需要）
