@@ -1,18 +1,23 @@
-# 热点文章素材 (生成时间: 2026-07-13 09:15)
+# 热点文章素材 (生成时间: 2026-07-15 09:15)
 
-## 话题 1
-- 标题: Ask HN: Add flag for AI-generated articles
-- 分数: 639 points
-- URL: https://news.ycombinator.com/item?id=48886741
-- 详细描述: HN 社区正在激烈讨论是否应该为 AI 生成的文章添加标记。HN 官方政策已禁止 AI 生成的评论和帖子，但对外部链接文章尚无类似规则。Dang（HN 编辑）指出社区对 AI 内容普遍反感——读者正在发展出对 LLM 语言的"过敏性反应"，一旦识别出 AI 写作风格，文章立刻被归入低地位类别。这形成了一个有趣的"军备竞赛"：AI 在训练人类数据，人类也在训练自己识别 AI。文中引用了 Paul Graham 的"writes and write-nots"概念，提出了一种新的阶层划分——使用 AI 写作 vs 不使用 AI 写作的分野。有趣的是，这反而给了人类作者一个优势：如果你想让读者把你的文章归为高地位，最简单的办法就是自己写。同时 Dang 强调这并非否定 LLM 技术本身——HN 重度依赖 AI 技术，问题在于如何正确使用它。
-- 图片: N/A (Ask HN 帖子，无原始页面图片)
+## 话题 1: Bonsai 27B — 首个能在手机上运行的 27B 模型
+- 标题: Announcing Bonsai 27B: The First 27B-Class Model to Run on a Phone
+- 分数: 584 points (HN #1 热门)
+- URL: https://prismml.com/news/bonsai-27b
+- HN 讨论: https://news.ycombinator.com/item?id=48910545 (209 comments)
+- 详细描述:
+  PrismML 发布 Bonsai 27B，基于 Qwen3.6 27B，是首个能在手机上运行的 27B 级别多模态模型。核心突破在于极低比特量化技术：Ternary 版本使用 {-1, 0, +1} 三值权重 + FP16 分组缩放，仅 5.9GB，可在普通笔记本运行；1-bit 版本使用 {-1, +1} 二值权重，仅 3.9GB，首次让 27B 级模型跑在 iPhone 17 Pro 上。两个版本均支持多模态（视觉塔 4-bit 压缩）、262K token 上下文、推测解码加速，且全网络无高精度逃逸路径。性能保留方面，Ternary 版保留原始精度 95% 的智能，1-bit 版保留 90%，在 15 项基准测试（知识、推理、数学、编码、工具调用、视觉）中表现优异。全部以 Apache 2.0 开源发布。这标志着端侧 AI 从"能用"进入"好用"阶段——多步推理、结构化调用、视觉任务和 agentic 循环均可在手机上完成。
+- 图片: 未提取（页面未提供 og:image）
 
-## 话题 2
-- 标题: GhostLock — 存在 15 年的 Linux 内核 stack-UAF 漏洞 (CVE-2026-43499)
-- 分数: 264 points
-- URL: https://nebusec.ai/research/ionstack-part-2/
-- 详细描述: Nebula Security 的 VEGA 项目发现了一个影响所有 Linux 发行版长达 15 年的内核漏洞 GhostLock (CVE-2026-43499)。该漏洞存在于 rtmutex（实时互斥锁）子系统中，自 Linux 2.6.39（2011年）引入，直到 2026 年 4 月才在 Linux 7.1 中修复。漏洞根源在于 remove_waiter() 函数在代理路径（proxy path）上错误地清除了 current->pi_blocked_on，导致内核栈上出现悬空指针（Use-After-Free）。攻击者可以利用常规线程系统调用触发此漏洞，实现 97% 稳定性的权限提升和容器逃逸。唯一要求是 CONFIG_FUTEX_PI=y，不需要任何特殊权限或用户命名空间。Google 在 kernelCTF 中为此漏洞奖励了 $92,337。该漏洞影响从 v2.6.39-rc1 到 v7.1-rc1 的所有 Linux 内核版本。
-- 图片: N/A (readability 提取未获取 og:image)
+## 话题 2: Cursor 0day — 打开仓库即执行恶意代码
+- 标题: Cursor 0day: When Full Disclosure Becomes the Only Protection Left
+- 分数: 357 points (HN 热门)
+- URL: https://mindgard.ai/blog/cursor-0day-when-full-disclosure-becomes-the-only-protection-left
+- HN 讨论: https://news.ycombinator.com/item?id=48910676 (165 comments)
+- 详细描述:
+  Mindgard 安全研究团队披露 Cursor IDE（700 万+ 活跃用户、100 万+ 日活、估值 600 亿美元）的一个严重安全漏洞：在 Windows 上，当开发者用 Cursor 打开一个项目时，IDE 会自动在工作区根目录查找 git 二进制文件并执行。攻击者只需在仓库根目录放置一个恶意 git.exe，Cursor 就会在无任何用户交互、无提示、无警告的情况下自动执行它，实现任意代码执行。该漏洞于 2025 年 12 月 15 日首次发现并报告，经过 6 个月、197+ 个新版本迭代，问题至今未修复。漏洞利用极其简单——不需要提示注入、模型操纵、越狱或内存损坏，只需开发者打开含有恶意 git.exe 的项目即可。建议企业临时使用 AppLocker 或 Windows App Control 策略，在工作区目录拒绝执行特定可执行文件名。
+- 图片: 未提取（页面未提供 og:image）
 
 ---
-*抓取完成: 2 个话题 | 耗时 ~20s | 无超时*
+*抓取完成: 2/2 话题成功*
+*总耗时: ~15 秒*

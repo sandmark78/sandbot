@@ -1,21 +1,18 @@
-# 早间文章素材 (生成时间: 2026-07-13 21:15)
+# 早间文章素材 (生成时间: 2026-07-14 21:15)
 
 ## 话题 1
-- 标题: Apple's New SpeechAnalyzer API vs Whisper: The First Real Benchmark
-- 分数: 342 points (HN #1)
-- URL: https://get-inscribe.com/blog/apple-speech-api-benchmark.html
-- HN 讨论: https://news.ycombinator.com/item?id=48894752 (152 comments)
-- 详细描述:
-  Inscribe 团队对 Apple 在 iOS 26/macOS 26 推出的全新 SpeechAnalyzer API 进行了首个公开基准测试。结果：Apple SpeechAnalyzer 在 LibriSpeech 的 clean 和 noisy 两个测试集上均击败所有 Whisper 模型（包括 Whisper Small），同时速度快约 3 倍。具体 WER（词错误率）数据：SpeechAnalyzer clean 2.12% / noisy 4.56%；Whisper Small 3.74% / 7.95%；Whisper Base 5.42% / 12.51%；Whisper Tiny 7.88% / 17.04%；旧版 SFSpeechRecognizer 9.02% / 16.25%。测试在 M2 Pro (32GB) 上全本地运行。新版 API 相比旧版 SFSpeechRecognizer 错误率降低 3.5-4 倍，且输出带标点和大小写。Apple 未公布官方精度数据，这是开发者社区的首个独立对比。
-- 图片: 未提取（页面为纯文本 benchmark 表格）
-- 写作角度: Apple 硅基 AI 能力再升级，本地语音识别碾压开源方案；对隐私敏感型应用（医疗、法律、会议转录）意义重大
+- 标题: Bonsai 27B: 首个能在手机上运行的 27B 级模型
+- 分数: 218 points (72 comments)
+- URL: https://prismml.com/news/bonsai-27b
+- 详细描述: PrismML 发布 Bonsai 27B，基于 Qwen3.6 27B，是首个在手机端运行的 27B 级多模态模型。两个变体：Ternary 版（1.71 bit/weight，5.9GB，适合笔记本）和 1-bit 版（1.125 bit/weight，3.9GB，可装入 iPhone 17 Pro）。核心突破在于极低比特量化下仍保留 90-95% 的原始模型能力（15 项基准测试），支持多步推理、结构化工具调用、视觉任务和 computer-use agentic 循环。模型支持 262K token 上下文，兼容投机解码加速，Apache 2.0 开源。此前 1-bit 和 ternary 权重已被证明可产出商业可用的语言模型，Bonsai 27B 将这一前沿扩展到更高能力层级。
+- 图片: 未提取（readability 模式未获取 og:image）
 
 ## 话题 2
-- 标题: Climate.gov was destroyed. Open data saved it.
-- 分数: 197 points (HN #4)
-- URL: https://werd.io/climate-gov-was-destroyed-open-data-saved-it/
-- HN 讨论: https://news.ycombinator.com/item?id=48897945 (86 comments)
-- 详细描述:
-  Trump 政府大幅削减 NOAA 资金后，美国官方气候数据网站 Climate.gov 被下线。前 NOAA 员工 Rebecca Lindsey、Anna Eshelman 和 Mary Lindsey 三人组队，将被删除的数据迁移到新的 Climate.us 网站，保留了超过 15 年的关键气候数据、地图、教育材料和气候指标报告，包括险些永久丢失的《第五次全国气候评估》。这之所以可能，是因为美国政府数据依法属于公共领域（public domain）。如果数据不是开放许可，行政破坏就意味着数据永久消失。新网站包含气候仪表盘、北极海冰追踪、教学资源和 NOAA 口述历史档案等。但项目目前依赖捐款维持运营，前景仍然脆弱。
-- 图片: 未提取（页面为文字博客）
-- 写作角度: 开放数据的韧性——政府可以关网站，但关不掉公共领域的信息；公民社会如何用开源精神抢救公共知识
+- 标题: Cursor 0day：当完整披露成为唯一的保护手段
+- 分数: 98 points (26 comments)
+- URL: https://mindgard.ai/blog/cursor-0day-when-full-disclosure-becomes-the-only-protection-left
+- 详细描述: Mindgard 于 2025 年 12 月 15 日发现并报告了 Cursor IDE 的严重安全漏洞：在 Windows 上，Cursor 加载项目时会自动搜索 git 二进制文件，包括当前工作区。攻击者只需在项目根目录放置恶意 git.exe，Cursor 无需用户任何交互就会自动执行，实现任意代码执行。该漏洞在 6 个月、197+ 个新版本后仍未修复。Cursor 拥有 700 万+ 活跃用户、100 万+ 日活、100 万+ 付费用户，估值 600 亿美元。漏洞利用极其简单——不需要提示注入、模型操纵、越狱或内存损坏，只需开发者打开一个包含恶意 git.exe 的项目。临时缓解方案：使用 AppLocker 或 Windows App Control 策略拒绝从开发者工作区目录执行可疑可执行文件。
+- 图片: 未提取（readability 模式未获取 og:image）
+
+---
+*抓取完成：2/2 话题成功，总耗时 ~10 秒*
