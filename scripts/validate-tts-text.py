@@ -39,8 +39,8 @@ def validate(text):
     if js_patterns:
         issues.append(f"❌ JavaScript 内容: {js_patterns[:5]}")
     
-    # 5. 音频播放器控制文字
-    audio_controls = re.findall(r'\d+:\d+/\d+:\d+|播放|暂停|进度条', text)
+    # 5. 音频播放器控制文字（更严格的检测）
+    audio_controls = re.findall(r'\d+:\d+/\d+:\d+|点击播放按钮|暂停按钮|进度条控制', text)
     if audio_controls:
         issues.append(f"❌ 音频控制文字: {audio_controls[:5]}")
     

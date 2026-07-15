@@ -1,47 +1,19 @@
-# 晚间文章素材 (生成时间: 2026-07-14 11:16 UTC)
+# 晚间文章素材 (生成时间: 2026-07-15 11:15)
 
 ## 话题 1
-- 标题: Japan Develops a Method to Recover Up to 90% of Lithium from Used EV Batteries
-- 分数: 530 points (HN #1)
-- URL: https://tech.supercarblondie.com/japan-recovers-up-to-90-of-lithium-from-used-ev-batteries/
-- HN 讨论: https://news.ycombinator.com/item?id=48901569 (133 comments)
-- 详细描述:
-  日本科学家开发了一种从废旧电动汽车电池中回收高达 90% 锂的新方法，这是传统回收方法（通常不到 50%）的巨大飞跃。该工艺的核心是一种巧妙的化学调整——团队用回收的氢氧化锂（一种白色粉末）替代了标准的氢氧化钠。这种方法帮助将电池废料（称为"黑粉"）转化为高纯度的锂，可以重新用于新电池制造。
-
-  该工艺不仅效率更高，对环境也更友好——研究人员表示，与常规回收技术相比，它能减少约 40% 的碳排放。
-
-  这一突破意义重大，因为锂是电动汽车电池最关键的原料之一，需求正在飙升。采矿不仅昂贵、耗能，还涉及复杂的地缘政治问题。通过在国内回收锂，日本可以减少对进口的依赖并稳定供应链。随着全球电动汽车数量激增，处理废旧电池的压力也在增加，这项技术如果能在规模化层面交付，可能从根本上改变电动汽车电池的制造和重复使用方式。
-
-- 图片: https://tech.supercarblondie.com/wp-content/uploads/Japan-lithium-2.webp
-- 备选图片: https://tech.supercarblondie.com/wp-content/uploads/Japan-lithium-1.webp
-- 文章角度建议: 绿色科技/循环经济/供应链安全
-
----
+- 标题: Announcing Bonsai 27B: The First 27B-Class Model to Run on a Phone
+- 分数: 615 points (214 comments)
+- URL: https://prismml.com/news/bonsai-27b
+- 详细描述: PrismML 发布 Bonsai 27B，基于 Qwen3.6 27B 的多模态旗舰模型，首次实现 27B 级别模型在手机上运行。两个版本：Ternary 版本（5.9GB，1.71 bit/weight）可在笔记本运行完整推理和工具调用；1-bit 版本（3.9GB，1.125 bit/weight）可在 iPhone 17 Pro 上运行。模型保留 262K token 上下文，支持视觉任务（4-bit 视觉塔），支持推测解码加速。Ternary 版本保留 95% 全精度性能，1-bit 版本保留 90%。Apache 2.0 开源协议发布。
+- 图片: (og:image 为空)
 
 ## 话题 2
-- 标题: Clawk – Give Coding Agents a Disposable Linux VM, Not Your Laptop
-- 分数: 203 points (HN #29, Show HN)
-- URL: https://github.com/clawkwork/clawk
-- HN 讨论: https://news.ycombinator.com/item?id=48895xxx (153 comments)
-- 详细描述:
-  Clawk 是一个开源工具，解决了一个现代开发者的核心痛点：让 AI 编程 Agent（如 Claude Code、Codex）安全地执行代码，而不危及宿主机安全。
-
-  传统方案只有两个糟糕的选择：要么你逐条审批每个命令（每隔几秒就要看一次提示），要么运行 `--dangerously-skip-permissions` 然后祈祷不会误删重要文件或泄露 token。
-
-  Clawk 提供了第三种选择：输入 `clawk` 命令后，AI Agent 在一个一次性的 Linux VM 内工作（你的代码挂载进去，guest 系统有 root 权限，无需权限提示），而你的文件、钥匙串和宿主机其他部分完全隔离。Agent 有了自己的机器，而不是用你的。
-
-  安全边界不是 Agent 可能被说服放弃的 prompt 规则，而是一台独立的机器，唯一的开口就是你挂载的目录。VM 内部有网络白名单功能，可以阻止对未知服务器的连接。你的 SSH 密钥永远不会进入 VM，但 ssh-agent 转发让 git push 仍然可用。
-
-  支持平台：macOS 和 Linux（实验性）。用 Go 编写。
-
-- 图片: https://raw.githubusercontent.com/clawkwork/clawk/main/assets/clawk-lockup-orange-transparent.png
-- 文章角度建议: AI 安全/开发者工具/沙箱隔离/Agent 基础设施
+- 标题: Cursor 0day: When Full Disclosure Becomes the Only Protection Left
+- 分数: 381 points (179 comments)
+- URL: https://mindgard.ai/blog/cursor-0day-when-full-disclosure-becomes-the-only-protection-left
+- 详细描述: Mindgard 于 2025 年 12 月 15 日发现 Cursor IDE 的严重安全漏洞：在 Windows 上，当开发者打开包含恶意 git.exe 的项目时，Cursor 会自动执行该二进制文件，无需任何用户交互或确认。该漏洞影响 700 万+ 活跃用户、100 万+ 日活用户、5 万+ 企业。尽管 Cursor 估值 600 亿美元、年收入 40 亿美元，但 6 个月过去、197+ 个版本更新后，漏洞仍未修复。建议企业使用 AppLocker 或 Windows App Control 策略，在开发者工作区目录中拒绝执行受影响的可执行文件。
+- 图片: https://cdn.prod.website-files.com/673f0725df990f6c96bf18ea/6a562c4ba76323b509a1de8d_cursor-zero-hero.webp
 
 ---
-
-## 抓取统计
-- 总 web_fetch 次数: 7 (1 HN首页 + 1 HN API + 5 原始URL尝试)
-- 成功获取详细内容: 2 个话题
-- 404 跳过: 5 个 URL (supercarblondie.com 旧域、scottwillsey.com、cloudflare blog、lalitm.com、github.com/poseidon-fan、bbc.com)
-- 超时: 0
-- 最终素材: 2 个话题（符合"2 个保证质量"目标）
+**抓取统计**: 2 个话题，2 个成功获取详细内容，1 个有 og:image
+**耗时**: ~20 秒（HN 首页 + 2 个原始 URL + og:image 提取）
