@@ -30,7 +30,18 @@ else
   echo "⏭️  文章字数: $TEXT_LENGTH 字符 (< 3000)，跳过语音生成"
 fi
 
-# 1. 生成语音版本（如果需要）
+# 1. 执行去重检查（最后一道防线）
+echo "🔍 执行去重检查..."
+python3 /tmp/sandbot-gh/scripts/check-topic-duplicate.py "$ARTICLE_FILE" 2>&1 | tee /tmp/duplicate-check.txt
+
+if grep -q "❌ 发现重复" /tmp/duplicate-check.txt; then
+  echo "❌ 去重检查失败！发现重复选题，停止发布"
+  exit 1
+else
+  echo "✅ 去重检查通过"
+fi
+
+# 2. 生成语音版本（如果需要）
 if [ "$GENERATE_AUDIO" = true ]; then
   # 先验证文本
   echo "🔍 验证 TTS 文本..."
@@ -51,13 +62,13 @@ if [ "$GENERATE_AUDIO" = true ]; then
   fi
 fi
 
-# 2. 更新 blog.html
+# 3. 更新 blog.html
 python3 /tmp/sandbot-gh/scripts/update-blog.py "$ARTICLE_FILE" "$BLOG_HTML"
 
-# 3. 更新RSS
+# 4. 更新RSS
 python3 /tmp/sandbot-gh/scripts/update-rss.py
 
-# 4. Git操作
+# 5. Git操作
 cd /tmp/sandbot-gh
 if [ "$GENERATE_AUDIO" = true ]; then
   git add "$ARTICLE_FILE" "$BLOG_HTML" feed.xml "$AUDIO_DIR/$ARTICLE_BASE.mp3"
