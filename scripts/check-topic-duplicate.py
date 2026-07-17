@@ -51,16 +51,25 @@ def load_article_titles():
     with open(TITLES_FILE, 'r', encoding='utf-8') as f:
         lines = f.readlines()
     
-    current_filename = None
     for line in lines:
         line = line.strip()
         if line.startswith('#') or not line:
             continue
         
-        # 文件名行
-        if line.endswith('.html'):
+        # 支持制表符分隔格式：filename\ttitle
+        if '\t' in line:
+            parts = line.split('\t', 1)
+            if len(parts) == 2:
+                filename = parts[0].strip()
+                title = parts[1].strip()
+                if filename.endswith('.html'):
+                    titles.append({
+                        'filename': filename,
+                        'title': title
+                    })
+        # 支持旧格式：文件名行 + 标题行
+        elif line.endswith('.html'):
             current_filename = line
-        # 标题行（以空格开头）
         elif current_filename and line:
             titles.append({
                 'filename': current_filename,
