@@ -1,37 +1,26 @@
-# 晚间文章素材 (生成时间: 2026-07-16 11:15 UTC)
+# 晚间文章素材 (生成时间: 2026-07-17 11:15 UTC)
 
-## 今日已有文章（已避开）
-- 2026-07-16-early-inkling-open-weights-model (Inkling 开放权重模型)
-- 2026-07-16-hot-stripe-paypal-acquisition (Stripe/PayPal 收购)
+## 话题 1
+- 标题: Kimi K3: Open Frontier Intelligence
+- 分数: 1681 points (990 comments)
+- URL: https://www.kimi.com/blog/kimi-k3
+- 详细描述: Kimi K3 是月之暗面发布的最新最强模型，2.8 万亿参数，基于 Kimi Delta Attention (KDA) 和 Attention Residuals (AttnRes) 架构构建。它是全球首个开放的 3T 级别模型，具备原生视觉能力和 100 万 token 上下文窗口。Kimi K3 采用了 Mixture of Experts (MoE) 稀疏化技术，配合 Stable LatentMoE 框架，有效激活 896 个专家中的 16 个。与 Kimi K2 相比，整体缩放效率提升约 2.5 倍。虽然整体性能仍落后于 Claude Fable 5 和 GPT 5.6 Sol 等最强闭源模型，但在评估套件中展示了前沿级性能，持续超越其他测试模型。模型将于 2026 年 7 月 27 日前发布完整权重。目前已在 Kimi.com、Kimi Work、Kimi Code 和 Kimi API 上可用，默认使用最大思考强度。
+- 图片: N/A
 
----
+## 话题 2
+- 标题: Microsoft Comic Chat is now open source
+- 分数: 699 points (154 comments)
+- URL: https://opensource.microsoft.com/blog/2026/07/16/microsoft-comic-chat-is-now-open-source/
+- 详细描述: 微软宣布将经典聊天客户端 Comic Chat 开源，代码已上传至 GitHub (microsoft/comic-chat)。Comic Chat 是 1990 年代中期的互联网聊天工具，能将 IRC 对话自动转化为漫画面板，配有插画角色、语音气泡和表情。它也是 Comic Sans 字体首次大规模应用的产品——该字体由微软排版师 Vincent Connare 于 1994 年设计，最初就是为了匹配 Comic Chat 的语音气泡风格。该项目由微软研究院虚拟世界组的 David "DJ" Kurlancer 构思开发。在那个互联网聊天还是纯文字滚动的年代，Comic Chat 提出了视觉化通信的前瞻概念——角色根据输入文字自动做出表情和动作，预示了当今消息应用中表情、贴纸、GIF 等功能的雏形。
+- 图片: N/A
 
-## 话题 1: Grok Build 开源
-- 标题: Grok Build is open source
-- 分数: 473 points (515 comments)
-- URL: https://github.com/xai-org/grok-build
-- 详细描述: xAI (SpaceXAI) 开源了其终端 AI 编程代理工具 Grok Build。这是一个基于 Rust 开发的全屏 TUI（终端用户界面），能够理解代码库、编辑文件、执行 shell 命令、搜索网络并管理长时间运行的任务。支持交互式运行、无头模式（用于脚本/CI）以及通过 Agent Client Protocol (ACP) 嵌入编辑器。预编译二进制文件支持 macOS、Linux 和 Windows。安装方式简单：`curl -fsSL https://x.ai/cli/install.sh | bash`。项目从 SpaceXAI monorepo 定期同步，需要 Rust 工具链和 protoc。这是 xAI 在开源社区的重要一步，直接对标 Claude Code、Cursor 等 AI 编程工具。
-- 图片: https://media.x.ai/v1/website/universe-tui-screenshot-6f7a0837.png
-
-## 话题 2: 音乐盗版的失落乐趣
-- 标题: The lost joy of music piracy
-- 分数: 388 points (236 comments)
-- URL: https://www.pigeonsandplanes.com/read/music-piracy-what-cd-oink-nine-inch-nails-streaming
-- 详细描述: Pigeons & Planes 的深度文化文章，回顾音乐盗版时代的独特体验。从 CD 刻录、Oink（经典 BT 站点）、Nine Inch Nails 的《Ghosts》免费下载实验，到流媒体时代的音乐消费变迁。文章探讨了盗版不仅仅是"偷音乐"，而是一种发现音乐的文化仪式——在论坛里寻找资源、和朋友交换刻录 CD、通过文件命名发现新艺术家。流媒体让一切变得便捷，但也失去了那种"寻宝"的兴奋感和社区感。HN 评论区引发大量讨论（236 条），许多人分享了自己在 Napster/LimeWire/BitTorrent 时代的音乐发现故事，反思便利性与发现感之间的取舍。
-- 图片: (页面提取失败，无 og:image)
-
-## 话题 3: SQLite 应该有 Rust 风格的版本系统
-- 标题: SQLite should have (Rust-style) editions
-- 分数: 287 points (127 comments)
-- URL: https://mort.coffee/home/sqlite-editions/
-- 详细描述: 作者提出 SQLite 应该借鉴 Rust 的"版本"(editions) 机制来解决其默认设置问题。文章指出 SQLite 作为嵌入式数据库的行业标准（甚至 lobste.rs 也在用它），有几个严重的默认值问题：1) 外键约束默认关闭——这是所有 RDBMS 中唯一不默认执行外键的，导致数据一致性问题；2) ROWID 复用可能导致悬空引用。作者认为，引入 editions 机制可以让 SQLite 在不破坏向后兼容性的前提下，为新项目提供更合理的默认值。就像 Rust 2015/2018/2021 editions 一样，SQLite 可以推出"edition 2026"，默认启用外键、禁用 ROWID 复用等。HN 讨论热烈，涉及数据库向后兼容性、默认值设计哲学等话题。
-- 图片: (无 og:image)
+## 话题 3
+- 标题: The Human-in-the-Loop is Tired
+- 分数: 235 points (129 comments)
+- URL: https://pydantic.dev/articles/the-human-in-the-loop-is-tired
+- 详细描述: Pydantic 团队成员 Laura Summers 撰写的一篇关于 LLM 时代开发者心理状态的真实记录。文章核心观点：用 LLM 编程确实有用，但也确实令人不安——这两件事同时存在。作者强调这不是又一篇"AI 是否会取代程序员"的讨论，也不是末日论或炒作文，而是来自一个身处其中的开发者的诚实叙述。文章探讨了编程时"双手触碰宇宙织物"的感觉如何被 LLM 改变，以及当代码开始自己写出来时，开发者真正经历的是什么。Pydantic 团队本身就在做让 LLM 驱动软件更可靠的工作（数据验证、AI Agent 构建、生产环境观测），但他们自己也正经历着这段"奇怪时期"。文章试图描述大多数开发者正在经历但还没来得及理清的感受。
+- 图片: N/A
 
 ---
-
-## 备选话题（未抓取详情）
-- OnePlus halts operations in USA and Europe (17 pts) - 新闻类，分数低
-- Where are YC founders now? OpenAI and Anthropic, mostly (65 pts) - 创业话题
-- If you want to create a button from scratch, you must first create the universe (159 pts) - 前端/无障碍
-- Governments should invest in free, open source AI (206 pts) - AI 政策 PDF
-- 1,300 Beautiful Wildlife Illustrations from the 19th Century (115 pts) - 文化/历史
+**数据来源**: Hacker News 首页 (2026-07-17 11:15 UTC)
+**备注**: 今日无已发布文章，无需去重。第三个话题原始 URL 经历两次跳转（pydantic.dev → blog.pydantic.dev → pydantic.dev/articles），最终成功获取内容。
