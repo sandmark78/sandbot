@@ -39,8 +39,8 @@ fi
 
 echo "   文章标题: $ARTICLE_TITLE"
 
-# 检查标题相似度
-python3 /tmp/sandbot-gh/scripts/check-topic-duplicate.py --title "$ARTICLE_TITLE"
+# 检查标题相似度（阈值 0.4，更容易检测到相似标题）
+python3 /tmp/sandbot-gh/scripts/check-topic-duplicate.py --title "$ARTICLE_TITLE" --threshold 0.4
 DUPLICATE_EXIT_CODE=$?
 
 if [ $DUPLICATE_EXIT_CODE -ne 0 ]; then

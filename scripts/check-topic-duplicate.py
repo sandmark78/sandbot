@@ -70,7 +70,7 @@ def load_article_titles():
     
     return titles
 
-def check_title_similarity(new_title, existing_titles, threshold=0.6):
+def check_title_similarity(new_title, existing_titles, threshold=0.4):
     """检查新标题与已有标题的相似度
     
     Args:
@@ -249,120 +249,125 @@ def check_duplicate(keywords, days=7, exclude_file=None):
     
     return duplicates
 
-def main():
-    if len(sys.argv) < 2:
-        print("用法:")
-        print("  python3 check-topic-duplicate.py <关键词1> [关键词2] ...")
-        print("  python3 check-topic-duplicate.py --file <文章文件路径>")
-        print("  python3 check-topic-duplicate.py --title \"<文章标题>\"")
-        print("\n示例:")
-        print("  python3 check-topic-duplicate.py Apple OpenAI 起诉")
-        print("  python3 check-topic-duplicate.py --file posts/2026-07-15-early-app-vs-webpage.html")
-        print("  python3 check-topic-duplicate.py --title \"你的 App 其实只是一个网页\"")
-        sys.exit(1)
-    
-    # 加载所有文章标题
+def check_title(title, threshold=0.4):
+    """检查标题相似度"""
     all_titles = load_article_titles()
     
-    # 检查是否使用 --title 模式
-    if sys.argv[1] == '--title':
-        if len(sys.argv) < 3:
-            print("错误: --title 模式需要提供文章标题")
-            sys.exit(1)
-        
-        title = sys.argv[2]
-        print(f"🔍 检查标题相似度...")
-        print(f"   新标题: {title}")
-        print(f"   已有文章数: {len(all_titles)}")
-        print()
-        
-        # 检查标题相似度
-        similar = check_title_similarity(title, all_titles, threshold=0.5)
-        
+    print(f"🔍 检查标题相似度...")
+    print(f"   新标题: {title}")
+    print(f"   已有文章数: {len(all_titles)}")
+    print(f"   相似度阈值: {threshold}")
+    print()
+    
+    similar = check_title_similarity(title, all_titles, threshold=threshold)
+    
+    if similar:
+        print(f"❌ 发现 {len(similar)} 篇相似标题：")
+        for item in similar[:5]:
+            print(f"\n   📄 {item['filename']}")
+            print(f"      标题: {item['title']}")
+            print(f"      相似度: {item['similarity']:.2f}")
+            print(f"      共同关键词: {', '.join(item['common_keywords'][:5])}")
+        print("\n💡 建议：选择其他话题，或从完全不同的角度切入")
+        return False
+    else:
+        print("✅ 未发现相似标题")
+        return True
+
+def check_article_file(filepath, threshold=0.4):
+    """检查文章文件"""
+    if not os.path.exists(filepath):
+        print(f"错误: 文件不存在: {filepath}")
+        return False
+    
+    all_titles = load_article_titles()
+    
+    print(f"🔍 从文章中提取关键词...")
+    keywords = extract_keywords_from_file(filepath)
+    print(f"   文件: {os.path.basename(filepath)}")
+    print(f"   提取的关键词: {', '.join(keywords)}")
+    print(f"   相似度阈值: {threshold}")
+    print()
+    
+    # 提取标题用于相似度检查
+    with open(filepath, 'r', encoding='utf-8') as f:
+        content = f.read()
+    title_match = re.search(r'<title>([^<]+)</title>', content)
+    title = title_match.group(1) if title_match else ""
+    
+    # 检查标题相似度
+    if title and all_titles:
+        similar = check_title_similarity(title, all_titles, threshold=threshold)
         if similar:
             print(f"❌ 发现 {len(similar)} 篇相似标题：")
-            for item in similar[:5]:  # 只显示前5个
+            for item in similar[:3]:
                 print(f"\n   📄 {item['filename']}")
                 print(f"      标题: {item['title']}")
                 print(f"      相似度: {item['similarity']:.2f}")
-                print(f"      共同关键词: {', '.join(item['common_keywords'][:5])}")
             print("\n💡 建议：选择其他话题，或从完全不同的角度切入")
             return False
-        else:
-            print("✅ 未发现相似标题")
-            return True
     
-    # 检查是否使用 --file 模式
-    elif sys.argv[1] == '--file':
-        if len(sys.argv) < 3:
-            print("错误: --file 模式需要提供文章文件路径")
-            sys.exit(1)
-        
-        filepath = sys.argv[2]
-        if not os.path.exists(filepath):
-            print(f"错误: 文件不存在: {filepath}")
-            sys.exit(1)
-        
-        print(f"🔍 从文章中提取关键词...")
-        keywords = extract_keywords_from_file(filepath)
-        print(f"   文件: {os.path.basename(filepath)}")
-        print(f"   提取的关键词: {', '.join(keywords)}")
-        print()
-        
-        # 提取标题用于相似度检查
-        with open(filepath, 'r', encoding='utf-8') as f:
-            content = f.read()
-        title_match = re.search(r'<title>([^<]+)</title>', content)
-        title = title_match.group(1) if title_match else ""
-        
-        # 检查标题相似度
-        if title and all_titles:
-            similar = check_title_similarity(title, all_titles, threshold=0.5)
-            if similar:
-                print(f"❌ 发现 {len(similar)} 篇相似标题：")
-                for item in similar[:3]:
-                    print(f"\n   📄 {item['filename']}")
-                    print(f"      标题: {item['title']}")
-                    print(f"      相似度: {item['similarity']:.2f}")
-                print("\n💡 建议：选择其他话题，或从完全不同的角度切入")
-                return False
-        
-        # 检查关键词重复
-        duplicates = check_duplicate(keywords, days=7, exclude_file=filepath)
-        
-        if duplicates:
-            print(f"\n❌ 发现 {len(duplicates)} 篇重复选题：")
-            for dup in duplicates:
-                print(f"\n   📄 {dup['file']}")
-                print(f"      标题: {dup['title']}")
-                print(f"      匹配关键词: {', '.join(dup['keywords'])}")
-            print("\n💡 建议：选择其他话题，或从不同角度切入")
-            return False
-        else:
-            print("✅ 未发现重复选题")
-            return True
+    # 检查关键词重复
+    duplicates = check_duplicate(keywords, days=7, exclude_file=filepath)
     
+    if duplicates:
+        print(f"\n❌ 发现 {len(duplicates)} 篇重复选题：")
+        for dup in duplicates:
+            print(f"\n   📄 {dup['file']}")
+            print(f"      标题: {dup['title']}")
+            print(f"      匹配关键词: {', '.join(dup['keywords'])}")
+        print("\n💡 建议：选择其他话题，或从不同角度切入")
+        return False
     else:
-        # 关键词模式
-        keywords = sys.argv[1:]
-        print(f"🔍 检查选题去重...")
-        print(f"   关键词: {', '.join(keywords)}")
-        print(f"   检查范围: 过去 7 天")
-        print()
-        
-        duplicates = check_duplicate(keywords, days=7)
-        
-        if duplicates:
-            print(f"❌ 发现 {len(duplicates)} 篇重复选题：")
-            for dup in duplicates:
-                print(f"\n   📄 {dup['file']}")
-                print(f"      标题: {dup['title']}")
-                print(f"      匹配关键词: {', '.join(dup['keywords'])}")
-            print("\n💡 建议：选择其他话题，或从不同角度切入")
-            return False
-        else:
-            print("✅ 未发现重复选题")
-            return True
+        print("✅ 未发现重复选题")
+        return True
+
+def check_keywords(keywords):
+    """检查关键词"""
+    print(f"🔍 检查选题去重...")
+    print(f"   关键词: {', '.join(keywords)}")
+    print(f"   检查范围: 过去 7 天")
+    print()
+    
+    duplicates = check_duplicate(keywords, days=7)
+    
+    if duplicates:
+        print(f"❌ 发现 {len(duplicates)} 篇重复选题：")
+        for dup in duplicates:
+            print(f"\n   📄 {dup['file']}")
+            print(f"      标题: {dup['title']}")
+            print(f"      匹配关键词: {', '.join(dup['keywords'])}")
+        print("\n💡 建议：选择其他话题，或从不同角度切入")
+        return False
+    else:
+        print("✅ 未发现重复选题")
+        return True
+
+def main():
+    import argparse
+    
+    parser = argparse.ArgumentParser(description='选题去重检查器')
+    parser.add_argument('--file', help='检查文章文件')
+    parser.add_argument('--title', help='检查标题相似度')
+    parser.add_argument('--threshold', type=float, default=0.4, help='标题相似度阈值 (默认 0.4)')
+    parser.add_argument('keywords', nargs='*', help='关键词列表')
+    
+    args = parser.parse_args()
+    
+    if args.file:
+        # 检查文章文件
+        result = check_article_file(args.file, args.threshold)
+    elif args.title:
+        # 检查标题相似度
+        result = check_title(args.title, args.threshold)
+    elif args.keywords:
+        # 检查关键词
+        result = check_keywords(args.keywords)
+    else:
+        parser.print_help()
+        sys.exit(1)
+    
+    sys.exit(0 if result else 1)
 
 if __name__ == '__main__':
     success = main()
