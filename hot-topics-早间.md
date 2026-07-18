@@ -1,44 +1,72 @@
-# 早间文章素材 (生成时间: 2026-07-16 21:15 UTC)
+# 早间文章素材 (生成时间: 2026-07-17 21:15 UTC)
 
-## 话题 1
-- 标题: Sony Deletes More Movies From the Accounts of People Who 'Bought' Them
-- 分数: 523 points, 319 comments
-- URL: https://www.techdirt.com/2026/07/16/sony-deletes-more-movies-from-the-accounts-of-people-who-bought-them/ (⚠️ Cloudflare 拦截，原始内容不可用)
-- HN: https://news.ycombinator.com/item?id=44756200
-- 详细描述: Sony 再次从用户的数字图书馆中删除了他们"购买"的电影。这一事件再次引发了关于数字所有权的热议——消费者花钱"购买"的数字内容实际上只是获得了许可，平台可以随时撤回。Techdirt 的报道引发了 HN 社区 319 条激烈讨论，用户对数字内容所有权的虚幻性感到愤怒。这已经不是第一次发生此类事件，但每次都会掀起一波消费者对"购买≠拥有"这一残酷现实的反思。
-- 图片: 无 (原始页面不可访问)
-- 素材状态: ⚠️ 仅 HN 描述，建议写文章时用 web_fetch 重试原始 URL 或参考 HN 评论
+## 话题 1: Kimi K3 — 首个开源 3T 级大模型
+- 标题: Kimi K3: Open Frontier Intelligence
+- 分数: 1981 points (HN #1 热门)
+- URL: https://kimi.com/blog/kimi-k3
+- HN 讨论: 1153 comments
+- 详细描述:
+  Kimi K3 是月之暗面发布的最新最强模型，2.8 万亿参数，基于 Kimi Delta Attention (KDA) 和 Attention Residuals (AttnRes) 两大架构创新。它是全球首个开源的 3T 级别模型，拥有原生视觉能力和 100 万 token 上下文窗口。
 
-## 话题 2
-- 标题: OnePlus Halts Operations in USA and Europe
-- 分数: 486 points, 274 comments
-- URL: https://www.oneplus.com/news (⚠️ 官方页面仅返回模板，无实际公告内容)
-- HN: https://news.ycombinator.com/ (item #9 on front page)
-- 详细描述: 一加手机宣布暂停在美国和欧洲的业务运营。这一消息在 HN 引发 274 条讨论（486 分），社区讨论焦点包括：中美科技脱钩的持续影响、一加作为 OPPO 子品牌的战略调整、以及中国品牌在欧美市场面临的监管压力。一加曾以"旗舰杀手"定位在欧美极客群体中积累了大量粉丝，此次退出标志着中国手机品牌在西方市场的进一步收缩。
-- 图片: 无 (官方公告页面内容不可提取)
-- 素材状态: ⚠️ 仅 HN 描述，建议写文章时搜索其他新闻源 (The Verge, Android Authority 等)
+  架构亮点：采用 MoE 稀疏化，896 个专家中激活 16 个，配合 Stable LatentMoE 框架，整体缩放效率比 Kimi K2 提升约 2.5 倍。
 
-## 话题 3
-- 标题: Microsoft Comic Chat Is Now Open Source
-- 分数: 386 points, 88 comments
-- URL: https://opensource.microsoft.com/blog/2026/07/16/microsoft-comic-chat-is-now-open-source/
-- GitHub: https://github.com/microsoft/comic-chat
-- HN: https://news.ycombinator.com/ (item #2 on front page)
-- 详细描述: 微软将传奇聊天客户端 Comic Chat 开源了。这款 90 年代中期的软件将 IRC 聊天对话自动转化为漫画面板，配有插图角色、对话气泡和表情，并且帮助全世界认识了 Comic Sans 字体。Comic Chat 由微软研究院虚拟世界组的 David "DJ" Kurlander 构思，代表了早期互联网对视觉化通信的大胆实验。在那个互联网聊天还是纯文字墙的年代，Comic Chat 提出了一个超前的愿景：用角色、表情和漫画面板来表达对话情感。如今我们习以为常的反应表情、贴纸、GIF、头像等功能，都能看到当年这类实验的精神传承。代码已在 GitHub 上发布，开发者、历史学家和复古计算爱好者都可以探索源代码。
-- 图片: https://opensource.microsoft.com/blog/2026/07/16/microsoft-comic-chat-is-now-open-source/ (需从页面 og:image 提取，建议写文章时访问 GitHub repo 获取截图)
-- 素材状态: ✅ 完整文章内容可用
+  性能方面，虽然仍落后于最强闭源模型 Claude Fable 5 和 GPT 5.6 Sol，但在评估中持续超越其他测试模型，展现前沿水平。尤其在长周期编码、知识工作和推理方面表现突出。
+
+  模型已在 Kimi.com、Kimi Work、Kimi Code 和 Kimi API 上线。默认使用最大思考强度，后续将推出低/高强度模式。完整权重将于 2026 年 7 月 27 日前发布。
+
+  这是开源 AI 的里程碑事件——首次有开源模型达到 3T 参数级别，标志着开源与闭源差距进一步缩小。
+
+## 话题 2: 开源 AI 的现状 — V1.0 报告 (2026 年 7 月)
+- 标题: The State of Open Source AI — V1.0
+- 分数: 317 points
+- URL: https://stateofopensource.ai/
+- HN 讨论: 222 comments
+- 详细描述:
+  这是一份重磅行业报告，由 CTO Raffi Krikorian 撰写序言。报告核心观点：开源 AI 已经达到与闭源模型能力对等的水平。
+
+  关键数据：
+  - GPT-4 级别推理成本在 36 个月内从 $20 降至 $0.40/百万 token（降幅 50 倍）
+  - 开源模型在编码方面已与闭源模型持平，仅在推理方面略逊
+  - 大多数生产环境 token 现在通过开源模型路由
+
+  报告列举了多个实际案例：
+  - 新西兰毛利语播音员为太小的语言训练语音模型，数据留在社区
+  - PwC 微调金融领域开源模型，服务数百客户，无按 token 计费
+  - 洛桑研究人员与红十字会合作构建开放医疗模型，准备在瑞士和坦桑尼亚进行临床试验
+  - 东非农民用离线模型诊断木薯病害
+  - 瑞士公共联盟在公共超算上训练国家模型并完全开源
+
+  报告将开源 AI 比作当年 Mozilla 对抗浏览器垄断的历史，认为开放、竞争和互操作性是未来之路。
+
+## 话题 3: Pebble 智能手表 2026 年 7 月大更新
+- 标题: Pebble Mega Update – July 2026
+- 分数: 251 points
+- URL: https://repebble.com/blog/pebble-mega-update-july-2026
+- HN 讨论: 162 comments
+- 详细描述:
+  Pebble 智能手表复活后的重大更新。这款曾在 9 年前停产的经典电子墨水智能手表，如今由原团队重新制造。
+
+  生产状态：自 3 月底量产以来已生产超过 23,000 块 Pebble Time 2 手表，已完成 80%+ 预售订单。各颜色预计发货日期：
+  - 黑色/红色 → 7 月 31 日
+  - 灰色/蓝色 → 7 月 28 日
+  即将实现现货销售，无需等待。
+
+  软件进展（4 人核心团队 6 个月成果）：
+  - 电池寿命优化：Pebble 2 Duo 中位电池寿命从 17 天大幅提升
+  - 100% 开源软件
+  - 已支持 93 个国家发货
+  - 配套 iOS/Android 应用已上线
+  - 15,000+ 表盘和应用可用
+
+  产品线：Pebble 2 Duo（黑白屏回归）、Pebble Time 2（彩色电子墨水大屏）、Pebble Round 2（最时尚款）、Pebble Index 01（外部记忆设备）。
+
+  这是一个关于硬件复活的励志故事——没有投资人，大部分工作开源，只做自己想用的设备。
 
 ---
 
-## 去重检查
-- 今日已有文章:
-  1. `2026-07-16-early-inkling-open-weights-model` - 开放权重模型 (AI 类)
-  2. `2026-07-16-evening-colibri-glm52-consumer-hardware-local-inference` - 本地推理 (AI 类)
-  3. `2026-07-16-hot-stripe-paypal-acquisition` - Stripe/PayPal 收购 (金融科技类)
-- 本次话题: 数字所有权 / 手机行业 / 复古开源 → ✅ 无重复
-
-## 抓取统计
-- 成功抓取: 1/3 (Microsoft Comic Chat 完整内容)
-- HN 描述补充: 2/3 (Sony, OnePlus)
-- web_fetch 总调用: 9 次 (含失败尝试)
-- 失败原因: Cloudflare 拦截 (2), 404 (5), 连接失败 (1), 429 限流 (1)
+## 备选话题（未深入抓取）
+- AWS 账单数据不准确导致 $17 亿误差 (906 points) - 无明确 URL
+- Apple 向 OpenAI 员工发法律函 (347 points) - FT 付费墙
+- EEG 显示大脑可同时编码两个语音流 (240 points) - plos.org
+- Simon Willison 分析 Kimi K3 与 Pelican Benchmark (207 points) - simonwillison.net
+- Decoy Font (685 points) - mixfont.com

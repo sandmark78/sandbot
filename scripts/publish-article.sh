@@ -55,10 +55,16 @@ python3 /tmp/sandbot-gh/scripts/check-topic-duplicate.py --file "$ARTICLE_FILE"
 DUPLICATE_EXIT_CODE=$?
 
 if [ $DUPLICATE_EXIT_CODE -ne 0 ]; then
-  echo ""
-  echo "❌ 去重检查失败！发现重复选题，拒绝发布"
-  echo "请检查文章主题是否与近期文章重复"
-  exit 1
+  if [ "$FORCE_PUBLISH" = "1" ]; then
+    echo ""
+    echo "⚠️  关键词去重警告（FORCE_PUBLISH=1，继续发布）"
+  else
+    echo ""
+    echo "❌ 去重检查失败！发现重复选题，拒绝发布"
+    echo "请检查文章主题是否与近期文章重复"
+    echo "提示: 设置 FORCE_PUBLISH=1 可强制跳过"
+    exit 1
+  fi
 fi
 
 echo ""
