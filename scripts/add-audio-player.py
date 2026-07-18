@@ -28,7 +28,11 @@ def add_audio_player(article_path):
     
     # 检查是否已有播放器
     if 'class="audio-player"' in html:
-        print("✅ 文章已有音频播放器")
+        print("✅ 文章已有音频播放器，替换 AUDIO_FILE_PLACEHOLDER")
+        # 替换 AUDIO_FILE_PLACEHOLDER 为实际的音频文件路径
+        html = html.replace('AUDIO_FILE_PLACEHOLDER', audio_path)
+        with open(article_path, 'w', encoding='utf-8') as f:
+            f.write(html)
         return True
     
     # CSS 样式
