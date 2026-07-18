@@ -85,7 +85,7 @@ class ArticleTextExtractor(HTMLParser):
         
         # 处理列表项
         elif tag == 'li':
-            self.result.append('\n· ')
+            self.result.append('\n')
         
         # 处理引用
         elif tag == 'blockquote':
@@ -188,6 +188,17 @@ class ArticleTextExtractor(HTMLParser):
             flags=re.UNICODE
         )
         text = emoji_pattern.sub('', text)
+        
+        # 过滤 markdown 符号（TTS 不需要读出）
+        text = re.sub(r'@', '', text)  # 移除 @ 符号
+        text = re.sub(r'·', '', text)  # 移除 · 符号
+        text = re.sub(r'["""]', '', text)  # 移除中文引号
+        text = re.sub(r'——', '，', text)  # 将破折号替换为逗号
+        text = re.sub(r'\*\*', '', text)  # 移除加粗标记
+        
+        # 清理多余空格
+        text = re.sub(r'^\s+', '', text, flags=re.MULTILINE)  # 移除行首空格
+        
         # 只合并多个空格
         text = re.sub(r'[ \t]+', ' ', text)
         
