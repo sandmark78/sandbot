@@ -1,72 +1,66 @@
-# 早间文章素材 (生成时间: 2026-07-17 21:15 UTC)
+# 早间文章素材 (生成时间: 2026-07-18 21:15)
 
-## 话题 1: Kimi K3 — 首个开源 3T 级大模型
-- 标题: Kimi K3: Open Frontier Intelligence
-- 分数: 1981 points (HN #1 热门)
-- URL: https://kimi.com/blog/kimi-k3
-- HN 讨论: 1153 comments
-- 详细描述:
-  Kimi K3 是月之暗面发布的最新最强模型，2.8 万亿参数，基于 Kimi Delta Attention (KDA) 和 Attention Residuals (AttnRes) 两大架构创新。它是全球首个开源的 3T 级别模型，拥有原生视觉能力和 100 万 token 上下文窗口。
-
-  架构亮点：采用 MoE 稀疏化，896 个专家中激活 16 个，配合 Stable LatentMoE 框架，整体缩放效率比 Kimi K2 提升约 2.5 倍。
-
-  性能方面，虽然仍落后于最强闭源模型 Claude Fable 5 和 GPT 5.6 Sol，但在评估中持续超越其他测试模型，展现前沿水平。尤其在长周期编码、知识工作和推理方面表现突出。
-
-  模型已在 Kimi.com、Kimi Work、Kimi Code 和 Kimi API 上线。默认使用最大思考强度，后续将推出低/高强度模式。完整权重将于 2026 年 7 月 27 日前发布。
-
-  这是开源 AI 的里程碑事件——首次有开源模型达到 3T 参数级别，标志着开源与闭源差距进一步缩小。
-
-## 话题 2: 开源 AI 的现状 — V1.0 报告 (2026 年 7 月)
-- 标题: The State of Open Source AI — V1.0
-- 分数: 317 points
-- URL: https://stateofopensource.ai/
-- HN 讨论: 222 comments
-- 详细描述:
-  这是一份重磅行业报告，由 CTO Raffi Krikorian 撰写序言。报告核心观点：开源 AI 已经达到与闭源模型能力对等的水平。
-
-  关键数据：
-  - GPT-4 级别推理成本在 36 个月内从 $20 降至 $0.40/百万 token（降幅 50 倍）
-  - 开源模型在编码方面已与闭源模型持平，仅在推理方面略逊
-  - 大多数生产环境 token 现在通过开源模型路由
-
-  报告列举了多个实际案例：
-  - 新西兰毛利语播音员为太小的语言训练语音模型，数据留在社区
-  - PwC 微调金融领域开源模型，服务数百客户，无按 token 计费
-  - 洛桑研究人员与红十字会合作构建开放医疗模型，准备在瑞士和坦桑尼亚进行临床试验
-  - 东非农民用离线模型诊断木薯病害
-  - 瑞士公共联盟在公共超算上训练国家模型并完全开源
-
-  报告将开源 AI 比作当年 Mozilla 对抗浏览器垄断的历史，认为开放、竞争和互操作性是未来之路。
-
-## 话题 3: Pebble 智能手表 2026 年 7 月大更新
-- 标题: Pebble Mega Update – July 2026
-- 分数: 251 points
-- URL: https://repebble.com/blog/pebble-mega-update-july-2026
-- HN 讨论: 162 comments
-- 详细描述:
-  Pebble 智能手表复活后的重大更新。这款曾在 9 年前停产的经典电子墨水智能手表，如今由原团队重新制造。
-
-  生产状态：自 3 月底量产以来已生产超过 23,000 块 Pebble Time 2 手表，已完成 80%+ 预售订单。各颜色预计发货日期：
-  - 黑色/红色 → 7 月 31 日
-  - 灰色/蓝色 → 7 月 28 日
-  即将实现现货销售，无需等待。
-
-  软件进展（4 人核心团队 6 个月成果）：
-  - 电池寿命优化：Pebble 2 Duo 中位电池寿命从 17 天大幅提升
-  - 100% 开源软件
-  - 已支持 93 个国家发货
-  - 配套 iOS/Android 应用已上线
-  - 15,000+ 表盘和应用可用
-
-  产品线：Pebble 2 Duo（黑白屏回归）、Pebble Time 2（彩色电子墨水大屏）、Pebble Round 2（最时尚款）、Pebble Index 01（外部记忆设备）。
-
-  这是一个关于硬件复活的励志故事——没有投资人，大部分工作开源，只做自己想用的设备。
+## 今日已有文章（避免重复）
+- 2026-07-18-free-开源AI追平闭源真相
+- 2026-07-18-noon-contextecho-ai-indie-dev
 
 ---
 
-## 备选话题（未深入抓取）
-- AWS 账单数据不准确导致 $17 亿误差 (906 points) - 无明确 URL
-- Apple 向 OpenAI 员工发法律函 (347 points) - FT 付费墙
-- EEG 显示大脑可同时编码两个语音流 (240 points) - plos.org
-- Simon Willison 分析 Kimi K3 与 Pelican Benchmark (207 points) - simonwillison.net
-- Decoy Font (685 points) - mixfont.com
+## 话题 1: GoPro 要凉了？
+- 标题: Going, going, gone? Is this the end of the once-mighty GoPro?
+- 分数: 159 points (305 comments)
+- URL: https://amateurphotographer.com/latest/photo-news/going-going-gone-is-this-the-end-of-the-once-mighty-gopro/
+- 详细描述:
+GoPro 正面临生死存亡。创始人 Nicholas Woodman 自掏腰包借给公司 $2000万（年利率6.5%），但这只是止血而非根治。2026 Q1 营收同比暴跌 26%，相机出货量（31.3万台）下降 29%。公司已聘请财务顾问"审查战略替代方案"——这是寻找买家或破产的委婉说法。
+
+尽管 GoPro 推出了雄心勃勃的 Pro 级运动相机三件套（Mission 1、Pro、Pro ILS，甚至包括 Micro Four Thirds 镜头接口的型号），但可能是"太晚太少"。同时 GoPro 还在探索航空航天和国防市场（潜在数十亿美元），其相机还为 Artemis II NASA 任务提供了影像。
+
+然而竞争对手 Insta360 的强势崛起让 GoPro 的市场份额持续被蚕食。智能手机的防抖功能也越来越强，运动相机的"刚需"属性正在消失。一个曾经定义了整个品类的品牌，可能在2026年走到尽头。
+
+- 图片: 未提取（readability 模式无 og:image）
+- 写作角度: 品类杀手如何被自己的品类反噬？从 GoPro 看硬件创业公司的生死周期
+
+---
+
+## 话题 2: "你建了，他们就会来"——社交 fabric 的真相
+- 标题: If You Build It, They Will Come
+- 分数: 153 points (54 comments)
+- URL: https://www.benlandautaylor.com/p/if-you-build-it-they-will-come
+- 详细描述:
+作者 Ben Landau-Taylor 从个人经验出发：每次想融入一个新社交圈，最快最有效的方法不是"参加活动"，而是**自己组织活动**。无论是小众的同人小说讨论组，还是管理数亿美元的前沿智识运动，规律都一样——社交场景不会像野生蓝莓丛一样自然生长，它需要有人付出组织工作的"腿力"。
+
+文章指出现代社会疏离的核心问题是"搭便车者太多"：大量人想消费社交 fabric，但生产社交 fabric 的社会脚本已经过时。大多数人不会去做需要一点腿力的事情，所以一个圈子的领导者基本就是那些真正动手组织的人。
+
+关键洞察：其他组织者会**非常敏锐地注意到**谁在承担负担。这意味着组织活动不仅是"给大家做事"，更是一种高效的社交信号——你在告诉圈子"我是生产者，不是消费者"。
+
+这篇文章对独立开发者社区、开源社区运营、甚至 AI Agent 社区建设都有启发。
+
+- 图片: 未提取
+- 写作角度: 为什么"办活动"是融入任何圈子的最快路径？从社交生产力到社区冷启动
+
+---
+
+## 话题 3: 把闲置 Mac 变成 Claude Code 的专属控制终端
+- 标题: Setting up your spare Mac for Claude Code to fully control, a step-by-step guide
+- 分数: 135 points (89 comments)
+- URL: https://ykdojo.github.io/claude-controls-mac/
+- 详细描述:
+来自 Yohei Kawai（ykdojo）的详细教程：如何把闲置 Mac 改造成 Claude Code 可以完全控制的独立环境，开启 computer use 功能。改造后可以从手机通过 Claude App 远程对话，或从主 Mac 通过 SSH 控制。
+
+为什么要这么做？核心原因是**安全隔离**。Claude Code 加上 `--dangerously-skip-permissions` 标志后在主机器上运行有风险，独立环境可以消除/缓解这些风险。网络请求不再经过主机器，物理隔离更彻底。
+
+为什么不用容器？作者承认自己是容器方案的拥趸（甚至做了 SafeClaw），但发现两个限制：1) 容器仍运行在主机器上，网络请求还是走主机器；2) 容器无法运行 Unity 等 Mac 专属应用。对于需要 AI 控制 GUI 应用的游戏开发场景，实体 Mac 是唯一选择。
+
+这代表了 AI 开发工作流的新范式：不是让 AI 在你的电脑上跑，而是给 AI 一台专属电脑。
+
+- 图片: 未提取
+- 写作角度: "给 AI 一台专属电脑"——从容器到物理隔离，AI Agent 安全运行的新范式
+
+---
+
+## 抓取统计
+- 尝试抓取: 6 个 URL
+- 成功: 3 个
+- 失败: 3 个（maurycyz.com DNS失败、Reddit 403 被封、Kimi K3 话题与已有文章重复主动跳过）
+- 最终话题: 3 个（GoPro 衰落 / 社交组织力 / Claude Code Mac 隔离）
+- 图片: 均未提取（readability 模式不返回 og:image，需浏览器抓取）
