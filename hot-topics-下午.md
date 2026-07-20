@@ -1,37 +1,75 @@
-# 下午文章素材 (生成时间: 2026-07-18 07:17 UTC)
+# 下午文章素材 (生成时间: 2026-07-19 07:15)
 
-## 话题 1
-- 标题: AWS 账单系统出错：用户被显示 $17 亿账单，实际 usage 不到 $5
-- 分数: 1141 (HN 当日最高分 🔥)
-- URL: https://health.aws.amazon.com/health/status (原帖为 HN self-post)
-- HN 讨论: https://news.ycombinator.com/item?id=48945241
+## 话题 1: If You Build It, They Will Come
+- 标题: If You Build It, They Will Come
+- 分数: 367 points (131 comments)
+- URL: https://benlandautaylor.com/if-you-build-it-they-will-come/
+- 详细描述: 
+作者通过个人经历分享了一个关于社区建设的核心洞察：加入一个新社交圈最快最好的方式，不是被动参加别人的活动，而是主动组织活动。无论是小众的同人小说讨论组，还是管理数亿美元的前沿知识运动，这个规律都适用。
+
+文章指出，很多人对社区有一种"消费者心态"，认为社交场景是世界自然产生的东西，就像野生的蓝莓丛。但实际上，活动之所以发生，是因为有人投入了精力去组织。而宇宙最可靠的法则之一就是：需要一点腿脚功夫的事情，大多数人就不会去做。一个圈子的领导者，大多就是那些真正愿意投入精力的人。
+
+作者认为，当今社会疏离问题的一部分，本质上是"搭便车者太多"的问题。很多人想消费社交网络，但我们的"社会脚本"——告诉人们去生产社交网络的那套规范——已经 largely 消失了。组织工作被很多人低估了，但其他组织者会非常敏锐地注意到谁在承担这些负担。
+
+这篇文章适合写一篇关于"为什么你应该主动组织而不是被动参与"的中文博客，可以联系到开源社区建设、技术社群运营等话题。
+
+- 图片: 无 (Substack 文章，无 og:image)
+
+---
+
+## 话题 2: Mathematicians still don't know the fastest way to multiply numbers
+- 标题: Mathematicians still don't know the fastest way to multiply numbers
+- 分数: 71 points (46 comments)
+- URL: https://www.scientificamerican.com/article/mathematicians-still-dont-know-the-fastest-way-to-multiply-numbers/
 - 详细描述:
-  AWS 健康仪表板出现严重计费错误，多位用户发现其"预估账单"金额飙升至数十亿美元。发帖者报告其预估费用从正常的每月不到 $5 暴涨至 $1.7 BILLION（17 亿美元）。该问题已在 Reddit r/aws 社区引发大量讨论，多名用户确认遇到类似问题。AWS 已发布健康公告承认"Estimated Billing Data 不准确"，但截至发帖时问题仍未完全修复。这是 AWS 近年来最严重的计费系统故障之一，影响了大量中小用户的信心。事件引发了对云服务计费透明度和监控机制的广泛讨论——如果连 AWS 的账单都能出错，用户如何信任云成本的准确性？
-- 图片: 无（self-post）
-- 写作角度: 云服务计费信任危机 / 中小用户如何防范云账单异常
+Scientific American 的深度科普文章。小学生可能背熟了单位数乘法表，但三位数乘法需要算法：将一个数叠在另一个上面，逐位相乘。几千年来，数学家认为这就是最快的乘法方式，直到 1960 年一个 23 岁的年轻人做出了惊人发现，引出了一个至今未解的谜团。
 
-## 话题 2
-- 标题: 首次在宜居带类地行星上发现大气层 (LHS 1140 b)
-- 分数: 435
-- URL: https://www.bbc.com/news/articles/cy4kdd1e0ejo
-- HN 讨论: https://news.ycombinator.com/item?id=48947560
+这个谜团对数字世界的参与者至关重要，因为乘法是计算机的基础运算。加密、机器人、AI、音频处理，几乎所有我们让硅芯片做的事情都涉及乘法，有时是巨大的数字反复相乘。在这个规模下，即使简单的操作也会成为瓶颈，任何效率提升都有全球经济后果。
+
+文章解释了算法如何分析增长：两个两位数相乘需要 4 次单位数乘法（n²），三位数需要 9 次。计算机科学家不测量秒数（取决于硬件），而是计算步骤数，用 Big O 表示法表示。小学算法是 O(n²)。
+
+1960 年 Anatoly Karatsuba 发现了更快的方法，打破了"乘法必须 O(n²)"的认知。此后数十年，数学家不断找到更快的算法，但"最快可能是什么"仍然是开放问题。
+
+适合写一篇"从小学乘法到前沿数学：人类对效率的无尽追求"的中文科普。
+
+- 图片: 无 (Scientific American 页面未提取到 og:image)
+
+---
+
+## 话题 3: Codex Resets — OpenAI Codex 用量限制重置追踪
+- 标题: Codex Resets
+- 分数: 134 points (98 comments)
+- URL: https://codex-resets.com/
 - 详细描述:
-  哈佛大学的 Collin Cherubim 博士团队在《Science》期刊发表研究，首次在宜居带内的岩石行星 LHS 1140 b 上探测到大气层。该行星距地球 48 光年，围绕一颗比太阳小得多的红矮星运行。探测到的气体为氦气（不支持生命），但暗示其他气体也可能存在。这是人类首次在宜居带岩石行星上发现大气层，是寻找外星生命的重要里程碑。虽然目前发现的气体不适合生命，但证明了宜居带行星可以保持大气层，大大提升了在类似地球的条件下发现生命的可能性。已有超过 6000 颗系外行星被发现，但只有几十颗位于宜居带且为岩石行星。
-- 图片: https://ichef.bbci.co.uk/news/1024/branded_news/2cd8/live/f3f60290-81d1-11f1-926f-c90d1bcfbc84.jpg
-- 写作角度: 人类寻找"第二地球"的重大进展 / 宜居带行星大气层意味着什么
+一个专门追踪 OpenAI Codex 使用限制重置的网站，记录了 Codex 和 ChatGPT Work 的用量重置历史。
 
-## 话题 3
-- 标题: 学习运行 SQLite 的一些经验教训
-- 分数: 225
-- URL: https://jvns.ca/blog/2026/07/17/learning-about-running-sqlite/
-- HN 讨论: https://news.ycombinator.com/item?id=48950122
-- 详细描述:
-  Julia Evans (jvns.ca) 分享了她在 Django 项目中使用 SQLite 作为生产数据库的实战经验。核心发现：(1) ANALYZE 命令极其重要——一个 4000 行的 FTS5 全文搜索查询从 5 秒降到 0.05 秒，原因是 SQLite 需要统计信息来优化查询计划；(2) 清理数据库很棘手——删除大量行后，SQLite 不会自动释放磁盘空间，需要手动 VACUUM；(3) SQLite 虽然适合小型站点，但它仍然是一个完整的数据库，有很多需要学习的运维知识。文章以实际案例展示了 SQLite 在生产环境中的坑和优化技巧。
-- 图片: 无（纯文本博客）
-- 写作角度: SQLite 生产环境实战指南 / 小项目数据库选型思考
+关键数据：
+- 最后一次重置：昨天
+- 总重置次数：35 次
+- 平均间隔：8.9 天
+- 最长间隔：67.7 天
 
-## 备选话题 (未深入抓取)
-- 开源 AI 现状报告 V1.0 (415pts) - 已抓取部分内容：开源模型能力追平闭源，推理成本 36 个月降 50 倍
-- Kimi K3 与 pelican benchmark (318pts) - Simon Willison 的 AI 模型评测
-- TP-Link Kasa 摄像头泄露 GPS 位置 (94pts) - IoT 安全问题
-- Kaiser 护士称 AI 监控让工作更差 (480pts) - AI 在社会中的负面影响
+从公告日志可以看到 OpenAI 的快速增长轨迹：
+- 从 50 万用户 → 700 万 → 800 万 → 900 万活跃用户
+- ChatGPT Work 和 Codex 合计
+- 每次达到里程碑都会给所有用户重置用量
+- 5 小时速率限制也被取消，让用户自由探索 GPT-5.6 Sol
+
+最新动态显示 OpenAI 在 7 月 18 日（昨天）又进行了一次重置，9M 活跃用户。官方表示"感谢团队以光速迭代，在以前所未有的速度扩展时保持基础设施运行"。
+
+这反映了 AI 编码工具市场的爆发式增长，以及 OpenAI 在基础设施扩展上面临的挑战。适合写一篇"OpenAI Codex 900 万活跃用户意味着什么"的分析文章。
+
+- 图片: 无 (追踪网站，无 og:image)
+
+---
+
+## 备选话题 (原始 URL 无法访问)
+
+以下话题在 HN 首页排名很高，但原始 URL 均返回 403/404/DNS 失败：
+1. GPT-5.6 used a prompt to close a 30-year gap in convex optimization (546 points) - Reddit 403
+2. Mayor Mamdani Says Landlords Can't Use AI Images to Advertise (419 points) - PetaPixel 404
+3. Is this the end of the once-mighty GoPro? (213 points, 464 comments) - Amateur Photographer 404
+4. The Kimi K3 Moment (325 points) - DNS 解析失败
+5. Transcribe.cpp (382 points) - 个人主页无内容
+
+这些话题可以用 HN 讨论页的内容作为补充素材。

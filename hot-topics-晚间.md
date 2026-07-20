@@ -1,91 +1,119 @@
-# 晚间文章素材 (生成时间: 2026-07-18 11:15 UTC)
+# 晚间文章素材 (生成时间: 2026-07-19 11:15 UTC)
 
-## 话题 1: 开源 AI 现状报告 V1.0
-- 标题: The State of Open Source AI — V1.0 · July 2026
-- 分数: 454 points (327 comments)
-- URL: https://stateofopensource.ai
-- 详细描述: 
-  2026年7月发布的重磅报告，由 CTO Raffi Krikorian 撰写前言。核心观点：开源 AI 已经追平闭源模型的能力差距。
-
-  关键数据：
-  - 开源模型与顶级闭源模型的能力差距已降至 0%（在编码方面持平，推理方面略落后）
-  - GPT-4 级别推理成本在 36 个月内从 $20 降至 $0.40/百万 tokens（降幅 50 倍）
-  - 大多数生产环境的 token 现在通过开源模型路由
-
-  实际案例：
-  - 新西兰毛利语广播员训练小语种语音模型，数据留在社区
-  - PwC 用开源模型微调金融语言模型，服务数百客户，无 per-token 费用
-  - 洛桑研究人员与红十字会合作构建开源医疗模型，准备在瑞士和坦桑尼亚进行临床试验
-  - 东非农民用离线手机模型诊断木薯病害
-  - 瑞士公共联盟在公共超算上训练国家模型，完全开源（权重、数据、训练代码）
-
-  核心论点：开放带来竞争和互操作性，多模型共存、标准接口、随时切换供应商的自由。
-  
-  报告定位：展示开源 AI 的胜利领域和薄弱环节的"地图"。
-
-- 图片: https://stateofopensource.ai (需从页面 og:image 提取，页面未直接返回)
-- 文章角度: 开源 AI 在 2026 年达到与闭源平齐的里程碑，成本暴跌 50 倍，各行业的实际应用案例
+**今日已有文章**（已去重）:
+- `2026-07-19-afternoon-kimi-k3-open-source-moment` (Kimi K3 开源)
+- `2026-07-19-moonshine-micro-speech-ai-on-microcontroller` (Moonshine 微型语音AI)
 
 ---
 
-## 话题 2: AWS 账单数据错误 — $17 亿美元
-- 标题: AWS: Inaccurate Estimated Billing Data – $1.7 billion
-- 分数: 1207 points (712 comments) — 今日 HN 最高分！
-- URL: 原始链接无法访问（videocardz.com 被 Cloudflare 拦截）
-- 详细描述:
-  AWS 被发现其估算账单数据存在严重错误，涉及金额高达 17 亿美元。这是今天 HN 上讨论最热烈的话题（1207 分，712 条评论）。
+## 话题 1
+- **标题**: Codex Resets — OpenAI 用量限制重置追踪
+- **分数**: 200 points (HN)
+- **URL**: https://codex-resets.com/
+- **详细描述**: 
+  一个专门追踪 OpenAI Codex 用量限制重置的网站。OpenAI 会不定期重置所有付费用户的 Codex 使用额度，没有固定时间表，没有 changelog，只有 @thsottiaux 在 X 上的突然宣布。该网站记录了所有历史重置事件：
 
-  核心问题：
-  - AWS 的 Estimated Billing（估算账单）功能显示的数据与实际收费不符
-  - 差额高达 $1.7B（17 亿美元）
-  - 用户在 AWS 控制台看到的预估费用与实际扣款存在巨大差异
+  **关键数据**:
+  - 累计重置次数：35 次
+  - 平均间隔：8.9 天
+  - 最长等待：67.7 天
+  - 最近一次：昨天（2026-07-18）
 
-  影响范围：
-  - 大量企业用户受到影响
-  - 信任危机：如果账单估算都不准确，企业如何做预算和成本管控？
-  - 云厂商定价透明度问题再次被推上风口浪尖
+  **增长轨迹**（从公告摘录）:
+  - 500K → 700K → 800K → 900K 活跃用户（几周内）
+  - Codex + ChatGPT Work 合计
+  - 用户增长过快导致频繁触达限额，OpenAI 被迫反复重置
+  - 引入了"banked reset"机制，用户可在桌面端/网页端手动激活
 
-  社区反应（712 条评论）：
-  - 这是今天 HN 讨论量最大的帖子
-  - 引发了对云厂商定价复杂性的广泛讨论
-  - 许多用户分享了自己被云账单"惊喜"的经历
+  **为什么有趣**: 
+  这个网站本身就是 AI 时代"基础设施焦虑"的缩影——900 万活跃用户把 OpenAI 的基础设施打到需要反复手动重置限额，而社区建了一个网站来"膜拜"这些重置时刻。文章角度可以是：AI 产品的增长烦恼、基础设施瓶颈、以及开发者对 AI 编码工具的依赖程度。
 
-- 图片: 无（原始页面无法访问）
-- 文章角度: 云厂商定价透明度问题，$17 亿的账单错误如何影响企业信任
+- **图片**: 未能提取 og:image（网站为纯文本极简风格）
+- **写作角度**: AI 编码工具的增长烦恼 / Codex 从 0 到 900 万用户的野蛮生长 / 开发者对 AI 的依赖
 
 ---
 
-## 话题 3: TP-Link Kasa 摄像头通过未认证 UDP 泄露家庭 GPS 坐标（6 年）
-- 标题: TP-Link Kasa cameras leaked home GPS via unauthenticated UDP for 6 years
-- 分数: 141 points (45 comments)
-- URL: https://github.com/badchemical (具体 repo 404)
-- 详细描述:
-  安全研究者发现 TP-Link Kasa 系列智能摄像头存在严重隐私漏洞：通过未认证的 UDP 协议泄露用户的家庭 GPS 坐标，而且这个问题已经存在了 6 年。
+## 话题 2
+- **标题**: Mathematicians Still Don't Know the Fastest Way to Multiply Numbers
+- **分数**: 124 points (HN)
+- **URL**: https://www.scientificamerican.com/article/mathematicians-still-dont-know-the-fastest-way-to-multiply-numbers/
+- **详细描述**: 
+  Scientific American 深度文章，讲述数学乘法算法的未解之谜。
 
-  核心问题：
-  - Kasa 摄像头通过 UDP 广播发送包含 GPS 坐标的数据包
-  - 该 UDP 服务无需任何认证即可访问
-  - 同一局域网内的任何设备都可以获取摄像头的 GPS 位置
-  - 这个漏洞已经存在 6 年之久（约从 2020 年开始）
+  **核心内容**:
+  - 小学生学的乘法算法（竖式乘法）的时间复杂度是 O(n²)
+  - 1960 年，23 岁的 Anatoly Karatsuba 发现了更快的方法（Karatsuba 算法）
+  - 此后数十年，数学家们不断逼近理论下限，但**至今不知道最快的乘法算法是什么**
+  - 这个问题对计算机科学至关重要：加密、机器人、AI、音频处理都依赖大数乘法
+  - 当数字足够大时，即使是简单的乘法操作也会成为瓶颈，任何效率提升都有全球经济影响
 
-  安全风险：
-  - 家庭精确位置泄露（GPS 坐标精度可达米级）
-  - 攻击者可在同一网络内轻松获取用户位置
-  - IoT 设备安全的典型反面案例
+  **Big O 解释**:
+  - 竖式乘法：O(n²) — 两位数×两位数 = 4 次单 digit 乘法
+  - Karatsuba：O(n^1.585)
+  - Schönhage-Strassen (1971)：O(n log n log log n)
+  - Harvey-van der Hoeven (2019)：O(n log n) — 目前已知最快
+  - 但是否存在 O(n) 的算法？未知。
 
-  更广泛的启示：
-  - IoT 设备安全审计的缺失
-  - "设置就忘记"的消费级智能设备风险
-  - UDP 协议在 IoT 中的安全隐患
+  **为什么有趣**: 
+  一个看似"小学水平"的问题背后是计算机科学的核心瓶颈。在 AI 时代，大数乘法的效率直接影响 GPU 上的矩阵运算速度。文章适合写成"你以为你懂乘法，其实你不懂"的科普风格。
 
-- 图片: 无（GitHub repo 已 404）
-- 文章角度: IoT 安全灾难 — 你的智能摄像头可能在广播你家的精确坐标
+- **图片**: 未能提取 og:image（Scientific American 有 paywall 保护）
+- **写作角度**: 科普向 / 从小学乘法到 AI 芯片的底层瓶颈 / 数学未解之谜
+
+---
+
+## 话题 3
+- **标题**: Blender 5.2 LTS — 节点物理、音频驱动、程序化模拟
+- **分数**: 26 points (HN)
+- **URL**: https://www.blender.org/download/lts/5-2/
+- **详细描述**: 
+  Blender 5.2 LTS 于 2026 年 7 月 14 日发布，带来重大更新。
+
+  **核心新功能**:
+
+  1. **Geometry Nodes 重大升级**:
+     - Sample Sound Frequencies 节点：可用音频文件驱动节点动画和模拟
+     - Mesh Bevel 节点：程序化控制边缘/顶点的倒角
+     - Lists 数据类型：支持存储任意长度的序列（数字、字符串等）
+     - Geometry Bundles：可跨 modifier 和 object 边界携带任意数据
+
+  2. **节点化物理系统（革命性）**:
+     - 全新 XPBD Solver 节点
+     - 毛发和布料模拟完全程序化
+     - 高级用户可自定义约束、从头创建模拟系统
+     - 社区已经在用节点物理创造惊人效果
+
+  3. **LTS 意义**:
+     - Long Term Support 版本，适合生产环境
+     - Splash 画面：已灭绝的 Panthera spelaea（洞狮）
+
+  **为什么有趣**: 
+  Blender 正在从"建模工具"变成"程序化创作引擎"。节点化物理意味着用户可以像搭积木一样创建复杂的物理模拟，这对独立游戏开发者、影视特效师是巨大利好。AI 生成内容（AIGC）和程序化生成的结合点也在这里。
+
+- **图片**: 未能提取 og:image（Blender 页面为 JS 渲染）
+- **写作角度**: 3D 创作民主化 / Blender 的程序化革命 / 独立创作者的工具进化
 
 ---
 
 ## 备选话题（未深入抓取）
-- Regressive JPEGs (395 points) - 技术有趣但受众窄
-- Kimi K3 pelican benchmark (351 points) - AI 模型评测
-- Zilog Z80 turned 50 (233 points) - 复古计算
-- First atmosphere on Earth-like planet (466 points) - 科学发现
-- Reviving 15-year-old netbook with Arch Linux (118 points) - Linux 改造
+
+| 话题 | 分数 | URL | 备注 |
+|------|------|-----|------|
+| Transcribe.cpp | 553 | cjpais.com | 最高分！但原始页面内容极少，GitHub 404 |
+| NYC AI 房产披露 | 483 | petapixel.com | 高分，但 PetaPixel 404 |
+| AI Mania 批评 | 231 | mataroa.blog | 重定向到首页 |
+| Better Than IPTV | 216 | github.com/stupside | GitHub 404 |
+| Qwen 3.8 发布 | 211 | twitter.com/alibaba_qwen | 和已有 Kimi K3 话题接近 |
+| IndieWeb $0.01/天 | 177 | neatnik.net | 抓取失败 |
+| Claude Code 用 Bun+Rust | 61 | simonwillison.net | 404，URL 猜测错误 |
+| OpenAI 缩减 Codex 上下文 | 23 | github.com/openai | GitHub 404 |
+
+---
+
+## 抓取总结
+
+- **成功抓取**: 3/3 话题（Codex Resets、乘法算法、Blender 5.2）
+- **失败 URL**: 8 个（404/403/paywall/JS渲染）
+- **图片提取**: 0/3（目标网站均无法提取 og:image）
+- **去重检查**: ✅ 与已有 Kimi K3、Moonshine 文章无重复
+- **总 web_fetch 次数**: 10 次（HN 首页 1 次 + 尝试抓取 9 次）
