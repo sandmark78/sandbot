@@ -1,62 +1,85 @@
-# 热点文章素材 (生成时间: 2026-07-20 09:16)
+# 热点文章素材 (生成时间: 2026-07-21 09:15)
 
-## 话题 1
-- 标题: What I learned selling 2,500 MIDI recorders: Hardware is not so hard
-- 分数: 486 points (HN #12)
-- URL: https://chipweinberger.com/articles/20260719-hardware-is-not-so-hard.html
-- HN讨论: https://news.ycombinator.com/item?id=45043828 (220 comments)
-- 详细描述: 
-  Chip Weinberger 创建了一款名为 Jamcorder 的 MIDI 自动录音设备，一年半已售出 2500 台。作为一个软件工程师转硬件创业者，他最大的发现是：硬件没有传说中那么难。
-
-  他手工组装了前 500 台设备，只用了 4 天，完全没有意外。没有报废的生产批次，没有元件采购问题（Trump 关税差点成为例外）。整个过程中最难的部分仍然是软件——大约 20 万行代码分布在固件、App 和制造工具中，花了 3 年多时间，在 LLM 出现之前完成。
-
-  Jamcorder 的设计刻意保持简单：PCB 只有 25 个独立元件，MIDI 接口定制生产。他认为硬件"难"的名声被夸大了，对于有意愿的软件工程师来说，硬件创业是完全可行的。
-
-  这篇文章对独立硬件创业者极具启发价值，尤其是"软件才是真正难点"的反直觉结论。
-- 图片: 未提取（原文有产品图和原型图，需手动获取）
-
-## 话题 2
-- 标题: Moonshine - Headless streaming server for Moonlight clients (Rust)
-- 分数: 169 points (HN #3)
-- URL: https://github.com/hgaiser/moonshine
-- HN讨论: https://news.ycombinator.com/item?id=45044567 (72 comments)
-- 详细描述:
-  Moonshine 是一个用 Rust 编写的无头游戏串流服务器，允许你将 PC 游戏串流到任何运行 Moonlight 客户端的设备上。键盘、鼠标和手柄输入会回传到主机，实现远程游戏体验。
-
-  核心特性：
-  - 隔离串流会话：每个串流在独立的 compositor 中运行，与桌面环境完全分离，主机 PC 可同时用于其他工作
-  - 无需显示器：在无头服务器上工作，不需要 HDMI 虚拟插头
-  - 硬件视频编码：支持 H.264、H.265 和 AV1（实验性），使用 GPU 编码
-  - HDR 支持：真正的 10-bit HDR 串流
-  - 完整输入支持：鼠标、键盘、手柄（包括运动、触摸板和触觉反馈）
-  - 音频串流：立体声和环绕声（5.1/7.1），低延迟 Opus 编码
-  - 仅支持 Linux，已在 Arch Linux 测试
-
-  系统要求：systemd、支持 Vulkan 视频编码的 GPU（NVIDIA RTX、AMD RDNA2+、Intel Arc）、Moonlight v6.0.0+
-
-  这个项目对游戏串流和远程游戏场景非常有价值，Rust 实现保证了性能和安全性。
-- 图片: 未提取（GitHub 项目，无 og:image）
-
-## 话题 3
-- 标题: Qwen 3.8 发布
-- 分数: 876 points (HN #20, 最高分!)
-- URL: https://twitter.com/alibaba_qwen (官方公告)
-- HN讨论: https://news.ycombinator.com/item?id=45039897 (603 comments)
-- 详细描述:
-  阿里巴巴通义千问团队发布了 Qwen 3.8 模型，这是 Qwen 系列的最新版本。该发布在 HN 上获得了 876 分（今日最高分）和 603 条评论的热烈讨论。
-
-  Qwen 团队定位为"Open foundation models for AGI"，拥有 23.5 万 Twitter 关注者。Qwen 3.8 是开源基础模型的最新迭代，延续了该系列在开源 AI 社区的影响力。
-
-  由于原始公告在 X/Twitter 上，详细内容无法直接抓取。建议从 HN 讨论页面获取社区反馈和技术分析。
-
-  这个话题对 AI/ML 从业者极具价值，Qwen 系列是中国开源 AI 的代表性项目。
-- 图片: 未提取（Twitter 页面无法提取）
+## 今日已有文章（已去重）
+- china-open-weights-ai-strategy (中国AI开放权重)
+- early-open-weights-strategy (开放权重策略)
+- early-romania-data-wipe (罗马尼亚数据擦除)
+- noon-jelly-ui-soft-body-web-components (Jelly UI软体组件)
+- test-v41-template (测试模板)
 
 ---
 
-## 抓取总结
-- ✅ 成功抓取 2 个话题的详细内容（话题 1、话题 2）
-- ⚠️ 1 个话题使用 HN 描述（话题 3，原始内容在 Twitter 无法抓取）
-- ❌ 跳过 2 个话题（Claude Fable/Jacobian 猜想 403、Simon Willison 博客 404）
-- 📝 今日已有文章：esp32-bowling-revolution（已避免重复）
-- 🖼️ 图片均未提取（减少复杂度，可手动补充）
+## 话题 1: AI 正在击败人类数学家
+- 标题: Human mathematicians are being outcounterexampled
+- 分数: 338 points | 137 comments
+- URL: https://xenaproject.wordpress.com/2026/07/20/human-mathematicians-are-being-outcounterexampled/
+- 来源: Xena Project (Kevin Buzzard, 帝国理工)
+- 详细描述:
+  2026年5月20日，ChatGPT 反驳了 Erdős 单位距离猜想——这是离散几何领域的著名未解问题。OpenAI 宣布时，多位人类数学家验证了论证过程。核心思路是利用 Golod-Shafarevich 定理（1960年代数论深刻定理）构造反例。
+
+  不到一周后（5月26日），Fields 奖章得主 Mike Freedman（现为 Logical Intelligence 首席科学官，该公司由图灵奖得主 Yann LeCun 联合创立）发邮件告知：他们的系统已经用 Lean 自动形式化了整篇 ChatGPT 生成的论文。这意味着 LLM 生成的突破性数学成果正在被实时形式化验证。
+
+  但问题在于：Golod-Shafarevich 定理的证明超过100页，需要大量全局类域论（20世纪初发展的理论，至今仍无简短证明）。这引发了深层问题——AI 能生成证明，但人类是否真正理解了证明？形式化验证是否是必须的？
+
+  这篇文章来自 Kevin Buzzard（帝国理工教授），他9年前开始倡导交互式定理证明器应在数学未来中扮演重要角色。这篇文章在 HN 引发137条讨论，核心争论：AI 是在"做数学"还是"模仿数学"？形式化验证是否成为 AI 时代数学的必需品？
+- 图片: 无（WordPress 页面未提取到 og:image）
+- 写作角度: AI 从写代码到做数学的跨越，形式化验证成为新基础设施
+
+---
+
+## 话题 2: 美国五大科技巨头隐藏债务飙升至 1.65 万亿美元
+- 标题: Five US tech giants' hidden debts soar to $1.65tn on opaque AI funding
+- 分数: 275 points | 141 comments
+- URL: https://asia.nikkei.com/business/technology/five-us-tech-giants-hidden-debts-soar-to-1.65tn-on-opaque-ai-funding
+- 来源: Nikkei Asia (日本经济新闻)
+- 详细描述:
+  日经新闻研究显示，美国五大科技巨头的隐藏债务在约4年内膨胀了8倍，达到估计的1.65万亿美元，超过了其实际公开债务。这些隐藏债务主要来自数据中心租赁和 GPU 供应合同，使得投资者更难评估风险。
+
+  以 Meta 为例，其表外债务约4200亿美元，几乎是其透明债务的3倍。这些债务与 AI 基础设施投资直接相关——数据中心建设、GPU 采购合同、长期租赁协议等。
+
+  关键问题：
+  1. 这些债务为什么不透明？因为数据中心租赁和 GPU 供应合同通常不计入资产负债表
+  2. 投资者无法准确评估风险——公开财报显示的债务远低于实际水平
+  3. AI 投资的回报周期长，但债务义务是刚性的
+  4. 如果 AI 商业化不及预期，这些隐藏债务可能引发系统性风险
+
+  HN 讨论（141条）聚焦：这是否是另一个"次贷危机"式的系统性风险？科技公司的 AI 投资是否过度？
+- 图片: 无（Nikkei 付费墙，内容有限）
+- 写作角度: AI 军备竞赛的隐藏成本，1.65万亿美元的定时炸弹？
+
+---
+
+## 话题 3: 在自制 CPU 上运行 Doom 并走红网络
+- 标题: Running DOOM on our Custom CPU and Going Viral
+- 分数: 63 points | 12 comments
+- URL: https://www.armaangomes.com/blogs/doom/
+- 来源: Armaan Gomes (独立开发者/硬件爱好者)
+- 详细描述:
+  两周前，作者团队成功在他们从零构建的 CPU 上运行了 Doom（然后发了个视频，获得了几百万播放量）。
+
+  技术细节：
+  - 他们在逻辑门级别设计了一个自定义 CPU
+  - 连接了外设，改编了 Doom 源码以在其机器上运行
+  - 部署到 FPGA 上实时运行
+  - 之前只运行过自己写的简单程序（Pong、Mandelbrot 集）
+
+  面临的两大挑战：
+  1. **内存问题**：原设计只能使用 FPGA 的 BRAM（不到1MB），而 Doom 基础共享版 (doom1.wad) 有14MB
+  2. **速度问题**：Doom 对现代 PC 很轻松，但对他们的 CPU 来说太慢了
+
+  解决方案：
+  - 队友 Liam 在研究乱序处理（out-of-order processing）以实现更大的并行性
+  - 作者负责内存集成—— hook 额外内存芯片远比听起来复杂
+
+  这篇文章展示了硬核硬件工程的魅力：从逻辑门到运行完整游戏。"Doom can run on anything" 的说法再次得到验证。
+- 图片: 无（博客页面未提取到 og:image）
+- 写作角度: 从零造 CPU 到跑 Doom，硬核工程浪漫主义
+
+---
+
+## 备选话题（未抓取详细内容）
+- Incremental – Jane Street 增量计算库 (180pts) - github.com/janestreet/incremental
+- Nativ: 在 Mac 本地运行前沿开源模型 (271pts) - blaizzy.github.io/nativ/
+- Linux kernel will support $ORIGIN (35pts) - fzakaria.com
+- Kimi Work (539pts) - 和中国AI话题可能重复，跳过
+- Who's afraid of Chinese models? (624pts) - 和中国AI话题重复，跳过
