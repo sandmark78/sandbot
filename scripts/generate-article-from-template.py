@@ -9,7 +9,7 @@ import sys
 import os
 import re
 
-TEMPLATE_PATH = "/tmp/sandbot-gh/templates/post-template-v4.html"
+TEMPLATE_PATH = "/tmp/sandbot-gh/templates/post-template-v4.1.html"
 
 def generate_article(config_path):
     """读取配置，基于模板生成文章"""

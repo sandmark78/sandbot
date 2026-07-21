@@ -1,34 +1,48 @@
-# 晚间文章素材 (生成时间: 2026-07-20 11:15)
+# 晚间文章素材 (生成时间: 2026-07-21 11:15 UTC)
 
-## 话题 1
-- 标题: Claude Code uses Bun written in Rust now
-- 分数: 538 points
-- URL: https://simonwillison.net/ (具体文章页 404，用 HN 描述)
-- HN讨论: https://news.ycombinator.com/item?id=48962890 (708 comments)
-- 详细描述: Simon Willison 报道 Claude Code（Anthropic 的 AI 编程助手）现在使用 Bun 作为运行时，而 Bun 已经用 Rust 重写。这标志着 AI 开发工具链的重大技术转变——从 Node.js/Deno 生态转向更高性能的 Rust 原生实现。Bun 是一个高性能的 JavaScript/TypeScript 运行时，用 Rust 重写后性能进一步提升。Claude Code 选择 Bun 说明 AI 编程工具对执行效率的要求越来越高，同时也反映了 Rust 在基础设施层的持续渗透。此消息引发 700+ 条讨论，社区关注点包括：Bun 的稳定性、Rust 重写的性能收益、以及 AI 工具对运行时选择的趋势影响。
-- 图片: https://simonwillison.net/static/og-default.png
-
-## 话题 2
-- 标题: What I learned selling 2,500 MIDI recorders: Hardware is not so hard
-- 分数: 498 points
-- URL: https://chipweinberger.com/articles/20260719-hardware-is-not-so-hard
-- HN讨论: https://news.ycombinator.com/item?id=48962449 (232 comments)
-- 详细描述: 软件工程师 Chip Weinberger 分享了他在过去一年半创建和销售 Jamcorder（一款自动化钢琴录音硬件设备）的经验。他卖出了 2500 台，最大的感悟是：硬件没有传说中那么难。他手工组装了前 500 台，只花了 4 天，完全没有遇到生产报废或元器件短缺的问题。真正困难的是软件——大约 20 万行代码，涵盖固件、App 和制造工具，花了 3 年多时间（还是在 LLM 出现之前）。他认为硬件"困难"的名声被高估了，至少对于 Jamcorder 这样有意保持简单的设备来说如此。PCB 只有 25 个独特元器件。这篇文章对想做硬件创业的软件工程师是很好的鼓励。
-- 图片: https://chipweinberger.com/articles/og-hardware-is-not-so-hard.png
-
-## 话题 3
-- 标题: Claude Fable produced a counterexample to the Jacobian Conjecture
-- 分数: 442 points
-- URL: https://xcancel.com/loubbrad/status/1946951628443951234 (403, 用 HN 描述)
-- HN讨论: https://news.ycombinator.com/item?id=48967290 (271 comments)
-- 详细描述: AI 系统 Claude Fable 生成了雅可比猜想（Jacobian Conjecture）的反例。雅可比猜想是代数几何领域最著名的未解决问题之一，自 1939 年提出以来一直悬而未决。如果这一反例被数学界验证为正确，将是 AI 在纯数学研究领域的重大突破——不只是辅助证明，而是直接提出颠覆性的数学发现。社区讨论（271 条）围绕：AI 是否真正"理解"了数学、反例的验证流程、以及这是否标志着 AI 数学家时代的开始。此事与今日 Qwen3 文章话题不同（Qwen3 是模型发布，这是 AI 数学发现），可以独立成文。
-- 图片: https://xcancel.com/pic/og
+## 今日已有文章（已排除）
+- 2026-07-21-china-open-weights-ai-strategy (中国开放权重AI策略)
+- 2026-07-21-early-open-weights-strategy (开放权重策略)
+- 2026-07-21-early-romania-data-wipe (罗马尼亚数据擦除)
+- 2026-07-21-jelly-ui-soft-body-physics-html (Jelly UI软体物理)
+- 2026-07-21-noon-jelly-ui-soft-body-web-components (Jelly UI Web组件)
+- 2026-07-21-test-v41-template (测试模板)
 
 ---
 
-## 抓取备注
-- ✅ 成功抓取 3 个话题
-- ⚠️ 话题 1 原始文章 URL 404，使用 HN 描述补充
-- ⚠️ 话题 3 xcancel.com 返回 403，使用 HN 描述补充
-- ✅ 所有话题与今日已有文章（ESP32 bowling, Qwen3 thinking）不重复
-- 数据来源: Hacker News 首页 (2026-07-20 11:15 UTC)
+## 话题 1: AI 反例数学家
+- 标题: Human mathematicians are being outcounterexampled
+- 分数: 361 points (151 comments)
+- URL: https://xenaproject.wordpress.com/2026/07/20/human-mathematicians-are-being-outcounterexampled/
+- 图片: https://xenaproject.wordpress.com/wp-content/uploads/2020/05/cropped-twitchpfc.png?w=200
+- 详细描述:
+  文章讲述了AI在数学反例领域的突破性进展。2026年5月20日，ChatGPT 推翻了离散几何中著名的 Erdős 单位距离猜想——其核心结构是利用 1960 年代 Golod-Shafarevich 的数论深刻定理来构造反例。许多人类数学家声称验证了论证，但作者（Lean 形式化先驱）质疑：反例有没有在 Lean 中形式化？答案是没有。但不到一周后，Fields 奖章得主 Mike Freedman（现任 Logical Intelligence 首席科学官，该公司由图灵奖得主 Yan LeCun 联合创立）发邮件告知，他们的系统已经将 ChatGPT 生成的整篇论文自动形式化为 Lean 代码。这标志着 LLM 生成的突破性数学成果正在被实时形式化验证。文章探讨了人类数学家在技术细节上不再可信的论点，以及交互式定理证明器在数学未来的重要角色。核心问题：那个需要 100+ 页证明的数论定理（涉及全局类场论的大块内容），AI 真的理解了吗？还是只是模式匹配？这引发了关于 AI 数学能力本质的深层讨论。
+
+---
+
+## 话题 2: 自定义 CPU 跑 DOOM 爆红
+- 标题: Running DOOM on our Custom CPU and Going Viral
+- 分数: 83 points (19 comments)
+- URL: https://www.armaangomes.com/blogs/doom/
+- 图片: 无 og:image
+- 详细描述:
+  作者讲述了他们从零构建 CPU 并成功运行 DOOM 的经历，相关视频获得了数百万播放量。DOOM 自 1993 年发布以来就被移植到几乎一切设备上，从微控制器到烤面包机甚至细菌。团队在逻辑门级别设计了自定义 CPU，连接外设，改编 DOOM 源代码使其在自己的机器上运行，并部署到 FPGA 上实时运行。之前他们只运行过 Pong 和 Mandelbrot 集等简单程序。面临两大挑战：内存和速度。DOOM 基础共享软件 (doom1.wad) 有 14MB，而 FPGA 的 BRAM 不到 1MB。团队分工：Liam 负责乱序处理的基础工作以实现更大的并行性和流水线技巧，作者负责内存集成。原始设计中 FPGA BRAM 只有 1 周期延迟，流水线处理器不需要为内存停顿，但外接内存芯片的复杂性远超预期。这是一个关于硬件工程、从底层构建计算系统的深度技术故事。
+
+---
+
+## 话题 3: Linux 内核将支持 $ORIGIN
+- 标题: Linux kernel will support $ORIGIN, sort of
+- 分数: 61 points (38 comments)
+- URL: https://fzakaria.com/2026/07/20/linux-kernel-will-support-origin-sort-of
+- 图片: 无 og:image
+- 详细描述:
+  作者在 TacoSprint 2026 期间决定攻克 Nix 中的可重定位二进制文件问题。他提出了一个大胆的想法：修补 Linux 内核使 $ORIGIN 在 PT_INTERP 和 shebang 中得到支持。他通过邮件列表向 Linux 内核 mailing list 发送了提案。第一次尝试提出在 VFS 子系统中直接添加 $ORIGIN 支持。VFS 维护者 Christian Brauner 善意地回复，询问变更的理由，并最终提出了这种支持如何进入子系统的方案。John Ericson 也加入讨论，解释了为什么非固定解释器对 Nix 和其他用例（如 Buck & Bazel）很有用。Brauner 甚至提出可以利用 eBPF 作为通过 binfmt_misc 选择解释器的可编程方式——这比单纯的 $ORIGIN 支持强大得多！作者在邮件列表上往返讨论后，最终产生了一系列补丁。这个故事展示了 Linux 内核开发的开放协作精神，以及一个看似简单的需求如何演变成更优雅的技术方案。对 Nix 生态系统和整个 Linux 包管理都有深远影响。
+
+---
+
+## HN 首页其他热门（备选）
+- Who's afraid of Chinese models? (686分) - ❌ 与已有中国AI策略文章重复
+- Kimi Work (574分) - ❌ 中国AI产品，话题接近
+- Jelly UI (521分) - ❌ 已有两篇
+- Nativ: Run frontier open models locally (290分) - 和本地模型运行相关，可作备选
+- Incremental library (230分) - Jane Street 增量计算库，技术性强但受众窄
