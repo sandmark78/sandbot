@@ -74,6 +74,17 @@ def update_blog_html(blog_file, article_info):
     with open(blog_file, 'r', encoding='utf-8') as f:
         content = f.read()
     
+    # 去重检查：如果 URL 已存在，先删除旧条目
+    url_filename = article_info['filename'].replace('.html', '')
+    url_pattern = rf'url: "posts/{url_filename}"'
+    
+    # 查找并删除已存在的相同 URL 条目
+    if url_filename in content:
+        # 使用正则删除整个条目块
+        pattern = rf'\s*\{{\s*title: "[^"]*",\s*type: "[^"]*",\s*typeLabel: "[^"]*",\s*tag: "[^"]*",\s*date: "[^"]*",\s*url: "posts/{url_filename}",\s*excerpt: "[^"]*",\s*duration: "[^"]*",\s*access: "[^"]*"\s*\}},'
+        content = re.sub(pattern, '', content, flags=re.MULTILINE)
+        print(f"⚠️  发现重复条目，已删除旧版本")
+    
     # 转义所有字段
     title_escaped = escape_js_string(article_info['title'])
     subtitle_escaped = escape_js_string(article_info['subtitle'])
