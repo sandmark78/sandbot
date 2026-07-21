@@ -1,83 +1,45 @@
-# 早间文章素材 (生成时间: 2026-07-19 21:15 UTC)
+# 早间文章素材 (生成时间: 2026-07-20 21:15 UTC)
 
-**今日已有文章**（避免重复）：
-- `2026-07-19-afternoon-kimi-k3-open-source-moment` - Kimi K3 开源
-- `2026-07-19-moonshine-micro-speech-ai-on-microcontroller` - Moonshine 微型语音 AI
-
----
-
-## 话题 1: Qwen 3.8 发布
-- **标题**: Qwen 3.8
-- **分数**: 675 points (HN #2)
-- **URL**: https://x.com/alibaba_qwen
-- **HN 讨论**: 493 comments
-- **详细描述**: 
-  阿里巴巴通义千问团队发布 Qwen 3.8 模型。这是今日 HN 热度最高的 AI 话题（675分），引发了 493 条讨论。Qwen 系列模型是目前中国最活跃的开源大模型之一，拥有 23.25 万 Twitter 粉丝。Qwen 3.8 的具体技术细节尚未从官方 Twitter 获取到完整内容，但 HN 社区的热烈讨论表明这是一个重大发布。结合今日已有的 Kimi K3 文章，可以看出中国 AI 开源模型正在密集发力。
-- **图片**: 无（Twitter 页面无法提取 og:image）
-- **写作角度建议**: 可聚焦"中国开源 AI 模型军备竞赛"或 Qwen 3.8 的技术突破
+## 今日已有文章（避免重复）
+- 2026-07-20-esp32-bowling-revolution (ESP32 保龄球)
+- 2026-07-20-midi-hardware-lessons (MIDI 硬件)
+- 2026-07-20-qwen3-thinking-2507 (Qwen3 思考模型)
 
 ---
 
-## 话题 2: 卖 2500 台 MIDI 录音设备的硬件创业经验
-- **标题**: What I learned selling 2,500 MIDI recorders, part 1: Hardware is not so hard
-- **分数**: 363 points (HN #9)
-- **URL**: https://chipweinberger.com/articles/20260719-hardware-is-not-so-hard.html
-- **HN 讨论**: 171 comments
-- **详细描述**:
-  Chip Weinberger 创建了 Jamcorder——一个全自动钢琴录音设备。一年半前发布，已售出 2500+ 台，作为独立业务站稳脚跟。
-
-  **核心洞察**：作为软件工程师转硬件创业者，他原以为硬件会是最难的部分（电子设计、塑料、制造、物流、元器件短缺等），但实际并非如此。
-
-  **关键数据**：
-  - 前 500 台手工组装，仅用 4 天，零修改
-  - 没有遇到报废生产批次或元器件采购问题
-  - 真正的难点是软件：约 20 万行代码（固件 + App + 制造工具），花了 3 年多
-  - PCB 只有 25 个独特元器件，MIDI 接口定制生产
-
-  **核心论点**：硬件的难度被高估了。对于一个有意保持简单的设备来说，硬件开发远比软件顺畅。
-
-  这篇文章对独立开发者极具启发——打破了"硬件很难"的刻板印象。
-- **图片**: 文章含多张原型照片（未提取 og:image）
-- **写作角度建议**: "软件工程师做硬件没那么难" / 独立硬件创业指南
+## 话题 1: 中国开放权重 AI 战略正在获胜
+- 标题: China's open-weights AI strategy is winning
+- 分数: 733 points | 612 comments
+- URL: https://werd.io/american-ai-is-locked-down-and-proprietary-its-losing/
+- 图片: https://images.unsplash.com/photo-1548192746-dd526f154ed9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMTc3M3wwfDF8c2VhcmNofDJ8fGluZGllfGVufDB8fHx8MTc0OTY5ODcxM3ww&ixlib=rb-4.1.0&q=80&w=2000
+- 详细描述:
+  Ben Werdmüller 发文指出：美国 AI 走的是封闭专有路线，而中国选择了开放权重策略，正在赢得竞争。核心论点：AI 模型本身作为产品的护城河很浅，真正的壁垒在企业服务层——合同、系统集成、生态锁定。但从技术角度看，模型之间切换成本极低（今天用 ChatGPT，明天用 Claude，API 换个端点就行）。美国政府虽然对 GPU 出口实施了管制，也合理限制了与中国服务器共享某些数据，但结果是：中国公司有足够的算力训练模型，却无法提供像 OpenAI/Anthropic 那样的全球集中式服务。因此，中国选择开放权重是理性策略——开放几乎总是在基础设施采用中胜出。开放技术可以无需许可地使用，因此能成为更多创新的中心。你可以自由部署、实验、修改。开放权重模型虽然不是开源，但它们是可移植的、无需许可的。这对美国 AI 产业构成重大挑战。
 
 ---
 
-## 话题 3: Bun 用 Rust 重写，Claude Code 已切换
-- **标题**: Rewriting Bun in Rust / Claude Code uses Bun written in Rust now
-- **分数**: 330 points (HN #7)
-- **URL**: https://bun.com/blog/bun-in-rust
-- **HN 讨论**: 443 comments
-- **详细描述**:
-  Bun 创始人 Jarred Sumner 宣布将 Bun 从 Zig 重写为 Rust。
-
-  **关键背景**：
-  - Bun 于 2025 年 12 月被 Anthropic 收购
-  - Claude Code v2.1.181（2026年6月17日发布）及之后版本已使用 Rust 版 Bun
-  - Bun CLI 月下载量超 2200 万
-  - Vercel、Railway、DigitalOcean 等平台已原生支持 Bun
-
-  **为什么从 Zig 转 Rust**：
-  - Zig 让 Bun 成为可能——Jarred 在 1 年内、pre-LLM 时代、在奥克兰的小公寓里独自完成了初始版本
-  - 但随着规模扩大，稳定性成为挑战（v1.3.14 修复了大量 heap-use-after-free 崩溃）
-  - Rust 的内存安全保证解决了这些稳定性问题
-  - Jarred 使用了 Claude Fable 5 预发布版完成大部分 Rust 重写
-
-  **行业影响**：
-  - Simon Willison 评论：这标志着 AI 工具链对运行时稳定性的更高要求
-  - Claude Code 是 Bun 最大的用户之一，切换到 Rust 版意味着 Anthropic 对生产环境稳定性的重视
-  - 这也意味着 Zig 生态失去了一个旗舰项目
-- **图片**: 无（页面未提取 og:image）
-- **写作角度建议**: "从 Zig 到 Rust：Bun 的语言豪赌" / AI 时代运行时稳定性之争
+## 话题 2: 黑客擦除罗马尼亚全国土地登记数据库
+- 标题: Hacker wipes Romania's entire land registry database
+- 分数: 498 points | 272 comments
+- URL: https://news.risky.biz/risky-bulletin-hacker-wipes-romanias-entire-land-registry-database/
+- 图片: https://storage.ghost.io/c/16/e9/16e9a748-ca66-4b3c-8590-85537131f696/content/images/2026/07/000-RBN-logo-4.png
+- 详细描述:
+  一名黑客入侵了罗马尼亚地籍局（ANCPI），在勒索失败后擦除了全国土地登记数据库。这次攻击使罗马尼亚整个房地产市场陷入停滞——官方应用和网站已离线一周，公证处无法记录新交易，公民无法获得产权证明或详细土地记录。据 Risky Business 的消息源透露，黑客使用有效凭证进入系统，绘制了内部系统地图，在勒索失败后清除了系统和备份。事件于 7 月 14 日公开，黑客开始删除数据。次日，ANCPI 的部分被盗数据被放在一个已知黑客论坛上出售，包括员工凭证、内部文件和 IT 网络详情。该黑客账号名为 ByteToBreach，此前还曾入侵瑞典电子政务门户。事后，官员们恢复了网站并宣布正在从零重建整个机构网络。即使黑客声称删除了备份，该机构似乎保留了离线副本，否则情况将更加糟糕。
 
 ---
 
-## 备选话题（未深入抓取）
-| 话题 | 分数 | 备注 |
-|------|------|------|
-| Better and Cheaper Than IPTV | 307 | GitHub 项目，无法找到具体仓库 |
-| Blender 5.2 LTS | 295 | 创意工具大版本 |
-| Codex Resets | 278 | OpenAI Codex 相关 |
-| OpenAI reduces Codex Context Size | 263 | 上下文从 372k 降到 272k |
-| Minecraft: Java Edition now uses SDL3 | 226 | 游戏技术迁移 |
-| Mathematicians: fastest way to multiply | 204 | 数学/算法 |
-| Moonshot AI suspends subscriptions (Kimi K3) | 138 | 与今日已有文章重复，已跳过 |
+## 话题 3: Jelly UI — HTML 表单控件的软体物理效果
+- 标题: Jelly UI: Soft-body physics for native HTML form controls
+- 分数: 202 points | 81 comments
+- URL: https://jelly-ui.com/
+- 图片: (无 og:image，网站未设置)
+- 详细描述:
+  Jelly UI 是一个零依赖的 Web Components 库，为原生 HTML 表单控件添加软体物理（soft-body physics）效果，创造柔软、有触感的界面交互。核心特点：0 依赖、40 个自定义元素、只需 1 个 script 标签引入。内置暗色模式、RTL（从右到左）支持、WCAG AA 色彩 token。这是一个纯前端的创意 UI 库，让按钮、输入框等表单元素拥有果冻般的弹性动画效果。适合需要独特视觉风格和趣味交互的产品界面。项目轻量、无依赖，对性能友好。
+
+---
+
+## 选题分析
+| 话题 | 热度 | 领域 | 适合角度 |
+|------|------|------|---------|
+| 中国开放AI | 🔥🔥🔥 | AI/地缘政治 | 深度分析：对独立开发者的影响 |
+| 罗马尼亚数据擦除 | 🔥🔥 | 网络安全 | 警示故事：备份策略的重要性 |
+| Jelly UI | 🔥 | 前端开发 | 趣味项目：动手试试效果 |

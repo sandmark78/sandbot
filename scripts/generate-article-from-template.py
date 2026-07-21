@@ -30,6 +30,9 @@ def generate_article(config_path):
     content = template
     
     # 基础信息
+    # 标题和描述
+    content = content.replace('[分类] 标题', config.get('title', '标题'))
+    content = content.replace('一句话摘要', config.get('subtitle', '副标题'))
     content = content.replace('文章标题写在这里', config.get('title', '标题'))
     content = content.replace('一句话概括核心内容，不是标题重复，是读者读完后应该记住的那句话。', 
                               config.get('subtitle', '副标题'))

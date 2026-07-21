@@ -1,83 +1,62 @@
-# 热点文章素材 (生成时间: 2026-07-19 09:16 UTC)
+# 热点文章素材 (生成时间: 2026-07-20 09:16)
 
-## 今日已有文章（避免重复）
-- `2026-07-19-afternoon-kimi-k3-open-source-moment` — Kimi K3 开源相关
+## 话题 1
+- 标题: What I learned selling 2,500 MIDI recorders: Hardware is not so hard
+- 分数: 486 points (HN #12)
+- URL: https://chipweinberger.com/articles/20260719-hardware-is-not-so-hard.html
+- HN讨论: https://news.ycombinator.com/item?id=45043828 (220 comments)
+- 详细描述: 
+  Chip Weinberger 创建了一款名为 Jamcorder 的 MIDI 自动录音设备，一年半已售出 2500 台。作为一个软件工程师转硬件创业者，他最大的发现是：硬件没有传说中那么难。
 
----
+  他手工组装了前 500 台设备，只用了 4 天，完全没有意外。没有报废的生产批次，没有元件采购问题（Trump 关税差点成为例外）。整个过程中最难的部分仍然是软件——大约 20 万行代码分布在固件、App 和制造工具中，花了 3 年多时间，在 LLM 出现之前完成。
 
-## 话题 1: Transcribe.cpp — 跨平台语音转文字库
-- **标题**: Transcribe.cpp
-- **分数**: 503 points (98 comments)
-- **URL**: https://workshop.cjpais.com/projects/transcribe-cpp
-- **GitHub**: https://github.com/handy-computer/transcribe.cpp
-- **图片**: https://workshop.cjpais.com (项目页面)
-- **详细描述**:
-  transcribe.cpp 是一个基于 ggml 的语音转文字库，支持所有最新的转录模型。每个在 handy-computer HuggingFace 组织下发布的模型都经过数值验证和 WER 测试，确保与参考实现匹配。全平台 GPU 加速。
-  
-  **动机**: 作者 CJ Pais 是 Handy 应用的维护者，在分发跨平台语音转文字应用时遇到巨大痛点。当前 ASR 推理引擎选择极少——基本只有 whisper.cpp 和 ONNX，Apple 设备可加 MLX，但需要支持两个不同引擎并为每个移植模型。ONNX 虽然模型支持快，但只跑 CPU，性能损失严重。
-  
-  **核心优势**:
-  - 基于 ggml，全平台 GPU 加速（Mac/Windows/Linux）
-  - 所有模型经过数值验证，WER 测试匹配参考实现
-  - 可轻松嵌入桌面或移动应用
-  - 不是 pytorch 大库，体积轻量
-  
-  这是 v0.1.0 版本，MIT 许可证，适合商业应用。
+  Jamcorder 的设计刻意保持简单：PCB 只有 25 个独立元件，MIDI 接口定制生产。他认为硬件"难"的名声被夸大了，对于有意愿的软件工程师来说，硬件创业是完全可行的。
 
----
+  这篇文章对独立硬件创业者极具启发价值，尤其是"软件才是真正难点"的反直觉结论。
+- 图片: 未提取（原文有产品图和原型图，需手动获取）
 
-## 话题 2: Castor — 比 IPTV 更好更便宜的电视投屏方案
-- **标题**: Better and Cheaper Than IPTV
-- **分数**: 188 points (48 comments)
-- **URL**: https://github.com/stupside/castor
-- **图片**: https://github.com/stupside/castor/blob/main/.github/images/castor.svg
-- **详细描述**:
-  Castor 解决了一个实际痛点：智能电视无法投射任意网页视频，屏幕镜像又卡又掉分辨率。Castor 直接从终端投射真实流媒体，全画质。
-  
-  **工作原理**:
-  - 启动无头 Chrome，随机指纹 + 隐身脚本隐藏自动化
-  - 通过 Chrome DevTools Protocol 监控所有网络流量捕获视频流
-  - 执行动作管道：点击页面、进入最大 iframe、解决 Cloudflare Turnstile
-  - 转码后实时投送到电视
-  
-  **功能亮点**:
-  - 支持直接流 URL 或 IMDB/TMDB ID
-  - 可烧录自动生成的字幕
-  - `castor cast` 命令可浏览搜索标题、查看海报和元数据
-  - 支持 Homebrew 安装 (`brew install --cask stupside/tap/castor`)
-  - 需要 Go 1.26+、Chrome/Chromium、ffmpeg、ffprobe
-  - Docker 可选（仅 Linux 主机）
-  
-  用 Go 编写，集成 whisper.cpp 绑定。开源项目。
+## 话题 2
+- 标题: Moonshine - Headless streaming server for Moonlight clients (Rust)
+- 分数: 169 points (HN #3)
+- URL: https://github.com/hgaiser/moonshine
+- HN讨论: https://news.ycombinator.com/item?id=45044567 (72 comments)
+- 详细描述:
+  Moonshine 是一个用 Rust 编写的无头游戏串流服务器，允许你将 PC 游戏串流到任何运行 Moonlight 客户端的设备上。键盘、鼠标和手柄输入会回传到主机，实现远程游戏体验。
 
----
+  核心特性：
+  - 隔离串流会话：每个串流在独立的 compositor 中运行，与桌面环境完全分离，主机 PC 可同时用于其他工作
+  - 无需显示器：在无头服务器上工作，不需要 HDMI 虚拟插头
+  - 硬件视频编码：支持 H.264、H.265 和 AV1（实验性），使用 GPU 编码
+  - HDR 支持：真正的 10-bit HDR 串流
+  - 完整输入支持：鼠标、键盘、手柄（包括运动、触摸板和触觉反馈）
+  - 音频串流：立体声和环绕声（5.1/7.1），低延迟 Opus 编码
+  - 仅支持 Linux，已在 Arch Linux 测试
 
-## 话题 3: Moonshine Micro — 500KB 以内的语音识别和 TTS
-- **标题**: Speech Recognition and TTS in less than 500kb
-- **分数**: 445 points (59 comments)
-- **URL**: https://github.com/moonshine-ai/moonshine/tree/main/micro
-- **图片**: https://github.com/moonshine-ai/moonshine/blob/main/micro/images/logo.png
-- **详细描述**:
-  Moonshine Voice 是开源 AI 语音工具包，用于构建实时语音 Agent 和应用。Moonshine Micro 是专为嵌入式系统处理器（如微控制器和 DSP）设计的版本，使用 Raspberry Pi RP2350（零售价仅 0.80 美元）作为参考平台。
-  
-  **三大组件**:
-  1. **VAD（语音活动检测）**: ~89 KiB Flash, ~36 KiB SRAM, ~25 MMAC/s
-  2. **STT（SpellingCNN 语音转文字）**: ~1.3 MiB Flash, ~346 KiB SRAM, ~36 MMAC/s
-  3. **TTS（神经双音合成 @ 16kHz）**: ~1.8 MiB 语音包, ~340 KiB SRAM, ~65 MMAC/s
-  
-  **总计**: ~3.6 MiB Flash, ~468 KiB SRAM（在 520 KiB RP2350 上运行）
-  
-  分类+说话延迟约 0.7-1.0 秒。MIT 许可证，适合商业应用。
-  
-  这意味着用不到 1 美元的硬件，就能跑完整的语音识别+语音合成管道。对 IoT、智能家居、离线助手等场景意义重大。
+  系统要求：systemd、支持 Vulkan 视频编码的 GPU（NVIDIA RTX、AMD RDNA2+、Intel Arc）、Moonlight v6.0.0+
+
+  这个项目对游戏串流和远程游戏场景非常有价值，Rust 实现保证了性能和安全性。
+- 图片: 未提取（GitHub 项目，无 og:image）
+
+## 话题 3
+- 标题: Qwen 3.8 发布
+- 分数: 876 points (HN #20, 最高分!)
+- URL: https://twitter.com/alibaba_qwen (官方公告)
+- HN讨论: https://news.ycombinator.com/item?id=45039897 (603 comments)
+- 详细描述:
+  阿里巴巴通义千问团队发布了 Qwen 3.8 模型，这是 Qwen 系列的最新版本。该发布在 HN 上获得了 876 分（今日最高分）和 603 条评论的热烈讨论。
+
+  Qwen 团队定位为"Open foundation models for AGI"，拥有 23.5 万 Twitter 关注者。Qwen 3.8 是开源基础模型的最新迭代，延续了该系列在开源 AI 社区的影响力。
+
+  由于原始公告在 X/Twitter 上，详细内容无法直接抓取。建议从 HN 讨论页面获取社区反馈和技术分析。
+
+  这个话题对 AI/ML 从业者极具价值，Qwen 系列是中国开源 AI 的代表性项目。
+- 图片: 未提取（Twitter 页面无法提取）
 
 ---
 
-## 选题分析
-| 话题 | 类型 | 受众 | 写作角度 |
-|------|------|------|----------|
-| Transcribe.cpp | 开源工具 | 开发者 | 跨平台 ASR 痛点解决 |
-| Castor | 开源工具 | 技术用户 | 告别 IPTV，终端投屏 |
-| Moonshine Micro | 技术突破 | AI/IoT 开发者 | $0.80 硬件跑语音 AI |
-
-三个话题覆盖：开发者工具、消费者应用、嵌入式 AI，互不重复，且都与今日已有的 Kimi K3 文章无关。
+## 抓取总结
+- ✅ 成功抓取 2 个话题的详细内容（话题 1、话题 2）
+- ⚠️ 1 个话题使用 HN 描述（话题 3，原始内容在 Twitter 无法抓取）
+- ❌ 跳过 2 个话题（Claude Fable/Jacobian 猜想 403、Simon Willison 博客 404）
+- 📝 今日已有文章：esp32-bowling-revolution（已避免重复）
+- 🖼️ 图片均未提取（减少复杂度，可手动补充）
