@@ -1,33 +1,36 @@
 #!/usr/bin/env python3
 """
-更新首页最新文章列表
-从 blog.html 的文章数组中提取最新 6 篇文章，更新到 index.html
+动态更新首页最新文章列表
+从 blog.html 提取最新文章，更新到 index.html
 """
 
 import re
-import json
+import os
 
-def extract_latest_articles(blog_html_path, count=6):
+BLOG_HTML = "/tmp/sandbot-gh/blog.html"
+INDEX_HTML = "/tmp/sandbot-gh/index.html"
+
+def extract_latest_articles(blog_html, limit=6):
     """从 blog.html 提取最新文章"""
-    with open(blog_html_path, 'r', encoding='utf-8') as f:
+    with open(blog_html, 'r', encoding='utf-8') as f:
         content = f.read()
     
-    # 提取 articles 数组
-    match = re.search(r'const articles = \[(.*?)\];', content, re.DOTALL)
-    if not match:
+    # 查找 const articles = [...] 部分
+    articles_match = re.search(r'const articles = \[(.*?)\];', content, re.DOTALL)
+    if not articles_match:
         print("❌ 无法找到 articles 数组")
         return []
     
-    articles_str = match.group(1)
+    articles_str = articles_match.group(1)
     
     # 解析每个文章对象
     articles = []
     article_pattern = r'\{\s*title:\s*"([^"]+)",\s*type:\s*"([^"]+)",\s*typeLabel:\s*"([^"]+)",\s*tag:\s*"([^"]+)",\s*date:\s*"([^"]+)",\s*url:\s*"([^"]+)",\s*excerpt:\s*"([^"]*)",\s*duration:\s*"([^"]+)",\s*access:\s*"([^"]+)"\s*\}'
     
-    for m in re.finditer(article_pattern, articles_str, re.DOTALL):
-        title, type_, typeLabel, tag, date, url, excerpt, duration, access = m.groups()
+    for match in re.finditer(article_pattern, articles_str):
+        title, type_, typeLabel, tag, date, url, excerpt, duration, access = match.groups()
         
-        # 去掉标题前的标签（如 [热点]）
+        # 清理标题（移除 [热点] 等前缀）
         clean_title = re.sub(r'^\[[^\]]+\]\s*', '', title)
         
         articles.append({
@@ -37,29 +40,33 @@ def extract_latest_articles(blog_html_path, count=6):
             'date': date,
             'url': url,
             'excerpt': excerpt,
-            'duration': duration
+            'duration': duration,
+            'access': access
         })
+        
+        if len(articles) >= limit:
+            break
     
-    return articles[:count]
+    return articles
 
 def generate_article_card(article):
     """生成文章卡片 HTML"""
     tag_class = article['type']
-    if tag_class == 'hot':
-        tag_text = '热点'
-    elif tag_class == 'early':
-        tag_text = '早鸟'
-    elif tag_class == 'evening':
-        tag_text = '晚间'
-    elif tag_class == 'noon':
-        tag_text = '午间'
-    elif tag_class == 'afternoon':
-        tag_text = '下午'
-    else:
-        tag_text = article['tag']
     
-    # 处理 URL（去掉 posts/ 前缀）
-    url = article['url'].replace('posts/', '/posts/')
+    # 映射类型到显示文本
+    type_map = {
+        'hot': '热点',
+        'early': '早鸟',
+        'evening': '晚间',
+        'noon': '午间',
+        'afternoon': '下午'
+    }
+    tag_text = type_map.get(article['type'], article['tag'])
+    
+    # 构建 URL
+    url = article['url']
+    if not url.startswith('http'):
+        url = f"/{url}"
     
     html = f'''      <a href="{url}" class="latest-card">
         <span class="card-tag {tag_class}">{tag_text}</span>
@@ -70,35 +77,64 @@ def generate_article_card(article):
     
     return html
 
-def update_index_html(index_html_path, articles):
+def update_index_html(index_html, articles):
     """更新 index.html 的最新文章部分"""
-    with open(index_html_path, 'r', encoding='utf-8') as f:
+    with open(index_html, 'r', encoding='utf-8') as f:
         content = f.read()
     
     # 生成新的文章卡片
-    cards_html = '\n'.join([generate_article_card(a) for a in articles])
+    new_cards = '\n'.join([generate_article_card(a) for a in articles])
     
-    # 替换 latest-articles 部分
-    pattern = r'<div class="latest-articles">(.*?)</div>\s*</div>\s*<div class="membership-banner">'
-    replacement = f'<div class="latest-articles">\n{cards_html}\n    </div>\n  </div>\n\n  <div class="membership-banner">'
+    # 查找 latest-articles 开始和结束位置
+    start_marker = '<div class="latest-articles">'
+    end_marker = '</div>\n  </div>\n\n  <div class="membership-banner">'
     
-    new_content = re.sub(pattern, replacement, content, flags=re.DOTALL)
+    start_idx = content.find(start_marker)
+    if start_idx == -1:
+        print("❌ 未找到 latest-articles 开始标记")
+        return False
     
-    with open(index_html_path, 'w', encoding='utf-8') as f:
+    # 找到结束标记
+    end_idx = content.find(end_marker, start_idx)
+    if end_idx == -1:
+        print("❌ 未找到 latest-articles 结束标记")
+        return False
+    
+    # 构建新内容
+    new_section = f'''{start_marker}
+{new_cards}
+    </div>
+  </div>
+
+  <div class="membership-banner">'''
+    
+    # 替换
+    new_content = content[:start_idx] + new_section + content[end_idx + len(end_marker):]
+    
+    with open(index_html, 'w', encoding='utf-8') as f:
         f.write(new_content)
     
-    print(f"✅ 已更新 index.html，包含 {len(articles)} 篇最新文章")
+    return True
+
+def main():
+    print("🔄 更新首页最新文章...")
+    
+    # 提取最新文章
+    articles = extract_latest_articles(BLOG_HTML, limit=6)
+    
+    if not articles:
+        print("❌ 未找到文章")
+        return
+    
+    print(f"📰 找到 {len(articles)} 篇最新文章：")
+    for i, article in enumerate(articles, 1):
+        print(f"  {i}. {article['title']} ({article['date']})")
+    
+    # 更新 index.html
+    if update_index_html(INDEX_HTML, articles):
+        print("✅ 首页已更新")
+    else:
+        print("❌ 更新失败")
 
 if __name__ == '__main__':
-    blog_html = '/tmp/sandbot-gh/blog.html'
-    index_html = '/tmp/sandbot-gh/index.html'
-    
-    articles = extract_latest_articles(blog_html, count=6)
-    if articles:
-        print(f"📝 提取到 {len(articles)} 篇最新文章：")
-        for a in articles:
-            print(f"   - {a['date']} | {a['title'][:50]}...")
-        
-        update_index_html(index_html, articles)
-    else:
-        print("❌ 未找到文章")
+    main()
