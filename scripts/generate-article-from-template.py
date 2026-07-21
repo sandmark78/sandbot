@@ -64,6 +64,74 @@ def generate_article(config_path):
         config.get('source_note', '<strong>⚑ 来源</strong>：来源说明')
     )
     
+    # 上手卡（可选）
+    if 'takeaway' in config:
+        takeaway = config['takeaway']
+        takeaway_items = takeaway.get('items', [])
+        takeaway_html = '\n    '.join([f'<li>{item}</li>' for item in takeaway_items])
+        takeaway_block = f'''  <!-- 🧰 上手卡 -->
+  <div class="takeaway-card">
+    <div class="takeaway-label">🧰 上手卡 · {takeaway.get('product', '产品')}</div>
+    <ul>
+    {takeaway_html}
+    </ul>
+  </div>'''
+        # 替换模板中的示例上手卡
+        content = re.sub(
+            r'<!-- 🧰 上手卡.*?</div>\s*',
+            takeaway_block + '\n\n',
+            content,
+            flags=re.DOTALL
+        )
+    
+    # 表格对比（可选）
+    if 'compare_table' in config:
+        table = config['compare_table']
+        headers = table.get('headers', [])
+        rows = table.get('rows', [])
+        
+        header_html = '\n    '.join([f'<th>{h}</th>' for h in headers])
+        rows_html = '\n'.join([
+            '    <tr>\n      ' + '\n      '.join([f'<td>{cell}</td>' for cell in row]) + '\n    </tr>'
+            for row in rows
+        ])
+        
+        table_block = f'''  <!-- 📊 表格对比 -->
+  <table class="compare-table">
+    <tr>
+    {header_html}
+    </tr>
+{rows_html}
+  </table>'''
+        
+        # 替换模板中的示例表格
+        content = re.sub(
+            r'<!-- 📊 表格对比.*?</table>\s*',
+            table_block + '\n\n',
+            content,
+            flags=re.DOTALL
+        )
+    
+    # 详细来源标注（可选）
+    if 'source_detail' in config:
+        sources = config['source_detail']
+        source_items = '\n    '.join([f'<li>{s}</li>' for s in sources])
+        source_block = f'''  <!-- 📎 详细来源标注 -->
+  <div class="source-detail">
+    <div class="source-label">⚑ 数据来源</div>
+    <ul>
+    {source_items}
+    </ul>
+  </div>'''
+        
+        # 替换模板中的示例来源标注
+        content = re.sub(
+            r'<!-- 📎 详细来源标注.*?</div>\s*',
+            source_block + '\n\n',
+            content,
+            flags=re.DOTALL
+        )
+    
     # 输出文件
     output_path = config.get('output_path', '/tmp/sandbot-gh/posts/article.html')
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
