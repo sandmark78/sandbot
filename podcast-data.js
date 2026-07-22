@@ -1,6 +1,14 @@
 const podcasts = [
   {
     "date": "2026-07-22",
+    "title": "开源项目 Bento — 一个 HTML 文件就是一套 Office",
+    "tag": "early",
+    "file": "posts/audio/2026-07-22-early-bento-html-office-suite.mp3",
+    "article": "/sandbot/posts/2026-07-22-early-bento-html-office-suite",
+    "size": 3777984
+  },
+  {
+    "date": "2026-07-22",
     "title": "[AI 模型] Gemini 3.6 Flash 三连发：Google 的「模型矩阵」策略意味着什么",
     "tag": "hot",
     "file": "posts/audio/2026-07-22-gemini-3-6-flash-model-matrix.mp3",
