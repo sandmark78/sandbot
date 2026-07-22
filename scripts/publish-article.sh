@@ -115,18 +115,27 @@ python3 /tmp/sandbot-gh/scripts/update-rss.py
 echo "📝 更新首页最新文章..."
 python3 /tmp/sandbot-gh/scripts/update-index-articles.py
 
-# 6. Git操作
+# 6. 更新播客列表
+echo "🎧 更新播客列表..."
+python3 /tmp/sandbot-gh/scripts/generate-podcast-list.py
+cd /tmp/sandbot-gh && cat podcast-data.json | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+print('const podcasts = ' + json.dumps(data, ensure_ascii=False, indent=2) + ';')
+" > podcast-data.js
+
+# 7. Git操作
 cd /tmp/sandbot-gh
 if [ "$GENERATE_AUDIO" = true ]; then
-  git add "$ARTICLE_FILE" "$BLOG_HTML" feed.xml index.html "$AUDIO_DIR/$ARTICLE_BASE.mp3"
+  git add "$ARTICLE_FILE" "$BLOG_HTML" feed.xml index.html podcast.html podcast-data.js "$AUDIO_DIR/$ARTICLE_BASE.mp3"
   git commit -m "📝 发布文章: $ARTICLE_BASE (带语音)"
 else
-  git add "$ARTICLE_FILE" "$BLOG_HTML" feed.xml index.html
+  git add "$ARTICLE_FILE" "$BLOG_HTML" feed.xml index.html podcast.html podcast-data.js
   git commit -m "📝 发布文章: $ARTICLE_BASE (无语音)"
 fi
 git push origin main
 
-# 7. 更新文章标题列表
+# 8. 更新文章标题列表
 echo "📝 更新文章标题列表..."
 python3 << 'PYEOF'
 import os

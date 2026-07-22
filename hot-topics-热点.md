@@ -1,85 +1,31 @@
-# 热点文章素材 (生成时间: 2026-07-21 09:15)
+# 热点文章素材 (生成时间: 2026-07-22 09:15)
 
-## 今日已有文章（已去重）
-- china-open-weights-ai-strategy (中国AI开放权重)
-- early-open-weights-strategy (开放权重策略)
-- early-romania-data-wipe (罗马尼亚数据擦除)
-- noon-jelly-ui-soft-body-web-components (Jelly UI软体组件)
-- test-v41-template (测试模板)
+## 话题 1
+- 标题: Advertise in ChatGPT (OpenAI 正式推出 ChatGPT 广告平台)
+- 分数: 735 points (518 comments)
+- URL: https://ads.openai.com/
+- 详细描述: OpenAI 正式上线 ChatGPT 广告平台，允许广告主在用户探索选项、比较选择和做决策时展示相关广告。平台主打"AI原生广告"概念，强调广告将与 ChatGPT 的回答明确区分，并保持用户信任。早期广告主包括 Best Buy 等大品牌。广告主可以通过 Ads Manager 创建账户、建立广告活动、批量上传广告详情，然后启动并优化效果。OpenAI 强调广告将清晰标注、与回答内容分离，并给用户选择和控制权。这一举措标志着 AI 对话产品商业化的重要里程碑，引发了 HN 社区关于 AI 产品广告化的激烈讨论。
+- 图片: https://ads.openai.com/ (页面为 JS 渲染，无直接 og:image)
 
----
+## 话题 2
+- 标题: Kimi K3 Is Competitive with Fable; Kimi K3 + Fable Is SoTA
+- 分数: 601 points (335 comments)
+- URL: https://fireworks.ai/blog/kimik3-fable
+- 详细描述: Fireworks AI 对开源模型 Kimi K3 和闭源模型 Fable 5 进行了大规模对比测试，涵盖约 1,030 个真实 Agent 任务。测试涵盖五大类别：SWE（真实仓库 bug 修复，460 任务）、Terminal（长时间 Agent 操作：安全、加密、逆向工程、系统管理，89 任务）、Algorithmic（LeetCode/AtCoder 风格，100 任务）、Multi-Language（六种语言实现，225 任务）和 Legal（法律 Agent 基准，120 任务）。结果显示 K3 在 SWE 上达到 92.4%，Fable 为 92.6%，整体接近。关键发现：通过 K3 和 Fable 之间的智能路由，可达到 93% 准确率，成本比单独使用 Fable 低约 50 倍。Oracle 路由分析显示 K3 被选中处理 72-96% 的任务，表明开源模型在大多数日常任务上已可替代闭源模型。
+- 图片: https://fireworks.ai/blog/kimik3-fable (页面包含图表，无直接 og:image)
 
-## 话题 1: AI 正在击败人类数学家
-- 标题: Human mathematicians are being outcounterexampled
-- 分数: 338 points | 137 comments
-- URL: https://xenaproject.wordpress.com/2026/07/20/human-mathematicians-are-being-outcounterexampled/
-- 来源: Xena Project (Kevin Buzzard, 帝国理工)
-- 详细描述:
-  2026年5月20日，ChatGPT 反驳了 Erdős 单位距离猜想——这是离散几何领域的著名未解问题。OpenAI 宣布时，多位人类数学家验证了论证过程。核心思路是利用 Golod-Shafarevich 定理（1960年代数论深刻定理）构造反例。
-
-  不到一周后（5月26日），Fields 奖章得主 Mike Freedman（现为 Logical Intelligence 首席科学官，该公司由图灵奖得主 Yann LeCun 联合创立）发邮件告知：他们的系统已经用 Lean 自动形式化了整篇 ChatGPT 生成的论文。这意味着 LLM 生成的突破性数学成果正在被实时形式化验证。
-
-  但问题在于：Golod-Shafarevich 定理的证明超过100页，需要大量全局类域论（20世纪初发展的理论，至今仍无简短证明）。这引发了深层问题——AI 能生成证明，但人类是否真正理解了证明？形式化验证是否是必须的？
-
-  这篇文章来自 Kevin Buzzard（帝国理工教授），他9年前开始倡导交互式定理证明器应在数学未来中扮演重要角色。这篇文章在 HN 引发137条讨论，核心争论：AI 是在"做数学"还是"模仿数学"？形式化验证是否成为 AI 时代数学的必需品？
-- 图片: 无（WordPress 页面未提取到 og:image）
-- 写作角度: AI 从写代码到做数学的跨越，形式化验证成为新基础设施
+## 话题 3
+- 标题: LG to Ban Residential Proxies from Smart TV Apps
+- 分数: 262 points (229 comments)
+- URL: https://krebsonsecurity.com/2026/07/lg-to-ban-residential-proxies-from-smart-tv-apps/
+- 详细描述: LG 电子美国宣布将暂停所有将其智能电视变成常驻住宅代理节点的应用。此举源于安全公司 Spur 的研究发现：LG webOS 商店中超过 42% 的应用包含未知第三方可通过用户电视路由流量的 SDK，三星 Tizen OS 上也有超过四分之一的应用包含类似住宅代理组件。LG 高级副总裁 John Taylor 表示公司正与开发者合作移除住宅代理选项，不配合的开发者其应用将被暂停。"住宅代理网络不是 LG 智能电视的预期用途"，Taylor 在声明中表示。应用开发者可以通过住宅代理提供商获利，但这显然以牺牲用户利益为代价。这一事件揭示了智能电视生态系统中隐蔽的隐私侵害问题。
+- 图片: https://krebsonsecurity.com/2026/07/lg-to-ban-residential-proxies-from-smart-tv-apps/ (文中有 Spur.us 图表)
 
 ---
 
-## 话题 2: 美国五大科技巨头隐藏债务飙升至 1.65 万亿美元
-- 标题: Five US tech giants' hidden debts soar to $1.65tn on opaque AI funding
-- 分数: 275 points | 141 comments
-- URL: https://asia.nikkei.com/business/technology/five-us-tech-giants-hidden-debts-soar-to-1.65tn-on-opaque-ai-funding
-- 来源: Nikkei Asia (日本经济新闻)
-- 详细描述:
-  日经新闻研究显示，美国五大科技巨头的隐藏债务在约4年内膨胀了8倍，达到估计的1.65万亿美元，超过了其实际公开债务。这些隐藏债务主要来自数据中心租赁和 GPU 供应合同，使得投资者更难评估风险。
+**去重说明**: 今日已有文章 `2026-07-22-freeink-open-ereader-ecosystem` (FreeInk 电子阅读器) 和 `2026-07-22-hot-openai-model-hacks-huggingface` (OpenAI/HuggingFace 安全事件)，已避开这两个话题。
 
-  以 Meta 为例，其表外债务约4200亿美元，几乎是其透明债务的3倍。这些债务与 AI 基础设施投资直接相关——数据中心建设、GPU 采购合同、长期租赁协议等。
-
-  关键问题：
-  1. 这些债务为什么不透明？因为数据中心租赁和 GPU 供应合同通常不计入资产负债表
-  2. 投资者无法准确评估风险——公开财报显示的债务远低于实际水平
-  3. AI 投资的回报周期长，但债务义务是刚性的
-  4. 如果 AI 商业化不及预期，这些隐藏债务可能引发系统性风险
-
-  HN 讨论（141条）聚焦：这是否是另一个"次贷危机"式的系统性风险？科技公司的 AI 投资是否过度？
-- 图片: 无（Nikkei 付费墙，内容有限）
-- 写作角度: AI 军备竞赛的隐藏成本，1.65万亿美元的定时炸弹？
-
----
-
-## 话题 3: 在自制 CPU 上运行 Doom 并走红网络
-- 标题: Running DOOM on our Custom CPU and Going Viral
-- 分数: 63 points | 12 comments
-- URL: https://www.armaangomes.com/blogs/doom/
-- 来源: Armaan Gomes (独立开发者/硬件爱好者)
-- 详细描述:
-  两周前，作者团队成功在他们从零构建的 CPU 上运行了 Doom（然后发了个视频，获得了几百万播放量）。
-
-  技术细节：
-  - 他们在逻辑门级别设计了一个自定义 CPU
-  - 连接了外设，改编了 Doom 源码以在其机器上运行
-  - 部署到 FPGA 上实时运行
-  - 之前只运行过自己写的简单程序（Pong、Mandelbrot 集）
-
-  面临的两大挑战：
-  1. **内存问题**：原设计只能使用 FPGA 的 BRAM（不到1MB），而 Doom 基础共享版 (doom1.wad) 有14MB
-  2. **速度问题**：Doom 对现代 PC 很轻松，但对他们的 CPU 来说太慢了
-
-  解决方案：
-  - 队友 Liam 在研究乱序处理（out-of-order processing）以实现更大的并行性
-  - 作者负责内存集成—— hook 额外内存芯片远比听起来复杂
-
-  这篇文章展示了硬核硬件工程的魅力：从逻辑门到运行完整游戏。"Doom can run on anything" 的说法再次得到验证。
-- 图片: 无（博客页面未提取到 og:image）
-- 写作角度: 从零造 CPU 到跑 Doom，硬核工程浪漫主义
-
----
-
-## 备选话题（未抓取详细内容）
-- Incremental – Jane Street 增量计算库 (180pts) - github.com/janestreet/incremental
-- Nativ: 在 Mac 本地运行前沿开源模型 (271pts) - blaizzy.github.io/nativ/
-- Linux kernel will support $ORIGIN (35pts) - fzakaria.com
-- Kimi Work (539pts) - 和中国AI话题可能重复，跳过
-- Who's afraid of Chinese models? (624pts) - 和中国AI话题重复，跳过
+**抓取状态**: 3/3 成功 ✅
+- 话题 1: ads.openai.com ✅
+- 话题 2: fireworks.ai ✅  
+- 话题 3: krebsonsecurity.com ✅

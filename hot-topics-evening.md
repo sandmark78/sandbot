@@ -1,64 +1,64 @@
-# 热点素材 (生成时间: 2026-07-20 11:45 UTC)
+# 热点素材 (生成时间: 2026-07-21 11:45 UTC)
 
-共 10 个话题（已过滤重复）
+共 12 个话题（已过滤重复）
 
-## 话题 1: Show HN: I replaced a $120k bowling center system with $1,600 in ESP32s
-- **分数**: 2444 points
-- **评论**: 266 comments
-- **URL**: 
-- **HN**: https://news.ycombinator.com/item?id=48968606
+## 话题 1: Incremental – A library for incremental computations
+- **分数**: 235 points
+- **评论**: 42 comments
+- **URL**: https://github.com/janestreet/incremental
+- **HN**: https://news.ycombinator.com/item?id=48987822
 
-## 话题 2: Moonshine: Lets you stream games from your PC to any device running Moonlight
-- **分数**: 217 points
-- **评论**: 90 comments
-- **URL**: https://github.com/hgaiser/moonshine
-- **HN**: https://news.ycombinator.com/item?id=48972970
+## 话题 2: Who's afraid of Chinese models?
+- **分数**: 699 points
+- **评论**: 513 comments
+- **URL**: https://stratechery.com/2026/whos-afraid-of-chinese-models/
+- **HN**: https://news.ycombinator.com/item?id=48977128
 
-## 话题 3: Claude Code uses Bun written in Rust now
-- **分数**: 544 points
-- **评论**: 719 comments
-- **URL**: https://simonwillison.net/2026/Jul/19/claude-code-in-bun-in-rust/
-- **HN**: https://news.ycombinator.com/item?id=48966569
+## 话题 3: Kimi Work
+- **分数**: 581 points
+- **评论**: 246 comments
+- **URL**: https://www.kimi.com/products/kimi-work
+- **HN**: https://news.ycombinator.com/item?id=48981703
 
-## 话题 4: Orion Browser by Kagi
-- **分数**: 222 points
-- **评论**: 157 comments
-- **URL**: https://orionbrowser.com/
-- **HN**: https://news.ycombinator.com/item?id=48970894
+## 话题 4: Jelly UI: Soft-body physics for native HTML form controls
+- **分数**: 531 points
+- **评论**: 159 comments
+- **URL**: https://jelly-ui.com/
+- **HN**: https://news.ycombinator.com/item?id=48981620
 
-## 话题 5: Xiaomi-Robotics-1
-- **分数**: 263 points
-- **评论**: 190 comments
-- **URL**: https://robotics.xiaomi.com/xiaomi-robotics-1.html
-- **HN**: https://news.ycombinator.com/item?id=48974454
+## 话题 5: Human mathematicians are being outcounterexampled
+- **分数**: 366 points
+- **评论**: 154 comments
+- **URL**: https://xenaproject.wordpress.com/2026/07/20/human-mathematicians-are-being-outcounterexampled/
+- **HN**: https://news.ycombinator.com/item?id=48983382
 
-## 话题 6: What I learned selling 2,500 MIDI recorders: Hardware is not so hard
-- **分数**: 508 points
-- **评论**: 232 comments
-- **URL**: https://chipweinberger.com/articles/20260719-hardware-is-not-so-hard
-- **HN**: https://news.ycombinator.com/item?id=48966713
+## 话题 6: Nativ: Run frontier open models locally on your Mac
+- **分数**: 294 points
+- **评论**: 97 comments
+- **URL**: https://blaizzy.github.io/nativ/
+- **HN**: https://news.ycombinator.com/item?id=48982681
 
-## 话题 7: Minecraft: Java Edition now uses SDL3
-- **分数**: 328 points
-- **评论**: 213 comments
-- **URL**: https://www.minecraft.net/en-us/article/minecraft-26-3-snapshot-4
-- **HN**: https://news.ycombinator.com/item?id=48967256
+## 话题 7: Agent swarms and the new model economics
+- **分数**: 209 points
+- **评论**: 97 comments
+- **URL**: https://cursor.com/blog/agent-swarm-model-economics
+- **HN**: https://news.ycombinator.com/item?id=48982535
 
-## 话题 8: Qwen 3.8
-- **分数**: 895 points
-- **评论**: 623 comments
-- **URL**: https://twitter.com/Alibaba_Qwen/status/2078759124914098291
-- **HN**: https://news.ycombinator.com/item?id=48966120
+## 话题 8: China’s open-weights AI strategy is winning
+- **分数**: 1127 points
+- **评论**: 855 comments
+- **URL**: https://werd.io/american-ai-is-locked-down-and-proprietary-its-losing/
+- **HN**: https://news.ycombinator.com/item?id=48979269
 
-## 话题 9: I joined the IndieWeb, here's what I learned
-- **分数**: 216 points
-- **评论**: 111 comments
-- **URL**: https://en.andros.dev/blog/0b8e451e/i-joined-the-indieweb-heres-what-i-learned/
-- **HN**: https://news.ycombinator.com/item?id=48966984
+## 话题 9: Shinjuku Station in 3D
+- **分数**: 234 points
+- **评论**: 52 comments
+- **URL**: https://satoshi7190.github.io/Shinjuku-indoor-threejs-demo/
+- **HN**: https://news.ycombinator.com/item?id=48978792
 
-## 话题 10: Claude Fable produced a counterexample to the Jacobian Conjecture
-- **分数**: 462 points
-- **评论**: 291 comments
-- **URL**: https://xcancel.com/__alpoge__/status/2079028340955197566
-- **HN**: https://news.ycombinator.com/item?id=48973869
+## 话题 10: Perfection is not over-engineering
+- **分数**: 246 points
+- **评论**: 107 comments
+- **URL**: https://var0.xyz/posts/perfection-is-not-over-engineering.html
+- **HN**: https://news.ycombinator.com/item?id=48979120
 
