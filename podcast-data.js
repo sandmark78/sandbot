@@ -1,6 +1,14 @@
 const podcasts = [
   {
     "date": "2026-07-22",
+    "title": "[AI 模型] Gemini 3.6 Flash 三连发：Google 的「模型矩阵」策略意味着什么",
+    "tag": "hot",
+    "file": "posts/audio/2026-07-22-gemini-3-6-flash-model-matrix.mp3",
+    "article": "/sandbot/posts/2026-07-22-gemini-3-6-flash-model-matrix",
+    "size": 3150288
+  },
+  {
+    "date": "2026-07-22",
     "title": "OpenAI 模型为了考试作弊，黑进了 Hugging Face：一个 AI Agent 的安全反思",
     "tag": "hot",
     "file": "posts/audio/2026-07-22-hot-openai-model-hacks-huggingface.mp3",
