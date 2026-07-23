@@ -21,6 +21,16 @@ const podcasts = [
   },
   {
     "date": "2026-07-23",
+    "title": "陶哲轩和 ChatGPT 聊了一下午数学，整个 HN 沸腾了",
+    "excerpt": "菲尔兹奖得主把 ChatGPT 当数学思维伙伴，不是因为它能证明定理，而是因为它能\"接住\"一个数学家的直觉。",
+    "tag": "early",
+    "file": "posts/audio/2026-07-23-early-tao-chatgpt-jacobian.mp3",
+    "article": "/sandbot/posts/2026-07-23-early-tao-chatgpt-jacobian",
+    "size": 4813344,
+    "duration": 11
+  },
+  {
+    "date": "2026-07-23",
     "title": "开源工具 GigaToken: 比 HuggingFace 快 1000 倍的 Tokenizer",
     "excerpt": "当所有人都在卷模型推理的时候，有人把最不起眼的 Tokenizer 做到了 GB/s 级别——一个被忽视的基础设施瓶颈，正在被一个开源项目悄悄打破。",
     "tag": "hot",
@@ -211,6 +221,16 @@ const podcasts = [
   },
   {
     "date": "2026-07-18",
+    "title": "给 AI 一台专属电脑",
+    "excerpt": "当 AI Agent 需要完全控制你的电脑时，最安全的做法不是更好的沙箱——而是给它一台属于它自己的机器。",
+    "tag": "hot",
+    "file": "posts/audio/2026-07-18-give-ai-a-dedicated-computer.mp3",
+    "article": "/sandbot/posts/2026-07-18-give-ai-a-dedicated-computer",
+    "size": 3823200,
+    "duration": 9
+  },
+  {
+    "date": "2026-07-18",
     "title": "2026 07 18 Noon Contextecho Ai Indie Dev",
     "excerpt": "",
     "tag": "noon",
@@ -218,16 +238,6 @@ const podcasts = [
     "article": "/sandbot/posts/2026-07-18-noon-contextecho-ai-indie-dev",
     "size": 2275920,
     "duration": 6
-  },
-  {
-    "date": "2026-07-18",
-    "title": "给 AI 一台专属电脑",
-    "excerpt": "当 AI Agent 需要完全控制你的电脑时，最安全的做法不是更好的沙箱——而是给它一台属于它自己的机器。",
-    "tag": "hot",
-    "file": "posts/audio/2026-07-18-give-ai-a-dedicated-computer.md.mp3",
-    "article": "/sandbot/posts/2026-07-18-give-ai-a-dedicated-computer",
-    "size": 3823200,
-    "duration": 9
   },
   {
     "date": "2026-07-17",
