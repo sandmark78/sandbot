@@ -139,6 +139,10 @@ def generate_podcast_list():
         base_name = filename.replace('.mp3', '').replace('.md', '')
         article_url = f"/sandbot/posts/{base_name}"
         
+        # 估算时长（假设 16KB/s 比特率）
+        duration_seconds = file_size / 16000
+        duration_minutes = max(1, round(duration_seconds / 60))
+        
         podcasts.append({
             'date': date,
             'title': title,
@@ -146,7 +150,8 @@ def generate_podcast_list():
             'tag': tag,
             'file': f'posts/audio/{filename}',
             'article': article_url,
-            'size': file_size
+            'size': file_size,
+            'duration': duration_minutes  # 分钟数
         })
     
     # 按日期排序（最新的在前）

@@ -6,7 +6,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/2026-07-23-gigatoken-1000x-faster-tokenizer.mp3",
     "article": "/sandbot/posts/2026-07-23-gigatoken-1000x-faster-tokenizer",
-    "size": 2536416
+    "size": 2536416,
+    "duration": 3
   },
   {
     "date": "2026-07-22",
@@ -15,7 +16,8 @@ const podcasts = [
     "tag": "early",
     "file": "posts/audio/2026-07-22-early-bento-html-office-suite.mp3",
     "article": "/sandbot/posts/2026-07-22-early-bento-html-office-suite",
-    "size": 3777984
+    "size": 3777984,
+    "duration": 4
   },
   {
     "date": "2026-07-22",
@@ -24,7 +26,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/2026-07-22-gemini-3-6-flash-model-matrix.mp3",
     "article": "/sandbot/posts/2026-07-22-gemini-3-6-flash-model-matrix",
-    "size": 3150288
+    "size": 3150288,
+    "duration": 3
   },
   {
     "date": "2026-07-22",
@@ -33,7 +36,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/2026-07-22-hot-openai-model-hacks-huggingface.mp3",
     "article": "/sandbot/posts/2026-07-22-hot-openai-model-hacks-huggingface",
-    "size": 3621744
+    "size": 3621744,
+    "duration": 4
   },
   {
     "date": "2026-07-22",
@@ -42,7 +46,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/2026-07-22-freeink-open-ereader-ecosystem.mp3",
     "article": "/sandbot/posts/2026-07-22-freeink-open-ereader-ecosystem",
-    "size": 4033872
+    "size": 4033872,
+    "duration": 4
   },
   {
     "date": "2026-07-22",
@@ -51,7 +56,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/2026-07-22-hot-chatgpt-ads-platform.mp3",
     "article": "/sandbot/posts/2026-07-22-hot-chatgpt-ads-platform",
-    "size": 2855664
+    "size": 2855664,
+    "duration": 3
   },
   {
     "date": "2026-07-21",
@@ -60,7 +66,8 @@ const podcasts = [
     "tag": "early",
     "file": "posts/audio/2026-07-21-early-romania-data-wipe.mp3",
     "article": "/sandbot/posts/2026-07-21-early-romania-data-wipe",
-    "size": 2787264
+    "size": 2787264,
+    "duration": 3
   },
   {
     "date": "2026-07-21",
@@ -69,7 +76,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/2026-07-21-china-open-weights-ai-strategy.mp3",
     "article": "/sandbot/posts/2026-07-21-china-open-weights-ai-strategy",
-    "size": 3564144
+    "size": 3564144,
+    "duration": 4
   },
   {
     "date": "2026-07-21",
@@ -78,7 +86,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/deepseek-70b-funding-open-source-giant-agent-perspective-2026.mp3",
     "article": "/sandbot/posts/deepseek-70b-funding-open-source-giant-agent-perspective-2026",
-    "size": 3009744
+    "size": 3009744,
+    "duration": 3
   },
   {
     "date": "2026-07-21",
@@ -87,7 +96,8 @@ const podcasts = [
     "tag": "early",
     "file": "posts/audio/2026-07-21-early-chatgpt-ads-platform.mp3",
     "article": "/sandbot/posts/2026-07-21-early-chatgpt-ads-platform",
-    "size": 3523680
+    "size": 3523680,
+    "duration": 4
   },
   {
     "date": "2026-07-20",
@@ -96,7 +106,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/2026-07-20-midi-hardware-lessons.mp3",
     "article": "/sandbot/posts/2026-07-20-midi-hardware-lessons",
-    "size": 2231856
+    "size": 2231856,
+    "duration": 2
   },
   {
     "date": "2026-07-20",
@@ -105,7 +116,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/2026-07-20-esp32-bowling-revolution.mp3",
     "article": "/sandbot/posts/2026-07-20-esp32-bowling-revolution",
-    "size": 3595392
+    "size": 3595392,
+    "duration": 4
   },
   {
     "date": "2026-07-20",
@@ -114,7 +126,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/2026-07-20-qwen3-thinking-2507.mp3",
     "article": "/sandbot/posts/2026-07-20-qwen3-thinking-2507",
-    "size": 3172752
+    "size": 3172752,
+    "duration": 3
   },
   {
     "date": "2026-07-19",
@@ -123,7 +136,8 @@ const podcasts = [
     "tag": "early",
     "file": "posts/audio/2026-07-19-early-bonsai-27b-phone-model.mp3",
     "article": "/sandbot/posts/2026-07-19-early-bonsai-27b-phone-model",
-    "size": 4079232
+    "size": 4079232,
+    "duration": 4
   },
   {
     "date": "2026-07-19",
@@ -132,7 +146,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/codex-resets-usage-limit-tracker.mp3",
     "article": "/sandbot/posts/codex-resets-usage-limit-tracker",
-    "size": 2475360
+    "size": 2475360,
+    "duration": 3
   },
   {
     "date": "2026-07-19",
@@ -141,7 +156,8 @@ const podcasts = [
     "tag": "afternoon",
     "file": "posts/audio/2026-07-19-afternoon-kimi-k3-open-source-moment.mp3",
     "article": "/sandbot/posts/2026-07-19-afternoon-kimi-k3-open-source-moment",
-    "size": 3645792
+    "size": 3645792,
+    "duration": 4
   },
   {
     "date": "2026-07-19",
@@ -150,7 +166,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/2026-07-19-moonshine-micro-speech-ai-on-microcontroller.mp3",
     "article": "/sandbot/posts/2026-07-19-moonshine-micro-speech-ai-on-microcontroller",
-    "size": 1960704
+    "size": 1960704,
+    "duration": 2
   },
   {
     "date": "2026-07-18",
@@ -159,7 +176,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/2026-07-18-free-开源AI追平闭源真相.mp3",
     "article": "/sandbot/posts/2026-07-18-free-开源AI追平闭源真相",
-    "size": 2724912
+    "size": 2724912,
+    "duration": 3
   },
   {
     "date": "2026-07-18",
@@ -168,7 +186,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/aws-17-billion-billing-error-2026.mp3",
     "article": "/sandbot/posts/aws-17-billion-billing-error-2026",
-    "size": 3350880
+    "size": 3350880,
+    "duration": 3
   },
   {
     "date": "2026-07-18",
@@ -177,7 +196,8 @@ const podcasts = [
     "tag": "noon",
     "file": "posts/audio/2026-07-18-noon-contextecho-ai-indie-dev.mp3",
     "article": "/sandbot/posts/2026-07-18-noon-contextecho-ai-indie-dev",
-    "size": 2275920
+    "size": 2275920,
+    "duration": 2
   },
   {
     "date": "2026-07-18",
@@ -186,7 +206,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/2026-07-18-give-ai-a-dedicated-computer.md.mp3",
     "article": "/sandbot/posts/2026-07-18-give-ai-a-dedicated-computer",
-    "size": 3823200
+    "size": 3823200,
+    "duration": 4
   },
   {
     "date": "2026-07-17",
@@ -195,7 +216,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/human-in-the-loop-fatigue.mp3",
     "article": "/sandbot/posts/human-in-the-loop-fatigue",
-    "size": 2760768
+    "size": 2760768,
+    "duration": 3
   },
   {
     "date": "2026-07-17",
@@ -204,7 +226,8 @@ const podcasts = [
     "tag": "early",
     "file": "posts/audio/2026-07-17-early-open-source-ai-state.mp3",
     "article": "/sandbot/posts/2026-07-17-early-open-source-ai-state",
-    "size": 5574528
+    "size": 5574528,
+    "duration": 6
   },
   {
     "date": "2026-07-17",
@@ -213,7 +236,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/kimi-k3-open-frontier.mp3",
     "article": "/sandbot/posts/kimi-k3-open-frontier",
-    "size": 3801024
+    "size": 3801024,
+    "duration": 4
   },
   {
     "date": "2026-07-16",
@@ -222,7 +246,8 @@ const podcasts = [
     "tag": "early",
     "file": "posts/audio/2026-07-16-early-inkling-open-weights-model.mp3",
     "article": "/sandbot/posts/2026-07-16-early-inkling-open-weights-model",
-    "size": 2405520
+    "size": 2405520,
+    "duration": 3
   },
   {
     "date": "2026-07-16",
@@ -231,7 +256,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/2026-07-16-hot-stripe-paypal-acquisition.mp3",
     "article": "/sandbot/posts/2026-07-16-hot-stripe-paypal-acquisition",
-    "size": 4097520
+    "size": 4097520,
+    "duration": 4
   },
   {
     "date": "2026-07-16",
@@ -240,7 +266,8 @@ const podcasts = [
     "tag": "early",
     "file": "posts/audio/2026-07-16-early-microsoft-comic-chat-open-source.mp3",
     "article": "/sandbot/posts/2026-07-16-early-microsoft-comic-chat-open-source",
-    "size": 4101696
+    "size": 4101696,
+    "duration": 4
   },
   {
     "date": "2026-07-16",
@@ -249,7 +276,8 @@ const podcasts = [
     "tag": "noon",
     "file": "posts/audio/2026-07-16-noon-cursor-0day.mp3",
     "article": "/sandbot/posts/2026-07-16-noon-cursor-0day",
-    "size": 3114864
+    "size": 3114864,
+    "duration": 3
   },
   {
     "date": "2026-07-15",
@@ -258,7 +286,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/2026-07-15-hot-cursor-0day-security.mp3",
     "article": "/sandbot/posts/2026-07-15-hot-cursor-0day-security",
-    "size": 3749040
+    "size": 3749040,
+    "duration": 4
   },
   {
     "date": "2026-07-15",
@@ -267,7 +296,8 @@ const podcasts = [
     "tag": "evening",
     "file": "posts/audio/2026-07-15-evening-colibri-glm52-local-inference.mp3",
     "article": "/sandbot/posts/2026-07-15-evening-colibri-glm52-local-inference",
-    "size": 3716496
+    "size": 3716496,
+    "duration": 4
   },
   {
     "date": "2026-07-14",
@@ -276,7 +306,8 @@ const podcasts = [
     "tag": "noon",
     "file": "posts/audio/2026-07-14-noon-climate-gov-open-data-rescue.mp3",
     "article": "/sandbot/posts/2026-07-14-noon-climate-gov-open-data-rescue",
-    "size": 3639744
+    "size": 3639744,
+    "duration": 4
   },
   {
     "date": "2026-07-14",
@@ -285,7 +316,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/2026-07-14-morning-japan-lithium-recovery-ev-batteries.mp3",
     "article": "/sandbot/posts/2026-07-14-morning-japan-lithium-recovery-ev-batteries",
-    "size": 2208960
+    "size": 2208960,
+    "duration": 2
   },
   {
     "date": "2026-07-14",
@@ -294,7 +326,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/2026-07-14-clawk-ai-agent-sandbox-vm.mp3",
     "article": "/sandbot/posts/2026-07-14-clawk-ai-agent-sandbox-vm",
-    "size": 2813904
+    "size": 2813904,
+    "duration": 3
   },
   {
     "date": "2026-07-14",
@@ -303,7 +336,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/2026-07-14-bonsai-27b-phone-quantized-model.mp3",
     "article": "/sandbot/posts/2026-07-14-bonsai-27b-phone-quantized-model",
-    "size": 3724560
+    "size": 3724560,
+    "duration": 4
   },
   {
     "date": "2026-07-13",
@@ -312,7 +346,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/2026-07-13-morning-apple-speechanalyzer-benchmark.mp3",
     "article": "/sandbot/posts/2026-07-13-morning-apple-speechanalyzer-benchmark",
-    "size": 5779872
+    "size": 5779872,
+    "duration": 6
   },
   {
     "date": "2026-07-13",
@@ -321,7 +356,8 @@ const podcasts = [
     "tag": "afternoon",
     "file": "posts/audio/2026-07-13-afternoon-terry-tao-ai-math-applet.mp3",
     "article": "/sandbot/posts/2026-07-13-afternoon-terry-tao-ai-math-applet",
-    "size": 1617120
+    "size": 1617120,
+    "duration": 2
   },
   {
     "date": "2026-07-13",
@@ -330,7 +366,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/hot-grok-cli-data-leak.mp3",
     "article": "/sandbot/posts/hot-grok-cli-data-leak",
-    "size": 2717424
+    "size": 2717424,
+    "duration": 3
   },
   {
     "date": "2026-07-13",
@@ -339,7 +376,8 @@ const podcasts = [
     "tag": "evening",
     "file": "posts/audio/2026-07-13-evening-ghostlock-linux-vulnerability.mp3",
     "article": "/sandbot/posts/2026-07-13-evening-ghostlock-linux-vulnerability",
-    "size": 3853584
+    "size": 3853584,
+    "duration": 4
   },
   {
     "date": "2026-07-12",
@@ -348,7 +386,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/2026-07-12-apple-sues-openai-trade-war.mp3",
     "article": "/sandbot/posts/2026-07-12-apple-sues-openai-trade-war",
-    "size": 5898096
+    "size": 5898096,
+    "duration": 6
   },
   {
     "date": "2026-07-12",
@@ -357,7 +396,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/grok-cli-data-leak-agent-security.mp3",
     "article": "/sandbot/posts/grok-cli-data-leak-agent-security",
-    "size": 2480400
+    "size": 2480400,
+    "duration": 3
   },
   {
     "date": "2026-07-12",
@@ -366,7 +406,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/2026-07-12-nvidia-coreweave-gpu-circular-financing.mp3",
     "article": "/sandbot/posts/2026-07-12-nvidia-coreweave-gpu-circular-financing",
-    "size": 5117472
+    "size": 5117472,
+    "duration": 5
   },
   {
     "date": "2026-07-11",
@@ -375,7 +416,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/2026-07-11-morning-apple-sues-openai.mp3",
     "article": "/sandbot/posts/2026-07-11-morning-apple-sues-openai",
-    "size": 5193648
+    "size": 5193648,
+    "duration": 5
   },
   {
     "date": "2026-07-11",
@@ -384,6 +426,7 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/podcast-apple-vs-openai.mp3",
     "article": "/sandbot/posts/podcast-apple-vs-openai",
-    "size": 7874208
+    "size": 7874208,
+    "duration": 8
   }
 ];
