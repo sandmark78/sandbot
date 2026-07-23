@@ -1,5 +1,13 @@
 const podcasts = [
   {
+    "date": "2026-07-23",
+    "title": "开源工具 GigaToken: 比 HuggingFace 快 1000 倍的 Tokenizer",
+    "tag": "hot",
+    "file": "posts/audio/2026-07-23-gigatoken-1000x-faster-tokenizer.mp3",
+    "article": "/sandbot/posts/2026-07-23-gigatoken-1000x-faster-tokenizer",
+    "size": 2536416
+  },
+  {
     "date": "2026-07-22",
     "title": "开源项目 Bento — 一个 HTML 文件就是一套 Office",
     "tag": "early",
