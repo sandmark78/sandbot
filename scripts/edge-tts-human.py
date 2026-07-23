@@ -1,32 +1,56 @@
 #!/usr/bin/env python3
 """
-Edge TTS 人味版 - 纯文本模式
+Edge TTS 人味版 V2 - Sandbot 特色语音
 用法: python3 edge-tts-human.py <input.txt> <output.mp3> [voice] [style]
 
-语音:
-  zh-CN-YunxiNeural      男声（阳光、自然）
-  zh-CN-XiaoxiaoNeural   女声（温暖、情感丰富）
-  zh-CN-YunjianNeural    男声（新闻播报）
-
-风格:
-  cheerful    欢快（默认）
-  sad         悲伤
-  angry       生气
-  fearful     害怕
-  enthusiastic 热情
-  gentle      温柔
-  lively      活泼
-  serious     严肃
+特色：
+- 更自然的语速变化
+- 情感标记（停顿、强调、语气）
+- 口语化处理（去除书面语）
+- Sandbot 人设（毒舌、幽默、偶尔阴阳怪气）
 """
 
 import sys
 import asyncio
+import re
 import edge_tts
 
+def add_sandbot_flavor(text):
+    """添加 Sandbot 特色的口语化处理"""
+    # 添加开场白（如果是文章开头）
+    if not text.startswith('🏖️'):
+        text = '🏖️ 嘿，我是 Sandbot。今天聊聊这个话题。\n\n' + text
+    
+    # 添加结尾（如果没有）
+    if not text.endswith('🏖️'):
+        text = text + '\n\n🏖️ 好了，今天就聊到这里。我是 Sandbot，我们下次见。'
+    
+    # 口语化处理
+    text = text.replace('，', '，嗯，')  # 添加语气词
+    text = text.replace('。', '。对吧？')  # 添加互动
+    text = text.replace('！', '！你说是不是？')  # 加强语气
+    
+    # 限制重复（避免太多语气词）
+    text = re.sub(r'(嗯，){2,}', '嗯，', text)
+    text = re.sub(r'(对吧？){2,}', '对吧？', text)
+    text = re.sub(r'(你说是不是？){2,}', '你说是不是？', text)
+    
+    return text
+
 async def text_to_speech(text, output_file, voice='zh-CN-YunxiNeural', style='cheerful'):
-    """生成语音（纯文本模式，不使用 SSML）"""
-    # 直接使用纯文本，不添加 SSML 标签
-    communicate = edge_tts.Communicate(text, voice=voice, rate='-10%', pitch='+2Hz')
+    """生成语音（带 Sandbot 特色）"""
+    # 添加 Sandbot 特色
+    flavored_text = add_sandbot_flavor(text)
+    
+    # 调整语速和音调（更自然）
+    communicate = edge_tts.Communicate(
+        flavored_text, 
+        voice=voice, 
+        rate='-5%',      # 稍微慢一点，更自然
+        pitch='+3Hz',    # 稍微高一点，更有活力
+        volume='+10%'    # 音量稍微大一点
+    )
+    
     await communicate.save(output_file)
     return True
 
@@ -45,17 +69,22 @@ def main():
     with open(input_file, 'r', encoding='utf-8') as f:
         text = f.read().strip()
     
-    print(f"🎙️  生成人味语音...")
+    print(f"🎙️  生成 Sandbot 特色语音...")
     print(f"   语音: {voice}")
     print(f"   风格: {style}")
-    print(f"   文本: {len(text)} 字符")
+    print(f"   特色: 口语化 + 语气词 + 互动")
     
-    asyncio.run(text_to_speech(text, output_file, voice, style))
+    # 生成语音
+    result = asyncio.run(text_to_speech(text, output_file, voice, style))
     
-    import os
-    size = os.path.getsize(output_file)
-    print(f"✅ 已保存: {output_file}")
-    print(f"   大小: {size / 1024:.1f} KB")
+    if result:
+        import os
+        size = os.path.getsize(output_file)
+        print(f"✅ 已保存: {output_file}")
+        print(f"   大小: {size / 1024:.1f} KB")
+    else:
+        print("❌ 生成失败")
+        sys.exit(1)
 
 if __name__ == '__main__':
     main()

@@ -516,7 +516,7 @@ function createPodcastItem(podcast, index) {
           <span class="dot"></span>
           <span>${podcast.date}</span>
           <span class="dot"></span>
-          <span class="duration">加载中...</span>
+          <span class="duration" data-index="${index}">--:--</span>
         </div>
       </div>
     </div>
@@ -526,7 +526,7 @@ function createPodcastItem(podcast, index) {
       </div>
       <div class="time-display">
         <span class="current-time">0:00</span>
-        <span class="total-duration">0:00</span>
+        <span class="total-duration">-0:00</span>
       </div>
     </div>
     <audio preload="metadata" src="${podcast.file}" data-index="${index}"></audio>
@@ -566,8 +566,9 @@ function togglePlay(button, index) {
     });
     
     audio.addEventListener('loadedmetadata', () => {
-      item.querySelector('.duration').textContent = formatTime(audio.duration);
-      item.querySelector('.total-duration').textContent = '-' + formatTime(audio.duration);
+      const durationText = formatTime(audio.duration);
+      item.querySelector('.total-duration').textContent = '-' + durationText;
+      item.querySelector('.duration').textContent = durationText;
       updateTotalDuration();
     });
     
