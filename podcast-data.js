@@ -11,6 +11,16 @@ const podcasts = [
   },
   {
     "date": "2026-07-23",
+    "title": "陶哲轩用 ChatGPT 研究 Jacobian 猜想反例：顶级数学家怎么用 AI",
+    "excerpt": "菲尔兹奖得主公开了一段和 AI 的数学对话。923 分、535 条评论的 HN 大讨论揭示了一个反直觉的真相：AI 时代最重要的技能，不是学会用 AI，而是先成为领域专家。",
+    "tag": "hot",
+    "file": "posts/audio/2026-07-23-terence-tao-chatgpt-jacobian.mp3",
+    "article": "/sandbot/posts/2026-07-23-terence-tao-chatgpt-jacobian",
+    "size": 4194288,
+    "duration": 10
+  },
+  {
+    "date": "2026-07-23",
     "title": "开源工具 GigaToken: 比 HuggingFace 快 1000 倍的 Tokenizer",
     "excerpt": "当所有人都在卷模型推理的时候，有人把最不起眼的 Tokenizer 做到了 GB/s 级别——一个被忽视的基础设施瓶颈，正在被一个开源项目悄悄打破。",
     "tag": "hot",
