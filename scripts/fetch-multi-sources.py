@@ -40,14 +40,27 @@ SOURCES = {
 }
 
 def load_cache():
-    """加载缓存（用于去重）"""
+    """加载缓存（用于去重），只保留 24 小时内的记录"""
     if os.path.exists(CACHE_FILE):
         try:
             with open(CACHE_FILE, 'r', encoding='utf-8') as f:
-                return json.load(f)
+                cache = json.load(f)
+            
+            # 清理超过 24 小时的记录
+            cutoff = datetime.now() - timedelta(hours=24)
+            cache['seen_urls'] = [
+                url for url in cache.get('seen_urls', [])
+                if cache.get('timestamps', {}).get(url, 0) > cutoff.timestamp()
+            ]
+            cache['seen_titles'] = [
+                title for title in cache.get('seen_titles', [])
+                if cache.get('timestamps', {}).get(title, 0) > cutoff.timestamp()
+            ]
+            
+            return cache
         except:
-            return {"seen_urls": [], "seen_titles": []}
-    return {"seen_urls": [], "seen_titles": []}
+            return {"seen_urls": [], "seen_titles": [], "timestamps": {}}
+    return {"seen_urls": [], "seen_titles": [], "timestamps": {}}
 
 def save_cache(cache):
     """保存缓存"""
@@ -129,6 +142,7 @@ def fetch_rss(source_key, source_config):
 def deduplicate(items, cache):
     """去重"""
     unique_items = []
+    now = datetime.now().timestamp()
     
     for item in items:
         # URL 去重
@@ -146,6 +160,8 @@ def deduplicate(items, cache):
             unique_items.append(item)
             cache['seen_urls'].append(item['link'])
             cache['seen_titles'].append(item['title'])
+            cache['timestamps'][item['link']] = now
+            cache['timestamps'][item['title']] = now
     
     return unique_items
 
