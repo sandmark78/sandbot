@@ -1,64 +1,64 @@
-# 热点素材 (生成时间: 2026-07-21 11:45 UTC)
+# 热点素材 (生成时间: 2026-07-22 11:45 UTC)
 
-共 12 个话题（已过滤重复）
+共 16 个话题（已过滤重复）
 
-## 话题 1: Incremental – A library for incremental computations
-- **分数**: 235 points
-- **评论**: 42 comments
-- **URL**: https://github.com/janestreet/incremental
-- **HN**: https://news.ycombinator.com/item?id=48987822
+## 话题 1: OpenAI and Hugging Face address security incident during model evaluation
+- **分数**: 1253 points
+- **评论**: 859 comments
+- **URL**: https://openai.com/index/hugging-face-model-evaluation-security-incident/
+- **HN**: https://news.ycombinator.com/item?id=48997548
 
-## 话题 2: Who's afraid of Chinese models?
-- **分数**: 699 points
-- **评论**: 513 comments
-- **URL**: https://stratechery.com/2026/whos-afraid-of-chinese-models/
-- **HN**: https://news.ycombinator.com/item?id=48977128
+## 话题 2: Kimi K3 Is Competitive with Fable; Kimi K3 and Fable Is SoTA
+- **分数**: 692 points
+- **评论**: 368 comments
+- **URL**: https://fireworks.ai/blog/kimik3-fable
+- **HN**: https://news.ycombinator.com/item?id=48999291
 
-## 话题 3: Kimi Work
-- **分数**: 581 points
-- **评论**: 246 comments
-- **URL**: https://www.kimi.com/products/kimi-work
-- **HN**: https://news.ycombinator.com/item?id=48981703
+## 话题 3: Advertise in ChatGPT
+- **分数**: 833 points
+- **评论**: 631 comments
+- **URL**: https://ads.openai.com/
+- **HN**: https://news.ycombinator.com/item?id=48996571
 
-## 话题 4: Jelly UI: Soft-body physics for native HTML form controls
-- **分数**: 531 points
-- **评论**: 159 comments
-- **URL**: https://jelly-ui.com/
-- **HN**: https://news.ycombinator.com/item?id=48981620
+## 话题 4: FreeInk: Open ecosystem for e-readers
+- **分数**: 597 points
+- **评论**: 124 comments
+- **URL**: https://freeink.org/
+- **HN**: https://news.ycombinator.com/item?id=48996318
 
-## 话题 5: Human mathematicians are being outcounterexampled
-- **分数**: 366 points
-- **评论**: 154 comments
-- **URL**: https://xenaproject.wordpress.com/2026/07/20/human-mathematicians-are-being-outcounterexampled/
-- **HN**: https://news.ycombinator.com/item?id=48983382
+## 话题 5: Judge approves $1.5B Anthropic settlement for pirated books used to train Claude
+- **分数**: 405 points
+- **评论**: 355 comments
+- **URL**: https://apnews.com/article/ai-anthropic-copyright-settlement-claude-books-bartz-74b140444023898aeba8579b6e9f0d63
+- **HN**: https://news.ycombinator.com/item?id=48996652
 
-## 话题 6: Nativ: Run frontier open models locally on your Mac
-- **分数**: 294 points
-- **评论**: 97 comments
-- **URL**: https://blaizzy.github.io/nativ/
-- **HN**: https://news.ycombinator.com/item?id=48982681
+## 话题 6: Late.sh – a command-line Clubhouse for computer people
+- **分数**: 205 points
+- **评论**: 72 comments
+- **URL**: https://late.sh/
+- **HN**: https://news.ycombinator.com/item?id=49001127
 
-## 话题 7: Agent swarms and the new model economics
-- **分数**: 209 points
-- **评论**: 97 comments
-- **URL**: https://cursor.com/blog/agent-swarm-model-economics
-- **HN**: https://news.ycombinator.com/item?id=48982535
+## 话题 7: Gemini 3.6 Flash, 3.5 Flash-Lite, and 3.5 Flash Cyber
+- **分数**: 706 points
+- **评论**: 536 comments
+- **URL**: https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-6-flash-3-5-flash-lite-3-5-flash-cyber/
+- **HN**: https://news.ycombinator.com/item?id=48993414
 
-## 话题 8: China’s open-weights AI strategy is winning
-- **分数**: 1127 points
-- **评论**: 855 comments
-- **URL**: https://werd.io/american-ai-is-locked-down-and-proprietary-its-losing/
-- **HN**: https://news.ycombinator.com/item?id=48979269
-
-## 话题 9: Shinjuku Station in 3D
-- **分数**: 234 points
-- **评论**: 52 comments
-- **URL**: https://satoshi7190.github.io/Shinjuku-indoor-threejs-demo/
-- **HN**: https://news.ycombinator.com/item?id=48978792
-
-## 话题 10: Perfection is not over-engineering
-- **分数**: 246 points
+## 话题 8: A digestion of the Jacobian conjecture counterexample
+- **分数**: 273 points
 - **评论**: 107 comments
-- **URL**: https://var0.xyz/posts/perfection-is-not-over-engineering.html
-- **HN**: https://news.ycombinator.com/item?id=48979120
+- **URL**: https://terrytao.wordpress.com/2026/07/21/a-digestion-of-the-jacobian-conjecture-counterexample/
+- **HN**: https://news.ycombinator.com/item?id=48998362
+
+## 话题 9: Long presumed dead, a thriving coral reef is discovered in West Africa
+- **分数**: 359 points
+- **评论**: 76 comments
+- **URL**: https://e360.yale.edu/digest/benin-coral-reef
+- **HN**: https://news.ycombinator.com/item?id=48993816
+
+## 话题 10: Jack Dorsey launches Buzz to combine team chat, AI agents and Git hosting
+- **分数**: 330 points
+- **评论**: 285 comments
+- **URL**: https://runtimewire.com/article/jack-dorsey-block-buzz-team-chat-ai-agents-git
+- **HN**: https://news.ycombinator.com/item?id=48995213
 

@@ -42,6 +42,41 @@ def extract_title_from_article(filename):
     
     return None
 
+def extract_excerpt_from_article(filename):
+    """从文章文件中提取摘要"""
+    base_name = filename.replace('.mp3', '').replace('.md', '')
+    
+    patterns = [
+        f"{base_name}.html",
+        f"{base_name.replace('.md', '')}.html",
+    ]
+    
+    for pattern in patterns:
+        article_path = os.path.join(POSTS_DIR, pattern)
+        if os.path.exists(article_path):
+            try:
+                with open(article_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                
+                # 提取 article-subtitle
+                subtitle_match = re.search(r'<p class="article-subtitle">(.*?)</p>', content, re.DOTALL)
+                if subtitle_match:
+                    subtitle = subtitle_match.group(1).strip()
+                    # 清理 HTML 标签
+                    subtitle = re.sub(r'<[^>]+>', '', subtitle)
+                    return subtitle[:150]  # 限制长度
+                
+                # 如果没有 subtitle，尝试提取第一段
+                para_match = re.search(r'<article[^>]*>.*?<p>(.*?)</p>', content, re.DOTALL)
+                if para_match:
+                    para = para_match.group(1).strip()
+                    para = re.sub(r'<[^>]+>', '', para)
+                    return para[:150]
+            except Exception as e:
+                pass
+    
+    return None
+
 def extract_tag_from_filename(filename):
     """从文件名中提取标签"""
     base_name = filename.replace('.mp3', '').replace('.md', '')
@@ -96,6 +131,7 @@ def generate_podcast_list():
             # 如果找不到文章，使用文件名作为标题
             title = filename.replace('.mp3', '').replace('.md', '').replace('-', ' ').title()
         
+        excerpt = extract_excerpt_from_article(filename)
         tag = extract_tag_from_filename(filename)
         date = extract_date_from_filename(filename)
         
@@ -106,6 +142,7 @@ def generate_podcast_list():
         podcasts.append({
             'date': date,
             'title': title,
+            'excerpt': excerpt or '',
             'tag': tag,
             'file': f'posts/audio/{filename}',
             'article': article_url,
