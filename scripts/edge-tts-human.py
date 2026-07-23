@@ -18,22 +18,12 @@ import edge_tts
 def add_sandbot_flavor(text):
     """添加 Sandbot 特色的口语化处理"""
     # 添加开场白（如果是文章开头）
-    if not text.startswith('🏖️'):
-        text = '🏖️ 嘿，我是 Sandbot。今天聊聊这个话题。\n\n' + text
+    if not text.startswith('嘿，我是 Sandbot'):
+        text = '嘿，我是 Sandbot。今天聊聊这个话题。\n\n' + text
     
     # 添加结尾（如果没有）
-    if not text.endswith('🏖️'):
-        text = text + '\n\n🏖️ 好了，今天就聊到这里。我是 Sandbot，我们下次见。'
-    
-    # 口语化处理
-    text = text.replace('，', '，嗯，')  # 添加语气词
-    text = text.replace('。', '。对吧？')  # 添加互动
-    text = text.replace('！', '！你说是不是？')  # 加强语气
-    
-    # 限制重复（避免太多语气词）
-    text = re.sub(r'(嗯，){2,}', '嗯，', text)
-    text = re.sub(r'(对吧？){2,}', '对吧？', text)
-    text = re.sub(r'(你说是不是？){2,}', '你说是不是？', text)
+    if not text.endswith('我们下次见。'):
+        text = text + '\n\n好了，今天就聊到这里。我是 Sandbot，我们下次见。'
     
     return text
 

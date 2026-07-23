@@ -1,31 +1,34 @@
-# 热点文章素材 (生成时间: 2026-07-22 09:15)
+# 热点文章素材 (生成时间: 2026-07-23 09:15 UTC)
+
+> 今日已有文章: gigatoken-1000x-faster-tokenizer (已去重跳过)
 
 ## 话题 1
-- 标题: Advertise in ChatGPT (OpenAI 正式推出 ChatGPT 广告平台)
-- 分数: 735 points (518 comments)
-- URL: https://ads.openai.com/
-- 详细描述: OpenAI 正式上线 ChatGPT 广告平台，允许广告主在用户探索选项、比较选择和做决策时展示相关广告。平台主打"AI原生广告"概念，强调广告将与 ChatGPT 的回答明确区分，并保持用户信任。早期广告主包括 Best Buy 等大品牌。广告主可以通过 Ads Manager 创建账户、建立广告活动、批量上传广告详情，然后启动并优化效果。OpenAI 强调广告将清晰标注、与回答内容分离，并给用户选择和控制权。这一举措标志着 AI 对话产品商业化的重要里程碑，引发了 HN 社区关于 AI 产品广告化的激烈讨论。
-- 图片: https://ads.openai.com/ (页面为 JS 渲染，无直接 og:image)
+- 标题: Bento - An entire PowerPoint in one HTML file (edit+view+data+collab)
+- 分数: 824 points (184 comments)
+- URL: https://bento.page/slides/
+- HN讨论: https://news.ycombinator.com/item?id=49008211
+- 详细描述: Bento Slides 是一个 Show HN 项目，将整个 PowerPoint 演示文稿压缩到一个单独的 HTML 文件中。这个文件同时包含编辑、查看、数据和协作功能。用户可以直接在浏览器中创建和编辑幻灯片，无需安装任何软件。该项目在 HN 上获得了极高关注（824 分），表明开发者社区对轻量级、无需安装的演示工具的巨大需求。Bento 的核心理念是"一个文件就是一切"——编辑逻辑、展示样式、数据存储和多人协作全部打包在一个自包含的 HTML 文件中，可以直接通过链接分享或通过文件传输。
+- 图片: (SPA 页面，无法提取 og:image)
 
 ## 话题 2
-- 标题: Kimi K3 Is Competitive with Fable; Kimi K3 + Fable Is SoTA
-- 分数: 601 points (335 comments)
-- URL: https://fireworks.ai/blog/kimik3-fable
-- 详细描述: Fireworks AI 对开源模型 Kimi K3 和闭源模型 Fable 5 进行了大规模对比测试，涵盖约 1,030 个真实 Agent 任务。测试涵盖五大类别：SWE（真实仓库 bug 修复，460 任务）、Terminal（长时间 Agent 操作：安全、加密、逆向工程、系统管理，89 任务）、Algorithmic（LeetCode/AtCoder 风格，100 任务）、Multi-Language（六种语言实现，225 任务）和 Legal（法律 Agent 基准，120 任务）。结果显示 K3 在 SWE 上达到 92.4%，Fable 为 92.6%，整体接近。关键发现：通过 K3 和 Fable 之间的智能路由，可达到 93% 准确率，成本比单独使用 Fable 低约 50 倍。Oracle 路由分析显示 K3 被选中处理 72-96% 的任务，表明开源模型在大多数日常任务上已可替代闭源模型。
-- 图片: https://fireworks.ai/blog/kimik3-fable (页面包含图表，无直接 og:image)
+- 标题: Are AI labs pelicanmaxxing?
+- 分数: 521 points (205 comments)
+- URL: https://dylancastillo.co/posts/pelicanmaxxing.html
+- HN讨论: https://news.ycombinator.com/item?id=49010129
+- 详细描述: Dylan Castillo 进行了一项有趣的实验，测试 AI 实验室是否在"pelicanmaxxing"——即针对 Simon Willison 著名的"生成一只鹈鹕骑自行车的 SVG"非正式基准测试进行优化。作者构建了 8 种动物 × 6 种交通工具 = 48 个提示词的测试网格，在 7 个前沿模型（GPT-5.6 Terra、Claude Sonnet 5、Gemini 3.5 Flash、Grok 4.5、Qwen3.7-Max、GLM-5.2、DeepSeek V4 Pro）上各生成 3 个样本，共产生 1,008 个 SVG。然后用 LLM 评判者打分，并使用 Claude Fable 5 进行分析。文章探讨了当数十亿美元利益攸关时，AI 实验室是否有动机针对知名非正式基准进行"应试优化"。所有代码已在 GitHub 开源。
+- 图片: https://dylancastillo.co/posts/images/social_media_card.webp
 
 ## 话题 3
-- 标题: LG to Ban Residential Proxies from Smart TV Apps
-- 分数: 262 points (229 comments)
-- URL: https://krebsonsecurity.com/2026/07/lg-to-ban-residential-proxies-from-smart-tv-apps/
-- 详细描述: LG 电子美国宣布将暂停所有将其智能电视变成常驻住宅代理节点的应用。此举源于安全公司 Spur 的研究发现：LG webOS 商店中超过 42% 的应用包含未知第三方可通过用户电视路由流量的 SDK，三星 Tizen OS 上也有超过四分之一的应用包含类似住宅代理组件。LG 高级副总裁 John Taylor 表示公司正与开发者合作移除住宅代理选项，不配合的开发者其应用将被暂停。"住宅代理网络不是 LG 智能电视的预期用途"，Taylor 在声明中表示。应用开发者可以通过住宅代理提供商获利，但这显然以牺牲用户利益为代价。这一事件揭示了智能电视生态系统中隐蔽的隐私侵害问题。
-- 图片: https://krebsonsecurity.com/2026/07/lg-to-ban-residential-proxies-from-smart-tv-apps/ (文中有 Spur.us 图表)
+- 标题: Everyone Should Know SIMD
+- 分数: 416 points (152 comments)
+- URL: https://mitchellh.com/writing/everyone-should-know-simd
+- HN讨论: https://news.ycombinator.com/item?id=49010648
+- 详细描述: Mitchell Hashimoto（HashiCorp 联合创始人、Ghostty 终端作者）撰写了一篇深入浅出的 SIMD 入门文章。他认为 SIMD（单指令多数据）被错误地认为过于复杂，实际上常见的 SIMD 模式几乎都遵循相同的五步结构：1) 广播常量 2) 按向量宽度循环 3) 执行 SIMD 操作 4) 归约向量结果 5) 标量尾部处理。文章以 Ghostty 终端中实际使用的 Zig 代码为例，展示了如何将一个逐字符扫描循环优化为 SIMD 版本，在 AVX2 上实现 5 倍实际加速。作者强调这是完全手写的文章，没有 AI 辅助。文章使用 Zig 语言但概念适用于任何编程语言。
+- 图片: (无 og:image，作者: Mitchell Hashimoto / mitchellh.com)
 
 ---
 
-**去重说明**: 今日已有文章 `2026-07-22-freeink-open-ereader-ecosystem` (FreeInk 电子阅读器) 和 `2026-07-22-hot-openai-model-hacks-huggingface` (OpenAI/HuggingFace 安全事件)，已避开这两个话题。
-
-**抓取状态**: 3/3 成功 ✅
-- 话题 1: ads.openai.com ✅
-- 话题 2: fireworks.ai ✅  
-- 话题 3: krebsonsecurity.com ✅
+## 备选话题 (未抓取详细内容)
+- **Terence Tao's ChatGPT conversation about the Jacobian Conjecture counterexample** (861 pts, 498 comments) - 陶哲轩与 ChatGPT 关于 Jacobian 猜想反例的对话，数学界重磅事件
+- **So Reddit has decided that plain HTML is unsafe** (451 pts) - Reddit 认为纯 HTML 不安全
+- **Quality non-fiction books are the antithesis of AI slop** (353 pts) - 优质非虚构书籍是 AI 泔水的对立面
