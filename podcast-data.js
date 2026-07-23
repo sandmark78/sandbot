@@ -1,6 +1,16 @@
 const podcasts = [
   {
     "date": "2026-07-23",
+    "title": "Petals：像 BitTorrent 一样在家跑 LLM，分布式推理的第一次真正落地",
+    "excerpt": "当你加载模型的一部分，然后加入全球网络，大型语言模型不再是云端的专利",
+    "tag": "afternoon",
+    "file": "posts/audio/2026-07-23-afternoon-petals-distributed-llm.mp3",
+    "article": "/sandbot/posts/2026-07-23-afternoon-petals-distributed-llm",
+    "size": 4428000,
+    "duration": 10
+  },
+  {
+    "date": "2026-07-23",
     "title": "开源工具 GigaToken: 比 HuggingFace 快 1000 倍的 Tokenizer",
     "excerpt": "当所有人都在卷模型推理的时候，有人把最不起眼的 Tokenizer 做到了 GB/s 级别——一个被忽视的基础设施瓶颈，正在被一个开源项目悄悄打破。",
     "tag": "hot",
