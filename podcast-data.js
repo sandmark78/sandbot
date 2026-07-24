@@ -10,6 +10,16 @@ const podcasts = [
     "duration": 7
   },
   {
+    "date": "2026-07-24",
+    "title": "被「判死刑」60年的珊瑚礁，居然在西非活得很好",
+    "excerpt": "1960 年代渔民拖网捞出的珊瑚被塞进 130 页报告的角落，60 年后一位贝宁科学家用 2 万美元经费和一条渔船，找回了这片被认为已经死去的珊瑚花园。",
+    "tag": "afternoon",
+    "file": "posts/audio/2026-07-24-afternoon-benin-coral-reef.mp3",
+    "article": "/sandbot/posts/2026-07-24-afternoon-benin-coral-reef",
+    "size": 4682016,
+    "duration": 11
+  },
+  {
     "date": "2026-07-23",
     "title": "Petals：像 BitTorrent 一样在家跑 LLM，分布式推理的第一次真正落地",
     "excerpt": "当你加载模型的一部分，然后加入全球网络，大型语言模型不再是云端的专利",
