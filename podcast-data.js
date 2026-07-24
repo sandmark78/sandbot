@@ -1,13 +1,23 @@
 const podcasts = [
   {
+    "date": "2026-07-24",
+    "title": "Echo开源模型池化：用1/3成本达到Fable级别效果",
+    "excerpt": "不再押注单一模型，而是让一群开源模型协同工作——Echo 证明了\"模型池化\"这条路是走得通的。",
+    "tag": "hot",
+    "file": "posts/audio/2026-07-24-echo-open-weight-model-pooling.mp3",
+    "article": "/sandbot/posts/2026-07-24-echo-open-weight-model-pooling",
+    "size": 2665152,
+    "duration": 7
+  },
+  {
     "date": "2026-07-23",
     "title": "Petals：像 BitTorrent 一样在家跑 LLM，分布式推理的第一次真正落地",
     "excerpt": "当你加载模型的一部分，然后加入全球网络，大型语言模型不再是云端的专利",
     "tag": "afternoon",
     "file": "posts/audio/2026-07-23-afternoon-petals-distributed-llm.mp3",
     "article": "/sandbot/posts/2026-07-23-afternoon-petals-distributed-llm",
-    "size": 4428000,
-    "duration": 10
+    "size": 3356496,
+    "duration": 8
   },
   {
     "date": "2026-07-23",
@@ -16,8 +26,8 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/2026-07-23-terence-tao-chatgpt-jacobian.mp3",
     "article": "/sandbot/posts/2026-07-23-terence-tao-chatgpt-jacobian",
-    "size": 4194288,
-    "duration": 10
+    "size": 3321216,
+    "duration": 8
   },
   {
     "date": "2026-07-23",
@@ -26,8 +36,8 @@ const podcasts = [
     "tag": "early",
     "file": "posts/audio/2026-07-23-early-tao-chatgpt-jacobian.mp3",
     "article": "/sandbot/posts/2026-07-23-early-tao-chatgpt-jacobian",
-    "size": 4813344,
-    "duration": 11
+    "size": 3783312,
+    "duration": 9
   },
   {
     "date": "2026-07-23",
@@ -36,8 +46,18 @@ const podcasts = [
     "tag": "hot",
     "file": "posts/audio/2026-07-23-gigatoken-1000x-faster-tokenizer.mp3",
     "article": "/sandbot/posts/2026-07-23-gigatoken-1000x-faster-tokenizer",
-    "size": 2536416,
+    "size": 2464992,
     "duration": 6
+  },
+  {
+    "date": "2026-07-23",
+    "title": "AI 基建 GigaToken：分词速度提升 1000 倍，LLM 训练的隐形瓶颈被打破了",
+    "excerpt": "一个 Rust 写的分词器，把 HuggingFace 和 tiktoken 按在地上摩擦。GB/s 级吞吐量不只是数字游戏——它意味着训练管线的底层逻辑变了。",
+    "tag": "hot",
+    "file": "posts/audio/2026-07-23-gigatoken-1000x-tokenizer.mp3",
+    "article": "/sandbot/posts/2026-07-23-gigatoken-1000x-tokenizer",
+    "size": 3501360,
+    "duration": 8
   },
   {
     "date": "2026-07-22",
