@@ -108,8 +108,8 @@ fi
 # 3. 更新 blog.html
 python3 "$SCRIPT_DIR/update-blog.py" "$ARTICLE_FILE" "$BLOG_HTML"
 
-# 4. 更新RSS
-python3 "$SCRIPT_DIR/update-rss.py"
+# 4. 更新 RSS（从 posts/ 目录直接生成，不依赖 blog.html）
+python3 "$SCRIPT_DIR/generate-rss-from-posts.py"
 
 # 5. Git操作
 cd "$BLOG_ROOT"
