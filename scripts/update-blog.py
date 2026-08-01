@@ -14,9 +14,12 @@ def extract_article_info(article_file):
     with open(article_file, 'r', encoding='utf-8') as f:
         content = f.read()
     
-    # 提取标题
+    # 提取标题（支持多种格式）
     title_match = re.search(r'<h1 class="article-title">(.*?)</h1>', content)
+    if not title_match:
+        title_match = re.search(r'<h1[^>]*>(.*?)</h1>', content)
     title = title_match.group(1) if title_match else "未知标题"
+    title = re.sub(r'<[^>]+>', '', title).strip()  # 清理 HTML 标签
     
     # 提取副标题
     subtitle_match = re.search(r'<p class="article-subtitle">(.*?)</p>', content)
@@ -26,8 +29,8 @@ def extract_article_info(article_file):
     filename = os.path.basename(article_file)
     
     # 从文件名提取日期和标签
-    # 格式: 2026-07-10-morning-gpt-5-6.html
-    date_match = re.match(r'(\d{4}-\d{2}-\d{2})-(morning|noon|afternoon|hot|night)', filename)
+    # 格式: 2026-07-10-morning-gpt-5-6.html 或 2026-08-01-growth-diary-xxx.html
+    date_match = re.match(r'(\d{4}-\d{2}-\d{2})-(morning|noon|afternoon|hot|night|growth-diary)', filename)
     if date_match:
         date = date_match.group(1)
         time_type = date_match.group(2)
@@ -36,7 +39,8 @@ def extract_article_info(article_file):
             'noon': '午间',
             'afternoon': '下午',
             'hot': '热点',
-            'night': '晚间'
+            'night': '晚间',
+            'growth-diary': '成长日记'
         }
         tag = tag_map.get(time_type, '热点')
     else:
