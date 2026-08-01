@@ -96,71 +96,37 @@ def fetch_hn_stories(max_items=10, threshold=100):
     return stories
 
 def fetch_aihot(max_items=10):
-    """抓取 AIHOT 每日 AI 热点"""
+    """抓取 AIHOT 每日 AI 热点（使用官方 API v1）"""
     print("📡 抓取 AIHOT...")
     
-    url = SOURCES["aihot"]["url"]
+    # 使用官方 API v1
+    url = "https://aihot.virxact.com/api/v1/items?mode=selected&window=24h&limit=20"
     req = urllib.request.Request(url, headers={
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)",
+        "Accept": "application/json"
     })
     
     try:
         with urllib.request.urlopen(req, timeout=30) as resp:
-            html = resp.read().decode('utf-8', errors='ignore')
+            data = json.loads(resp.read().decode('utf-8'))
     except Exception as e:
         print(f"  ❌ 抓取失败: {e}")
         return []
     
-    # 解析 Next.js 数据
-    matches = list(re.finditer(r'self\.__next_f\.push\(\[1,"(.*?)"\]\)', html, re.DOTALL))
-    
     items = []
-    for m in matches:
-        raw = m.group(1)
-        if 'initialItems' not in raw:
-            continue
+    for item in data.get('items', [])[:max_items]:
+        title = item.get('title', '')
+        summary = item.get('summary', '')
+        links = item.get('links', {})
+        original_url = links.get('original', '')
         
-        # 解码 Next.js JSON
-        raw = raw.replace('\\\\', '\x00')
-        raw = raw.replace('\\"', '"')
-        raw = raw.replace('\\n', '\n')
-        raw = raw.replace('\\t', '\t')
-        raw = raw.replace('\x00', '\\')
-        
-        try:
-            raw = raw.encode('latin-1').decode('unicode_escape')
-        except:
-            pass
-        
-        idx = raw.find('"initialItems":[')
-        if idx < 0:
-            continue
-        
-        # 提取 JSON 数组
-        depth = 0
-        start = idx + len('"initialItems":')
-        for j in range(start, min(start + 300000, len(raw))):
-            if raw[j] == '[':
-                depth += 1
-            elif raw[j] == ']':
-                depth -= 1
-                if depth == 0:
-                    try:
-                        items_data = json.loads(raw[start:j+1])
-                        for item in items_data[:max_items]:
-                            items.append({
-                                "title": item.get('title', ''),
-                                "url": item.get('url', ''),
-                                "source": "AIHOT",
-                                "summary": item.get('summary', '')[:200]
-                            })
-                            print(f"  ✅ {item.get('title', '')[:50]}...")
-                    except:
-                        pass
-                    break
-        
-        if len(items) >= max_items:
-            break
+        items.append({
+            "title": title,
+            "url": original_url,
+            "source": "AIHOT",
+            "summary": summary[:200]
+        })
+        print(f"  ✅ {title[:50]}...")
     
     return items
 
