@@ -17,9 +17,11 @@ import sys
 import os
 import re
 from datetime import datetime, timedelta
+# 博客根目录（自动解析，不依赖硬编码路径）
+BLOG_ROOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
-POSTS_DIR = "/tmp/sandbot-gh/posts"
-TITLES_FILE = "/tmp/sandbot-gh/article-titles.txt"
+POSTS_DIR = os.path.join(BLOG_ROOT, "posts")
+TITLES_FILE = os.path.join(BLOG_ROOT, "article-titles.txt")
 
 # 主题分类映射
 TOPIC_CATEGORIES = {

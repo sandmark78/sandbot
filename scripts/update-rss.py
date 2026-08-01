@@ -7,8 +7,10 @@
 import re
 import os
 from datetime import datetime
+# 博客根目录（自动解析，不依赖硬编码路径）
+BLOG_ROOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
-BLOG_DIR = '/tmp/sandbot-gh'
+BLOG_DIR = BLOG_ROOT
 BLOG_HTML = os.path.join(BLOG_DIR, 'blog.html')
 FEED_XML = os.path.join(BLOG_DIR, 'feed.xml')
 

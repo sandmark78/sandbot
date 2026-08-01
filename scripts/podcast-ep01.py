@@ -7,6 +7,8 @@
 import asyncio
 import edge_tts
 import os
+# 博客根目录（自动解析，不依赖硬编码路径）
+BLOG_ROOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
 OUTPUT_DIR = "/tmp/podcast2"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -126,7 +128,7 @@ def concat_podcast(audio_files, output_file):
 async def main():
     audio_files = await generate_podcast()
     
-    output_file = "/tmp/sandbot-gh/posts/audio/podcast-ep01-apple-vs-openai.mp3"
+    output_file = os.path.join(BLOG_ROOT, "posts/audio/podcast-ep01-apple-vs-openai.mp3")
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
     
     if concat_podcast(audio_files, output_file):

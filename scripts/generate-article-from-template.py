@@ -8,8 +8,10 @@ import json
 import sys
 import os
 import re
+# 博客根目录（自动解析，不依赖硬编码路径）
+BLOG_ROOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
-TEMPLATE_PATH = "/tmp/sandbot-gh/templates/post-template-v4.html"
+TEMPLATE_PATH = os.path.join(BLOG_ROOT, "templates/post-template-v4.html")
 
 def generate_article(config_path):
     """读取配置，基于模板生成文章"""
@@ -65,7 +67,7 @@ def generate_article(config_path):
     )
     
     # 输出文件
-    output_path = config.get('output_path', '/tmp/sandbot-gh/posts/article.html')
+    output_path = config.get('output_path', os.path.join(BLOG_ROOT, 'posts/article.html'))
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     
     with open(output_path, 'w', encoding='utf-8') as f:
