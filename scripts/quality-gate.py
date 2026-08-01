@@ -242,7 +242,9 @@ def check_blog_index(result, content):
     with open(BLOG_HTML, 'r', encoding='utf-8') as f:
         blog_content = f.read()
 
-    if basename not in blog_content:
+    # blog.html uses extension-less URLs (e.g. posts/2026-08-01-xxx), so check both
+    basename_no_ext = basename.replace('.html', '')
+    if basename not in blog_content and basename_no_ext not in blog_content:
         result.errors.append(
             f"blog.html 索引未包含此文章: {basename}"
         )
@@ -259,7 +261,8 @@ def check_rss_freshness(result, content):
     with open(FEED_XML, 'r', encoding='utf-8') as f:
         feed_content = f.read()
 
-    if basename not in feed_content:
+    basename_no_ext = basename.replace('.html', '')
+    if basename not in feed_content and basename_no_ext not in feed_content:
         result.warnings.append(
             f"RSS feed 未包含此文章: {basename}"
         )
