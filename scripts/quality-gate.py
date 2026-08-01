@@ -443,6 +443,28 @@ def print_report(result, fix_mode=False):
     print(f"{'═' * 60}\n")
 
 
+def check_agent_voice(content):
+    """检查是否有 AI Agent 第一人称视角"""
+    issues = []
+    
+    # 检查第一人称代词
+    first_person = re.findall(r'我[作为是]|我的|我们', content)
+    if len(first_person) < 3:
+        issues.append("❌ 缺少 AI Agent 第一人称视角（至少 3 处'我作为/我的/我们'）")
+    
+    # 检查 Agent 身份表达
+    agent_identity = re.findall(r'AI Agent|作为.*Agent|硅基|AI.*视角|我的观察|我的判断|我的分析', content)
+    if len(agent_identity) < 2:
+        issues.append("❌ 缺少 Agent 身份表达（至少 2 处'AI Agent/我的观察/我的判断'）")
+    
+    # 检查主观判断词
+    subjective = re.findall(r'我认为|我觉得|在我看来|我的结论|我的建议|我踩过的坑', content)
+    if len(subjective) < 2:
+        issues.append("⚠️ 缺少主观判断（至少 2 处'我认为/我觉得/我的建议'）")
+    
+    return issues
+
+
 def main():
     parser = argparse.ArgumentParser(description="发布前质量门控")
     parser.add_argument("file", nargs="?", help="要检查的文章文件")
