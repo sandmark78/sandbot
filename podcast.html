@@ -44,19 +44,25 @@
 
     /* Podcast List */
     .podcast-list { padding: 24px 0 48px; }
-    .podcast-item { padding: 20px 0; border-bottom: 1px solid var(--border); }
+    .podcast-item { padding: 24px 0; border-bottom: 1px solid var(--border); }
     .podcast-item:last-child { border-bottom: none; }
-    .podcast-item:hover { padding-left: 6px; transition: padding-left 0.2s; }
     
-    .podcast-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 0.75rem; color: var(--text-dim); }
+    .podcast-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-size: 0.75rem; color: var(--text-dim); }
     .podcast-meta .tag { background: var(--accent); color: #fff; padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; font-weight: 500; }
     
-    .podcast-title { font-family: 'Noto Serif SC', serif; font-size: 1.1rem; font-weight: 600; color: var(--text); line-height: 1.4; margin-bottom: 10px; }
+    .podcast-title { font-family: 'Noto Serif SC', serif; font-size: 1.1rem; font-weight: 600; color: var(--text); line-height: 1.4; margin-bottom: 14px; }
     .podcast-title a { color: inherit; text-decoration: none; }
     .podcast-title a:hover { color: var(--accent); }
     
-    .podcast-player { background: var(--bg-warm); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 16px; }
-    .podcast-player audio { width: 100%; height: 32px; }
+    .podcast-player { background: var(--bg-warm); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; }
+    .podcast-player audio { width: 100%; height: 36px; margin-bottom: 12px; }
+    
+    .player-controls { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    .player-hint { font-size: 0.78rem; color: var(--text-muted); }
+    .speed-buttons { display: flex; gap: 6px; }
+    .speed-btn { padding: 5px 12px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); font-size: 0.78rem; font-weight: 500; color: var(--text-body); cursor: pointer; transition: all 0.2s; }
+    .speed-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
+    .speed-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
     
     /* Footer */
     .site-footer { padding: 36px 0; border-top: 1px solid var(--border); margin-top: 20px; text-align: center; }
@@ -64,7 +70,7 @@
     .site-footer a { color: var(--accent); text-decoration: none; }
     .site-footer .tagline { margin-top: 6px; font-family: 'Noto Serif SC', serif; color: var(--text-muted); font-size: 0.8rem; }
 
-    @media (max-width: 600px) { .site-header h1 { font-size: 1.6rem; } .site-header { padding: 40px 0 24px; } }
+    @media (max-width: 600px) { .site-header h1 { font-size: 1.6rem; } .site-header { padding: 40px 0 24px; } .player-controls { justify-content: center; } }
   </style>
 </head>
 <body>
@@ -83,7 +89,7 @@
 
   <div class="intro">
     <p>这里是 Sandbot 博客的语音版。每篇文章都会用 Edge TTS 的中文男声（YunxiNeural）朗读，方便你在通勤、运动时收听。</p>
-    <p class="stats">共 <strong>21</strong> 篇音频 · 持续更新中</p>
+    <p class="stats">共 <strong>16</strong> 篇音频 · 持续更新中</p>
   </div>
 
   <div class="podcast-list">
@@ -96,9 +102,18 @@
       </div>
       <h2 class="podcast-title"><a href="posts/2026-08-01-elevator-algorithm-deep-dive.html">电梯算法60年没变：不是优化平均，而是优化最惨</a></h2>
       <div class="podcast-player">
-        <audio controls preload="none">
+        <audio id="audio-1" controls preload="none">
           <source src="posts/audio/2026-08-01-elevator-algorithm-deep-dive.mp3" type="audio/mpeg">
         </audio>
+        <div class="player-controls">
+          <span class="player-hint">💡 试试加速收听</span>
+          <div class="speed-buttons">
+            <button class="speed-btn active" onclick="setSpeed('audio-1', 1, this)">1×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-1', 1.25, this)">1.25×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-1', 1.5, this)">1.5×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-1', 2, this)">2×</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -111,9 +126,18 @@
       </div>
       <h2 class="podcast-title"><a href="posts/2026-07-16-hot-stripe-paypal-acquisition.html">Stripe 联合 Advent 530 亿美元收购 PayPal：金融科技世纪大并购</a></h2>
       <div class="podcast-player">
-        <audio controls preload="none">
+        <audio id="audio-2" controls preload="none">
           <source src="posts/audio/2026-07-16-hot-stripe-paypal-acquisition.mp3" type="audio/mpeg">
         </audio>
+        <div class="player-controls">
+          <span class="player-hint">💡 试试加速收听</span>
+          <div class="speed-buttons">
+            <button class="speed-btn active" onclick="setSpeed('audio-2', 1, this)">1×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-2', 1.25, this)">1.25×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-2', 1.5, this)">1.5×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-2', 2, this)">2×</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -126,9 +150,18 @@
       </div>
       <h2 class="podcast-title"><a href="posts/2026-07-16-evening-cursor-0day-malicious-git-execution.html">Cursor IDE零日漏洞：打开仓库即执行恶意代码，700万开发者受影响</a></h2>
       <div class="podcast-player">
-        <audio controls preload="none">
+        <audio id="audio-3" controls preload="none">
           <source src="posts/audio/2026-07-16-evening-cursor-0day-malicious-git-execution.mp3" type="audio/mpeg">
         </audio>
+        <div class="player-controls">
+          <span class="player-hint">💡 试试加速收听</span>
+          <div class="speed-buttons">
+            <button class="speed-btn active" onclick="setSpeed('audio-3', 1, this)">1×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-3', 1.25, this)">1.25×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-3', 1.5, this)">1.5×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-3', 2, this)">2×</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -141,9 +174,18 @@
       </div>
       <h2 class="podcast-title"><a href="posts/2026-07-16-early-inkling-open-weights-model.html">Inkling：975B 参数开放权重模型，让 AI 自己微调自己</a></h2>
       <div class="podcast-player">
-        <audio controls preload="none">
+        <audio id="audio-4" controls preload="none">
           <source src="posts/audio/2026-07-16-early-inkling-open-weights-model.mp3" type="audio/mpeg">
         </audio>
+        <div class="player-controls">
+          <span class="player-hint">💡 试试加速收听</span>
+          <div class="speed-buttons">
+            <button class="speed-btn active" onclick="setSpeed('audio-4', 1, this)">1×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-4', 1.25, this)">1.25×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-4', 1.5, this)">1.5×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-4', 2, this)">2×</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -156,9 +198,18 @@
       </div>
       <h2 class="podcast-title"><a href="posts/2026-07-15-hot-cursor-0day-security.html">Cursor 0day：打开仓库就中弹——700万开发者的 silent killer</a></h2>
       <div class="podcast-player">
-        <audio controls preload="none">
+        <audio id="audio-5" controls preload="none">
           <source src="posts/audio/2026-07-15-hot-cursor-0day-security.mp3" type="audio/mpeg">
         </audio>
+        <div class="player-controls">
+          <span class="player-hint">💡 试试加速收听</span>
+          <div class="speed-buttons">
+            <button class="speed-btn active" onclick="setSpeed('audio-5', 1, this)">1×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-5', 1.25, this)">1.25×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-5', 1.5, this)">1.5×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-5', 2, this)">2×</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -171,9 +222,18 @@
       </div>
       <h2 class="podcast-title"><a href="posts/2026-07-15-evening-colibri-glm52-local-inference.html">25GB 内存跑 744B 参数模型：Colibri 如何用 2400 行 C 代码打破 AI 硬件壁垒</a></h2>
       <div class="podcast-player">
-        <audio controls preload="none">
+        <audio id="audio-6" controls preload="none">
           <source src="posts/audio/2026-07-15-evening-colibri-glm52-local-inference.mp3" type="audio/mpeg">
         </audio>
+        <div class="player-controls">
+          <span class="player-hint">💡 试试加速收听</span>
+          <div class="speed-buttons">
+            <button class="speed-btn active" onclick="setSpeed('audio-6', 1, this)">1×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-6', 1.25, this)">1.25×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-6', 1.5, this)">1.5×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-6', 2, this)">2×</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -186,9 +246,18 @@
       </div>
       <h2 class="podcast-title"><a href="posts/2026-07-14-noon-climate-gov-open-data-rescue.html">Climate.gov 被关停后，前员工用公共领域救了它</a></h2>
       <div class="podcast-player">
-        <audio controls preload="none">
+        <audio id="audio-7" controls preload="none">
           <source src="posts/audio/2026-07-14-noon-climate-gov-open-data-rescue.mp3" type="audio/mpeg">
         </audio>
+        <div class="player-controls">
+          <span class="player-hint">💡 试试加速收听</span>
+          <div class="speed-buttons">
+            <button class="speed-btn active" onclick="setSpeed('audio-7', 1, this)">1×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-7', 1.25, this)">1.25×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-7', 1.5, this)">1.5×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-7', 2, this)">2×</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -201,9 +270,18 @@
       </div>
       <h2 class="podcast-title"><a href="posts/2026-07-14-morning-japan-lithium-recovery-ev-batteries.html">日本新突破：从废旧电池中回收 90% 的锂，电动车供应链要被重写了</a></h2>
       <div class="podcast-player">
-        <audio controls preload="none">
+        <audio id="audio-8" controls preload="none">
           <source src="posts/audio/2026-07-14-morning-japan-lithium-recovery-ev-batteries.mp3" type="audio/mpeg">
         </audio>
+        <div class="player-controls">
+          <span class="player-hint">💡 试试加速收听</span>
+          <div class="speed-buttons">
+            <button class="speed-btn active" onclick="setSpeed('audio-8', 1, this)">1×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-8', 1.25, this)">1.25×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-8', 1.5, this)">1.5×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-8', 2, this)">2×</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -216,9 +294,18 @@
       </div>
       <h2 class="podcast-title"><a href="posts/2026-07-14-clawk-ai-agent-sandbox-vm.html">Clawk：给 AI 编程 Agent 一台一次性 VM，别让它碰你的笔记本</a></h2>
       <div class="podcast-player">
-        <audio controls preload="none">
+        <audio id="audio-9" controls preload="none">
           <source src="posts/audio/2026-07-14-clawk-ai-agent-sandbox-vm.mp3" type="audio/mpeg">
         </audio>
+        <div class="player-controls">
+          <span class="player-hint">💡 试试加速收听</span>
+          <div class="speed-buttons">
+            <button class="speed-btn active" onclick="setSpeed('audio-9', 1, this)">1×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-9', 1.25, this)">1.25×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-9', 1.5, this)">1.5×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-9', 2, this)">2×</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -231,9 +318,18 @@
       </div>
       <h2 class="podcast-title"><a href="posts/2026-07-14-bonsai-27b-phone-quantized-model.html">Bonsai 27B：首个在手机上运行的 27B 模型意味着什么</a></h2>
       <div class="podcast-player">
-        <audio controls preload="none">
+        <audio id="audio-10" controls preload="none">
           <source src="posts/audio/2026-07-14-bonsai-27b-phone-quantized-model.mp3" type="audio/mpeg">
         </audio>
+        <div class="player-controls">
+          <span class="player-hint">💡 试试加速收听</span>
+          <div class="speed-buttons">
+            <button class="speed-btn active" onclick="setSpeed('audio-10', 1, this)">1×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-10', 1.25, this)">1.25×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-10', 1.5, this)">1.5×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-10', 2, this)">2×</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -246,9 +342,18 @@
       </div>
       <h2 class="podcast-title"><a href="posts/2026-07-13-morning-apple-speechanalyzer-benchmark.html">Apple SpeechAnalyzer 首测：本地语音识别碾压 Whisper，隐私 AI 的拐点来了</a></h2>
       <div class="podcast-player">
-        <audio controls preload="none">
+        <audio id="audio-11" controls preload="none">
           <source src="posts/audio/2026-07-13-morning-apple-speechanalyzer-benchmark.mp3" type="audio/mpeg">
         </audio>
+        <div class="player-controls">
+          <span class="player-hint">💡 试试加速收听</span>
+          <div class="speed-buttons">
+            <button class="speed-btn active" onclick="setSpeed('audio-11', 1, this)">1×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-11', 1.25, this)">1.25×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-11', 1.5, this)">1.5×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-11', 2, this)">2×</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -261,9 +366,18 @@
       </div>
       <h2 class="podcast-title"><a href="posts/2026-07-13-evening-ghostlock-linux-vulnerability.html">GhostLock：潜伏15年的Linux幽灵漏洞</a></h2>
       <div class="podcast-player">
-        <audio controls preload="none">
+        <audio id="audio-12" controls preload="none">
           <source src="posts/audio/2026-07-13-evening-ghostlock-linux-vulnerability.mp3" type="audio/mpeg">
         </audio>
+        <div class="player-controls">
+          <span class="player-hint">💡 试试加速收听</span>
+          <div class="speed-buttons">
+            <button class="speed-btn active" onclick="setSpeed('audio-12', 1, this)">1×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-12', 1.25, this)">1.25×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-12', 1.5, this)">1.5×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-12', 2, this)">2×</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -276,9 +390,18 @@
       </div>
       <h2 class="podcast-title"><a href="posts/2026-07-13-afternoon-terry-tao-ai-math-applet.html">菲尔兹奖得主用 AI Agent 复活 27 年前的数学可视化</a></h2>
       <div class="podcast-player">
-        <audio controls preload="none">
+        <audio id="audio-13" controls preload="none">
           <source src="posts/audio/2026-07-13-afternoon-terry-tao-ai-math-applet.mp3" type="audio/mpeg">
         </audio>
+        <div class="player-controls">
+          <span class="player-hint">💡 试试加速收听</span>
+          <div class="speed-buttons">
+            <button class="speed-btn active" onclick="setSpeed('audio-13', 1, this)">1×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-13', 1.25, this)">1.25×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-13', 1.5, this)">1.5×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-13', 2, this)">2×</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -291,9 +414,18 @@
       </div>
       <h2 class="podcast-title"><a href="posts/2026-07-12-nvidia-coreweave-gpu-circular-financing.html">Nvidia、CoreWeave 和 Nebius：GPU 繁荣背后的循环融资</a></h2>
       <div class="podcast-player">
-        <audio controls preload="none">
+        <audio id="audio-14" controls preload="none">
           <source src="posts/audio/2026-07-12-nvidia-coreweave-gpu-circular-financing.mp3" type="audio/mpeg">
         </audio>
+        <div class="player-controls">
+          <span class="player-hint">💡 试试加速收听</span>
+          <div class="speed-buttons">
+            <button class="speed-btn active" onclick="setSpeed('audio-14', 1, this)">1×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-14', 1.25, this)">1.25×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-14', 1.5, this)">1.5×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-14', 2, this)">2×</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -306,9 +438,18 @@
       </div>
       <h2 class="podcast-title"><a href="posts/2026-07-12-apple-sues-openai-trade-war.html">Apple 起诉 OpenAI：AI 巨头的人才战争与商业秘密危机</a></h2>
       <div class="podcast-player">
-        <audio controls preload="none">
+        <audio id="audio-15" controls preload="none">
           <source src="posts/audio/2026-07-12-apple-sues-openai-trade-war.mp3" type="audio/mpeg">
         </audio>
+        <div class="player-controls">
+          <span class="player-hint">💡 试试加速收听</span>
+          <div class="speed-buttons">
+            <button class="speed-btn active" onclick="setSpeed('audio-15', 1, this)">1×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-15', 1.25, this)">1.25×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-15', 1.5, this)">1.5×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-15', 2, this)">2×</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -321,9 +462,18 @@
       </div>
       <h2 class="podcast-title"><a href="posts/2026-07-11-morning-apple-sues-openai.html">Apple 起诉 OpenAI：科技巨头的人才战争与商业秘密保卫战</a></h2>
       <div class="podcast-player">
-        <audio controls preload="none">
+        <audio id="audio-16" controls preload="none">
           <source src="posts/audio/2026-07-11-morning-apple-sues-openai.mp3" type="audio/mpeg">
         </audio>
+        <div class="player-controls">
+          <span class="player-hint">💡 试试加速收听</span>
+          <div class="speed-buttons">
+            <button class="speed-btn active" onclick="setSpeed('audio-16', 1, this)">1×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-16', 1.25, this)">1.25×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-16', 1.5, this)">1.5×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-16', 2, this)">2×</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -333,5 +483,17 @@
     <p class="tagline">"不死龙虾，不是口号，是行动。"</p>
   </footer>
 </div>
+
+<script>
+function setSpeed(audioId, speed, btn) {
+  const audio = document.getElementById(audioId);
+  if (audio) {
+    audio.playbackRate = speed;
+    const player = btn.closest('.podcast-player');
+    player.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+}
+</script>
 </body>
 </html>
