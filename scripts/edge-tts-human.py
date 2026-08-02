@@ -99,7 +99,7 @@ async def text_to_speech(text, output_file, voice='zh-CN-YunxiNeural', style='ch
     ssml = text_to_ssml(text, voice, style)
     
     # 使用 SSML 生成语音
-    communicate = edge_tts.Communicate(ssml, voice=voice, rate='-15%')
+    communicate = edge_tts.Communicate(ssml, voice=voice, rate='+5%')
     await communicate.save(output_file)
     return True
 
@@ -123,7 +123,7 @@ def main():
     print(f"   语音: {voice}")
     print(f"   风格: {style}")
     print(f"   文本: {len(text)} 字符")
-    print(f"   改进: 段落停顿 500ms, 句间停顿 200ms, 语速 -15%")
+    print(f"   改进: 段落停顿 500ms, 句间停顿 200ms, 语速 +5%")
     
     asyncio.run(text_to_speech(text, output_file, voice, style))
     

@@ -165,9 +165,102 @@ with open(TITLES_FILE, 'w', encoding='utf-8') as f:
 print(f"✅ 已更新 article-titles.txt，包含 {len(titles)} 篇文章标题")
 PYEOF
 
+# 7. 自动添加到播客列表（如果有语音）
+if [ "$GENERATE_AUDIO" = true ]; then
+  echo "🎙️  添加到播客列表..."
+  python3 << PYEOF
+import re
+from datetime import datetime
+
+# 提取文章信息
+article_file = "$ARTICLE_FILE"
+audio_file = "$AUDIO_DIR/$ARTICLE_BASE.mp3"
+article_base = "$ARTICLE_BASE"
+
+with open(article_file, 'r', encoding='utf-8') as f:
+    content = f.read()
+
+# 提取标题
+title_match = re.search(r'<title>([^<]+)</title>', content)
+title = title_match.group(1).strip() if title_match else article_base
+title = re.sub(r'\s*—\s*Sandbot Blog.*$', '', title)
+
+# 提取标签
+tag_match = re.search(r'<span class="tag tag-(\w+)">', content)
+tag = tag_match.group(1) if tag_match else 'hot'
+
+# 提取日期
+date_match = re.search(r'(\d{4}-\d{2}-\d{2})', article_base)
+date = date_match.group(1) if date_match else datetime.now().strftime('%Y-%m-%d')
+
+# 计算时长（假设 300 字/分钟）
+text_file = "/tmp/tts-input.txt"
+try:
+    with open(text_file, 'r', encoding='utf-8') as f:
+        text_len = len(f.read())
+    duration_min = max(1, text_len // 300)
+except:
+    duration_min = 5
+
+# 生成播客条目
+podcast_item = f'''    <div class="podcast-item">
+      <div class="podcast-meta">
+        <span class="tag">{tag}</span>
+        <span>{date}</span>
+        <span>·</span>
+        <span>约 {duration_min} 分钟</span>
+      </div>
+      <h2 class="podcast-title"><a href="posts/{article_base}.html">{title}</a></h2>
+      <div class="podcast-player">
+        <audio id="audio-{article_base}" controls preload="none">
+          <source src="posts/audio/{article_base}.mp3" type="audio/mpeg">
+        </audio>
+        <div class="player-controls">
+          <span class="player-hint">💡 试试加速收听</span>
+          <div class="speed-buttons">
+            <button class="speed-btn active" onclick="setSpeed('audio-{article_base}', 1, this)">1×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-{article_base}', 1.25, this)">1.25×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-{article_base}', 1.5, this)">1.5×</button>
+            <button class="speed-btn" onclick="setSpeed('audio-{article_base}', 2, this)">2×</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+'''
+
+# 读取 podcast.html
+podcast_file = "$BLOG_ROOT/podcast.html"
+with open(podcast_file, 'r', encoding='utf-8') as f:
+    podcast_content = f.read()
+
+# 找到 podcast-list 的开头
+insert_pos = podcast_content.find('<div class="podcast-list">')
+if insert_pos != -1:
+    # 找到第一个 podcast-item 的位置
+    first_item = podcast_content.find('<div class="podcast-item">', insert_pos)
+    if first_item != -1:
+        # 插入新条目
+        new_content = podcast_content[:first_item] + podcast_item + podcast_content[first_item:]
+        
+        # 更新音频总数
+        count = new_content.count('<div class="podcast-item">')
+        new_content = re.sub(r'共 <strong>\d+</strong> 篇音频', f'共 <strong>{count}</strong> 篇音频', new_content)
+        
+        with open(podcast_file, 'w', encoding='utf-8') as f:
+            f.write(new_content)
+        
+        print(f"✅ 已添加到播客列表：{title}")
+    else:
+        print("⚠️  未找到播客列表位置")
+else:
+    print("⚠️  未找到 podcast-list")
+PYEOF
+fi
+
 echo ""
 if [ "$GENERATE_AUDIO" = true ]; then
-  echo "✅ 发布完成（含语音版本）"
+  echo "✅ 发布完成（含语音版本 + 已加入播客列表）"
 else
   echo "✅ 发布完成（无语音版本）"
 fi
