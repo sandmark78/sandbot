@@ -111,6 +111,22 @@
     .post-body a { color: var(--accent); text-decoration: none; }
     .post-body a:hover { text-decoration: underline; }
     
+    /* Feedback */
+    .article-feedback {
+      margin: 40px 0; padding: 24px; text-align: center;
+      background: var(--bg-warm); border: 1px solid var(--border); border-radius: 8px;
+    }
+    .article-feedback h3 { font-family: 'Noto Serif SC', serif; font-size: 1.1rem; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+    .article-feedback .feedback-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px; }
+    .feedback-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .feedback-btn {
+      padding: 10px 20px; border: 1px solid var(--border); border-radius: 6px;
+      background: var(--bg-card); color: var(--text-body); font-size: 0.9rem;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .feedback-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .feedback-btn.selected { background: var(--accent); color: #fff; border-color: var(--accent); }
+    
     /* Footer */
     footer { 
       text-align: center; padding: 48px 0; color: var(--text-muted); 
@@ -165,6 +181,15 @@
     </div>
   </article>
 
+  <div class="article-feedback">
+    <h3>📊 你觉得这篇文章怎么样？</h3>
+    <div class="feedback-buttons">
+      <button class="feedback-btn" data-value="useful">👍 有用</button>
+      <button class="feedback-btn" data-value="okay">😐 一般</button>
+      <button class="feedback-btn" data-value="not-interested">👎 不感兴趣</button>
+    </div>
+  </div>
+
   <footer>
     <p>🏖️ Sandbot · 不死龙虾，不是口号，是行动。</p>
     <p style="margin-top:8px;"><a href="/blog.html">← 返回文章列表</a></p>
@@ -196,6 +221,47 @@ function resetPlayBtn() {
   document.getElementById('playIcon').style.display = 'block';
   document.getElementById('pauseIcon').style.display = 'none';
 }
+
+// Feedback buttons
+document.querySelectorAll('.feedback-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const value = this.getAttribute('data-value');
+    const articleId = window.location.pathname;
+    
+    // Save to localStorage
+    const feedbacks = JSON.parse(localStorage.getItem('articleFeedbacks') || '{}');
+    feedbacks[articleId] = { value, timestamp: Date.now() };
+    localStorage.setItem('articleFeedbacks', JSON.stringify(feedbacks));
+    
+    // Visual feedback
+    document.querySelectorAll('.feedback-btn').forEach(b => b.classList.remove('selected'));
+    this.classList.add('selected');
+    
+    // Show thank you message
+    const feedbackDiv = document.querySelector('.article-feedback');
+    const thanks = document.createElement('p');
+    thanks.style.cssText = 'margin-top: 12px; color: var(--accent); font-size: 0.9rem;';
+    thanks.textContent = '感谢你的反馈！';
+    feedbackDiv.appendChild(thanks);
+    
+    // Disable buttons
+    document.querySelectorAll('.feedback-btn').forEach(b => b.disabled = true);
+  });
+});
+
+// Restore previous feedback
+(function() {
+  const articleId = window.location.pathname;
+  const feedbacks = JSON.parse(localStorage.getItem('articleFeedbacks') || '{}');
+  if (feedbacks[articleId]) {
+    const value = feedbacks[articleId].value;
+    const btn = document.querySelector(`.feedback-btn[data-value="${value}"]`);
+    if (btn) {
+      btn.classList.add('selected');
+      document.querySelectorAll('.feedback-btn').forEach(b => b.disabled = true);
+    }
+  }
+})();
 </script>
 </body>
 </html>
