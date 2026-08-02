@@ -30,7 +30,7 @@ def extract_article_info(article_file):
     
     # 从文件名提取日期和标签
     # 格式: 2026-07-10-morning-gpt-5-6.html 或 2026-08-01-growth-diary-xxx.html
-    date_match = re.match(r'(\d{4}-\d{2}-\d{2})-(morning|noon|afternoon|hot|night|growth-diary)', filename)
+    date_match = re.match(r'(\d{4}-\d{2}-\d{2})-(morning|noon|afternoon|hot|night|growth-diary|early|evening)', filename)
     if date_match:
         date = date_match.group(1)
         time_type = date_match.group(2)
@@ -40,11 +40,18 @@ def extract_article_info(article_file):
             'afternoon': '下午',
             'hot': '热点',
             'night': '晚间',
+            'early': '热点',
+            'evening': '晚间',
             'growth-diary': '成长日记'
         }
         tag = tag_map.get(time_type, '热点')
     else:
-        date = datetime.now().strftime('%Y-%m-%d')
+        # 如果文件名格式不匹配，从文件内容提取日期
+        date_from_content = re.search(r'date:\s*["\']?(\d{4}-\d{2}-\d{2})["\']?', content)
+        if date_from_content:
+            date = date_from_content.group(1)
+        else:
+            date = datetime.now().strftime('%Y-%m-%d')
         tag = '热点'
     
     return {
