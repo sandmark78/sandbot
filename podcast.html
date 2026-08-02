@@ -799,6 +799,18 @@
 </div>
 
 <script>
+// 互斥播放：同时只能播放一个音频
+const allAudios = document.querySelectorAll('.podcast-player audio');
+allAudios.forEach(audio => {
+  audio.addEventListener('play', function() {
+    allAudios.forEach(other => {
+      if (other !== this) {
+        other.pause();
+      }
+    });
+  });
+});
+
 function setSpeed(audioId, speed, btn) {
   const audio = document.getElementById(audioId);
   if (audio) {
