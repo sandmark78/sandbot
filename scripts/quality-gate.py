@@ -47,6 +47,7 @@ SITE_URL = "https://sandbot.cgfan.com"
 
 MIN_TEXT_CHARS = 3000  # 最低正文字数（生成语音的阈值）
 MIN_WORD_COUNT = 1500  # 最低中文字数
+MIN_AGENT_VOICE = 30   # 最低 Agent 视角出现次数
 
 # V4 模板必须元素 (regex, description, severity: error|warning)
 V4_REQUIRED = [
@@ -269,6 +270,39 @@ def check_rss_freshness(result, content):
         result.info.append("修复: python3 scripts/post-publish-audit.py --fix-rss")
 
 
+def check_agent_voice(result, content):
+    """检查 10: Agent 视角密度（第一人称）"""
+    # 统计第一人称代词
+    first_person = re.findall(r'我[作为是]|我的|我们|作为一个|作为.*AI', content)
+    agent_count = len(first_person)
+    
+    result.info.append(f"Agent视角: {agent_count} 次")
+    
+    if agent_count < MIN_AGENT_VOICE:
+        result.errors.append(
+            f"Agent视角不足: {agent_count} 次 (最低要求 {MIN_AGENT_VOICE} 次)"
+        )
+    
+    # 检查是否有 Agent 身份表达
+    identity_patterns = [
+        r'作为.*AI',
+        r'作为一个.*Agent',
+        r'我是.*AI',
+        r'我的.*视角',
+        r'我的.*判断',
+        r'我的.*分析'
+    ]
+    
+    identity_count = 0
+    for pattern in identity_patterns:
+        identity_count += len(re.findall(pattern, content))
+    
+    if identity_count < 3:
+        result.warnings.append(
+            f"Agent身份表达偏少: {identity_count} 次 (建议 ≥3 次)"
+        )
+
+
 def check_html_validity(result, content):
     """检查 9: 基本 HTML 完整性"""
     # 检查 </html> 闭合
@@ -288,8 +322,6 @@ def check_html_validity(result, content):
                 f"<{tag}> 标签不匹配: {opens} 开 / {closes} 闭"
             )
 
-
-# ── 自动修复 ──────────────────────────────────────────────────────────
 
 def auto_fix(result):
     """尝试自动修复可修复的问题"""
@@ -355,6 +387,7 @@ def run_gate(filepath):
     check_blog_index(result, content)
     check_rss_freshness(result, content)
     check_html_validity(result, content)
+    check_agent_voice(result, content)
 
     return result
 
@@ -444,28 +477,6 @@ def print_report(result, fix_mode=False):
     else:
         print(f"🔴 结果: 未通过（{len(result.errors)} 个错误需修复）")
     print(f"{'═' * 60}\n")
-
-
-def check_agent_voice(content):
-    """检查是否有 AI Agent 第一人称视角"""
-    issues = []
-    
-    # 检查第一人称代词
-    first_person = re.findall(r'我[作为是]|我的|我们', content)
-    if len(first_person) < 3:
-        issues.append("❌ 缺少 AI Agent 第一人称视角（至少 3 处'我作为/我的/我们'）")
-    
-    # 检查 Agent 身份表达
-    agent_identity = re.findall(r'AI Agent|作为.*Agent|硅基|AI.*视角|我的观察|我的判断|我的分析', content)
-    if len(agent_identity) < 2:
-        issues.append("❌ 缺少 Agent 身份表达（至少 2 处'AI Agent/我的观察/我的判断'）")
-    
-    # 检查主观判断词
-    subjective = re.findall(r'我认为|我觉得|在我看来|我的结论|我的建议|我踩过的坑', content)
-    if len(subjective) < 2:
-        issues.append("⚠️ 缺少主观判断（至少 2 处'我认为/我觉得/我的建议'）")
-    
-    return issues
 
 
 def main():
