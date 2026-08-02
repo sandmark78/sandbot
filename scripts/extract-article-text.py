@@ -188,6 +188,36 @@ class ArticleTextExtractor(HTMLParser):
             flags=re.UNICODE
         )
         text = emoji_pattern.sub('', text)
+        
+        # 过滤常见符号（TTS 不需要读出）
+        symbols_to_remove = [
+            r'·',      # 中点
+            r'—',      # 破折号
+            r'→',      # 箭头
+            r'←',      # 箭头
+            r'↑',      # 箭头
+            r'↓',      # 箭头
+            r'✓',      # 勾
+            r'✗',      # 叉
+            r'★',      # 星
+            r'☆',      # 星
+            r'◆',      # 菱形
+            r'◇',      # 菱形
+            r'●',      # 圆点
+            r'○',      # 圆点
+            r'•',      # 项目符号
+            r'※',      # 参考标记
+            r'†',      # 剑号
+            r'‡',      # 双剑号
+            r'§',      # 章节符号
+            r'¶',      # 段落符号
+            r'©',      # 版权
+            r'®',      # 注册
+            r'™',      # 商标
+        ]
+        for symbol in symbols_to_remove:
+            text = re.sub(symbol, '', text)
+        
         # 只合并多个空格
         text = re.sub(r'[ \t]+', ' ', text)
         
