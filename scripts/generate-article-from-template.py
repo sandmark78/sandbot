@@ -115,6 +115,7 @@ def generate_article(config_path):
             print("⚠️  警告: 无法定位正文区域，sections 未替换")
     
     # ========== 4. 音频路径替换 ==========
+    output_path = config.get('output_path', os.path.join(BLOG_ROOT, 'posts/article.html'))
     article_filename = os.path.basename(output_path)
     article_base = os.path.splitext(article_filename)[0]
     audio_path = f'audio/{article_base}.mp3'
@@ -149,7 +150,6 @@ def generate_article(config_path):
         content = content.replace('</article>', feedback_html + '\n</article>')
     
     # ========== 6. 输出文件 ==========
-    output_path = config.get('output_path', os.path.join(BLOG_ROOT, 'posts/article.html'))
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     
     with open(output_path, 'w', encoding='utf-8') as f:

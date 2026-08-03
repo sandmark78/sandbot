@@ -1,41 +1,62 @@
-# 🔥 晚间素材 - 2026-08-02
+# 🔥 晚间素材 - 2026-08-03
 
-**抓取时间**: 11:15 UTC
-
----
-
-## 话题 1: Seedance 2.5 — 字节跳动视频生成模型 (357分/190评论)
-
-**热度**: HN 榜首，远超其他话题
-**链接**: https://seed.bytedance.com/en/blog/one-take-creation-flexible-referencing-introducing-seedance-2-5
-
-**核心看点**:
-- 字节跳动发布 Seedance 2.5，主打 "one-take creation" + flexible referencing
-- 357 分 + 190 评论，社区讨论极其活跃
-- 视频生成赛道持续白热化（Sora、Veo、Seedance 三足鼎立）
-
-**文章角度候选**:
-- 字节在 AI 视频领域的布局与竞争力
-- "flexible referencing" 技术突破意味着什么
-- 中国 AI 视频模型 vs 美国竞品的差距
+**抓取时间**: 09:15 UTC (17:15 北京)
+**来源**: Hacker News + AIHOT + FiNews
 
 ---
 
-## 话题 2: Codex 用 Sol 指挥 Luna Max — AI Agent 编排新玩法
+## 话题 1: Qwen3.8-Max 发布 — 开源最强编码模型
 
-**热度**: AIHOT 热推
-**链接**: https://x.com/AYi_AInotes/status/2083867265179537565
+**热度**: HN 536分 / 259评论 + AIHOT 头条
+**链接**: https://qwen.ai/blog?id=qwen3.8
 
-**核心看点**:
-- OpenAI Codex 高阶用法：Sol 做编排层，自动拆任务+审代码
-- Luna Max (gpt-5.6-luna, reasoning effort=max) 做实际执行
-- 本质是 Agent 联邦模式的原生实现——和 Sandbot 的 7 子 Agent 架构异曲同工
+### 核心信息
+- Qwen 正式发布 Qwen3.8-Max，2.4T 参数（95B 激活）
+- 首次开源 Qwen-Max 级权重，开放权重下周发布
+- 编码和协作能力创新高
 
-**文章角度候选**:
-- "省额度翻倍产出"——Agent 编排的 ROI 思维
-- 从 Sandbot 子 Agent 到 Codex Sol+Luna，AI 编排的殊途同归
-- 普通开发者如何复制这种多 Agent 协作模式
+### 文章角度
+- Sandbot 自身就在用 Qwen 模型（bailian/qwen3.7-plus），可以聊"我们用的模型家族又进化了"
+- 开源 vs 闭源竞争格局：Qwen 开源 Max 级权重意味着什么？
+- 2.4T 参数但只激活 95B（MoE 架构），效率和性能的平衡
+
+### 关键数据
+- 总参数: 2.4T
+- 激活参数: 95B
+- 架构: MoE (混合专家)
+- 开放权重: 下周发布
 
 ---
 
-*备选话题: Go 1.27 Interactive Tour (236分)、15岁少年造减速器 (181分)、Grok 视频分析*
+## 话题 2: Karpathy's Pelican — AI 大佬的新玩具
+
+**热度**: HN 563分 / 388评论 (今日最高分)
+**链接**: https://twitter.com/karpathy/status/2083749667410727319
+
+### 核心信息
+- Andrej Karpathy 发布 Pelican 项目
+- 388 条评论，讨论极其热烈
+
+### 文章角度
+- Karpathy 从 Tesla AI → OpenAI → 独立创业，每一步都引领方向
+- Pelican 是什么？为什么能拿到今日 HN 最高分？
+- AI 大佬的"玩具"往往预示下一个趋势
+
+### 待补充
+- 需要抓取 Karpathy 推文原文和项目详情
+- 看评论区在讨论什么（技术细节 vs 行业影响）
+
+---
+
+## 备选话题
+
+| 话题 | 热度 | 简评 |
+|------|------|------|
+| Don't be a meat proxy | 438分/189评 | 反消费主义？有深度 |
+| OpenAI Astra 数学强但被过度吹捧 | AIHOT | Gary Marcus 唱衰派，观点犀利 |
+| Codex 用 Sol 指挥 Luna Max | AIHOT | 高阶玩法，省额度技巧 |
+| Isopolis 等距像素旧金山地图 | 213分 | 有趣但偏小众 |
+
+---
+
+*素材就绪，等老大选角度写文章。*
