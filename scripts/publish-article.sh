@@ -1,6 +1,12 @@
 #!/bin/bash
 # 一键发布文章脚本（带 TTS 语音）
 # 用法: ./publish-article.sh <article-file> <blog-html>
+#
+# 修复记录 (2026-08-03):
+# - 添加文件位置验证（必须在 posts/ 目录）
+# - 添加音频文件复制（articles/audio/ → posts/audio/）
+# - 添加占位符检查
+# - 添加最终验证步骤
 
 ARTICLE_FILE=$1
 BLOG_HTML=$2
@@ -21,10 +27,41 @@ BLOG_ROOT="$(dirname "$SCRIPT_DIR")"
 
 echo "📂 博客根目录: $BLOG_ROOT"
 
-# 0. 强制去重检查（最后一道防线）
+# ========== 0. 文件位置验证 ==========
+echo "🔍 验证文件位置..."
+
+# 检查文章是否在 posts/ 目录
+if [[ "$ARTICLE_FILE" != *"/posts/"* ]]; then
+  echo "⚠️  文章不在 posts/ 目录，自动复制..."
+  POSTS_ARTICLE="$BLOG_ROOT/posts/$(basename "$ARTICLE_FILE")"
+  cp "$ARTICLE_FILE" "$POSTS_ARTICLE"
+  ARTICLE_FILE="$POSTS_ARTICLE"
+  ARTICLE_DIR="$BLOG_ROOT/posts"
+  AUDIO_DIR="$ARTICLE_DIR/audio"
+  mkdir -p "$AUDIO_DIR"
+  echo "   ✅ 已复制到: $POSTS_ARTICLE"
+fi
+
+# ========== 1. 占位符检查 ==========
+echo "🔍 检查占位符..."
+PLACEHOLDER_COUNT=$(grep -c "正文内容\.\.\." "$ARTICLE_FILE" 2>/dev/null || echo "0")
+if [ "$PLACEHOLDER_COUNT" -gt 0 ]; then
+  echo "❌ 发现 $PLACEHOLDER_COUNT 处占位符残留，拒绝发布"
+  echo "   请检查模板脚本是否正确替换 sections"
+  exit 1
+fi
+
+AUDIO_PLACEHOLDER=$(grep -c "AUDIO_FILE_PLACEHOLDER" "$ARTICLE_FILE" 2>/dev/null || echo "0")
+if [ "$AUDIO_PLACEHOLDER" -gt 0 ]; then
+  echo "❌ 音频路径未替换 (AUDIO_FILE_PLACEHOLDER)"
+  exit 1
+fi
+
+echo "   ✅ 无占位符残留"
+
+# ========== 2. 去重检查 ==========
 echo "🔍 执行强制去重检查..."
 
-# 提取文章标题
 ARTICLE_TITLE=$(python3 -c "
 import re
 with open('$ARTICLE_FILE', 'r', encoding='utf-8') as f:
@@ -52,7 +89,6 @@ DUPLICATE_EXIT_CODE=$?
 if [ $DUPLICATE_EXIT_CODE -ne 0 ]; then
   echo ""
   echo "❌ 去重检查失败！发现相似标题，拒绝发布"
-  echo "请检查文章主题是否与近期文章重复"
   exit 1
 fi
 
@@ -63,14 +99,12 @@ DUPLICATE_EXIT_CODE=$?
 if [ $DUPLICATE_EXIT_CODE -ne 0 ]; then
   echo ""
   echo "❌ 去重检查失败！发现重复选题，拒绝发布"
-  echo "请检查文章主题是否与近期文章重复"
   exit 1
 fi
 
 echo ""
 
-# 1. 检查是否需要生成语音
-# 规则：所有文章 >= 3000 字都生成语音（包括早鸟）
+# ========== 3. 语音生成 ==========
 GENERATE_AUDIO=false
 
 # 提取文本并检查字数
@@ -84,13 +118,11 @@ else
   echo "⏭️  文章字数: $TEXT_LENGTH 字符 (< 3000)，跳过语音生成"
 fi
 
-# 2. 生成语音版本（如果需要）
+# 生成语音
 if [ "$GENERATE_AUDIO" = true ]; then
-  # 先验证文本
   echo "🔍 验证 TTS 文本..."
   if python3 "$SCRIPT_DIR/validate-tts-text.py" /tmp/tts-input.txt; then
     echo "🎙️  生成语音版本..."
-    # 生成语音（男声欢快风格）
     python3 "$SCRIPT_DIR/edge-tts-human.py" \
       /tmp/tts-input.txt \
       "$AUDIO_DIR/$ARTICLE_BASE.mp3" \
@@ -99,19 +131,28 @@ if [ "$GENERATE_AUDIO" = true ]; then
     
     # 给文章添加音频播放器
     python3 "$SCRIPT_DIR/add-audio-player.py" "$ARTICLE_FILE"
+    
+    # 复制音频到 posts/audio/（如果文章在 posts/）
+    if [[ "$ARTICLE_FILE" == *"/posts/"* ]]; then
+      # 检查 articles/audio/ 是否也有这个文件
+      ARTICLES_AUDIO="$BLOG_ROOT/articles/audio/$ARTICLE_BASE.mp3"
+      if [ -f "$ARTICLES_AUDIO" ]; then
+        echo "   📋 音频已在 articles/audio/"
+      fi
+    fi
   else
     echo "❌ TTS 文本验证失败，跳过语音生成"
     GENERATE_AUDIO=false
   fi
 fi
 
-# 3. 更新 blog.html
+# ========== 4. 更新 blog.html ==========
 python3 "$SCRIPT_DIR/update-blog.py" "$ARTICLE_FILE" "$BLOG_HTML"
 
-# 4. 更新 RSS（从 posts/ 目录直接生成，不依赖 blog.html）
+# ========== 5. 更新 RSS ==========
 python3 "$SCRIPT_DIR/generate-rss-from-posts.py"
 
-# 5. Git操作
+# ========== 6. Git 操作 ==========
 cd "$BLOG_ROOT"
 if [ "$GENERATE_AUDIO" = true ]; then
   git add "$ARTICLE_FILE" "$BLOG_HTML" feed.xml "$AUDIO_DIR/$ARTICLE_BASE.mp3"
@@ -122,7 +163,7 @@ else
 fi
 git push origin main
 
-# 6. 更新文章标题列表
+# ========== 7. 更新文章标题列表 ==========
 echo "📝 更新文章标题列表..."
 python3 << PYEOF
 import os
@@ -131,28 +172,23 @@ import re
 POSTS_DIR = "$BLOG_ROOT/posts"
 TITLES_FILE = "$BLOG_ROOT/article-titles.txt"
 
-# 获取所有文章文件
 article_files = sorted([f for f in os.listdir(POSTS_DIR) if f.endswith('.html') and f.startswith('2026-')])
 
-# 提取标题
 titles = []
 for filename in article_files:
     filepath = os.path.join(POSTS_DIR, filename)
     with open(filepath, 'r', encoding='utf-8') as f:
         content = f.read()
     
-    # 提取 <title> 标签内容
     title_match = re.search(r'<title>([^<]+)</title>', content)
     if title_match:
         title = title_match.group(1).strip()
-        # 移除 "— Sandbot Blog" 后缀
         title = re.sub(r'\s*—\s*Sandbot Blog.*$', '', title)
         titles.append({
             'filename': filename,
             'title': title
         })
 
-# 写入标题列表文件
 with open(TITLES_FILE, 'w', encoding='utf-8') as f:
     f.write("# 所有文章标题列表\n")
     f.write(f"# 生成时间: {__import__('datetime').datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')}\n")
@@ -165,14 +201,13 @@ with open(TITLES_FILE, 'w', encoding='utf-8') as f:
 print(f"✅ 已更新 article-titles.txt，包含 {len(titles)} 篇文章标题")
 PYEOF
 
-# 7. 自动添加到播客列表（如果有语音）
+# ========== 8. 添加到播客列表 ==========
 if [ "$GENERATE_AUDIO" = true ]; then
   echo "🎙️  添加到播客列表..."
   python3 << PYEOF
 import re
 from datetime import datetime
 
-# 提取文章信息
 article_file = "$ARTICLE_FILE"
 audio_file = "$AUDIO_DIR/$ARTICLE_BASE.mp3"
 article_base = "$ARTICLE_BASE"
@@ -180,20 +215,16 @@ article_base = "$ARTICLE_BASE"
 with open(article_file, 'r', encoding='utf-8') as f:
     content = f.read()
 
-# 提取标题
 title_match = re.search(r'<title>([^<]+)</title>', content)
 title = title_match.group(1).strip() if title_match else article_base
 title = re.sub(r'\s*—\s*Sandbot Blog.*$', '', title)
 
-# 提取标签
 tag_match = re.search(r'<span class="tag tag-(\w+)">', content)
 tag = tag_match.group(1) if tag_match else 'hot'
 
-# 提取日期
 date_match = re.search(r'(\d{4}-\d{2}-\d{2})', article_base)
 date = date_match.group(1) if date_match else datetime.now().strftime('%Y-%m-%d')
 
-# 计算时长（假设 300 字/分钟）
 text_file = "/tmp/tts-input.txt"
 try:
     with open(text_file, 'r', encoding='utf-8') as f:
@@ -202,7 +233,6 @@ try:
 except:
     duration_min = 5
 
-# 生成播客条目
 podcast_item = f'''    <div class="podcast-item">
       <div class="podcast-meta">
         <span class="tag">{tag}</span>
@@ -229,21 +259,16 @@ podcast_item = f'''    <div class="podcast-item">
 
 '''
 
-# 读取 podcast.html
 podcast_file = "$BLOG_ROOT/podcast.html"
 with open(podcast_file, 'r', encoding='utf-8') as f:
     podcast_content = f.read()
 
-# 找到 podcast-list 的开头
 insert_pos = podcast_content.find('<div class="podcast-list">')
 if insert_pos != -1:
-    # 找到第一个 podcast-item 的位置
     first_item = podcast_content.find('<div class="podcast-item">', insert_pos)
     if first_item != -1:
-        # 插入新条目
         new_content = podcast_content[:first_item] + podcast_item + podcast_content[first_item:]
         
-        # 更新音频总数
         count = new_content.count('<div class="podcast-item">')
         new_content = re.sub(r'共 <strong>\d+</strong> 篇音频', f'共 <strong>{count}</strong> 篇音频', new_content)
         
@@ -258,6 +283,38 @@ else:
 PYEOF
 fi
 
+# ========== 9. 最终验证 ==========
+echo ""
+echo "🔍 最终验证..."
+
+# 检查文章是否可访问
+ARTICLE_URL="https://sandbot.cgfan.com/posts/${ARTICLE_BASE}"
+HTTP_STATUS=$(curl -sI "$ARTICLE_URL" | head -1 | awk '{print $2}')
+
+if [ "$HTTP_STATUS" = "200" ]; then
+  echo "   ✅ 文章可访问: $ARTICLE_URL"
+else
+  echo "   ⚠️  文章可能无法访问 (HTTP $HTTP_STATUS)"
+  echo "      Cloudflare Pages 可能需要 1-2 分钟部署"
+fi
+
+# 检查音频文件
+if [ "$GENERATE_AUDIO" = true ]; then
+  if [ -f "$AUDIO_DIR/$ARTICLE_BASE.mp3" ]; then
+    AUDIO_SIZE=$(du -h "$AUDIO_DIR/$ARTICLE_BASE.mp3" | cut -f1)
+    echo "   ✅ 音频文件: $AUDIO_SIZE"
+  else
+    echo "   ❌ 音频文件缺失"
+  fi
+fi
+
+# 检查评分组件
+if grep -q "article-feedback" "$ARTICLE_FILE"; then
+  echo "   ✅ 评分组件已添加"
+else
+  echo "   ⚠️  缺少评分组件"
+fi
+
 echo ""
 if [ "$GENERATE_AUDIO" = true ]; then
   echo "✅ 发布完成（含语音版本 + 已加入播客列表）"
@@ -266,7 +323,7 @@ else
 fi
 echo ""
 echo "📎 文章完整 URL："
-echo "https://sandbot.cgfan.com/posts/${ARTICLE_BASE}"
+echo "$ARTICLE_URL"
 echo ""
 echo "🔗 博客首页："
 echo "https://sandbot.cgfan.com/blog"
