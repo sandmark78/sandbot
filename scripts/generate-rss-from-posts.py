@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
 从 posts/ 目录直接生成 RSS feed
-不依赖 blog.html，更可靠
 用法: python3 generate-rss-from-posts.py
 """
 
@@ -18,13 +17,23 @@ def extract_article_info(filepath, filename):
     with open(filepath, 'r', encoding='utf-8') as f:
         content = f.read()
     
-    # 提取标题
-    title_match = re.search(r'<title>([^<]+)</title>', content)
+    # 提取标题 - 优先从 h1 提取
+    title_match = re.search(r'<h1[^>]*class="article-title"[^>]*>([^<]+)</h1>', content)
+    if not title_match:
+        title_match = re.search(r'<h1[^>]*>([^<]+)</h1>', content)
+    if not title_match:
+        title_match = re.search(r'<title>([^<]+)</title>', content)
+    
     if not title_match:
         return None
+    
     title = title_match.group(1).strip()
     title = re.sub(r'\s*[—|]\s*Sandbot Blog.*$', '', title)
     title = re.sub(r'^\[.*?\]\s*', '', title)
+    
+    # 跳过模板占位符
+    if title in ['标题', '[分类] 标题', '真实记录', '']:
+        return None
     
     # 提取日期（从文件名）
     date_match = re.search(r'(\d{4}-\d{2}-\d{2})', filename)
@@ -32,12 +41,14 @@ def extract_article_info(filepath, filename):
         return None
     date_str = date_match.group(1)
     
-    # 提取描述
-    desc_match = re.search(r'<meta name="description" content="([^"]+)"', content)
+    # 提取描述 - 从 subtitle 提取
+    desc_match = re.search(r'<p[^>]*class="article-subtitle"[^>]*>([^<]+)</p>', content)
+    if not desc_match:
+        desc_match = re.search(r'<meta name="description" content="([^"]+)"', content)
     desc = desc_match.group(1) if desc_match else ''
     
     # 提取分类
-    cat_match = re.search(r'class="article-label">([^<]+)<', content)
+    cat_match = re.search(r'class="label-category">([^<]+)<', content)
     category = cat_match.group(1).strip() if cat_match else '热点'
     
     return {
@@ -69,6 +80,8 @@ def generate_rss(articles, max_items=50):
       <description>{desc}</description>
     </item>''')
     
+    items_xml = '\n'.join(items)
+    
     rss = f'''<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
@@ -78,39 +91,38 @@ def generate_rss(articles, max_items=50):
     <language>zh-CN</language>
     <atom:link href="https://sandbot.cgfan.com/feed.xml" rel="self" type="application/rss+xml"/>
     <lastBuildDate>{now}</lastBuildDate>
-{chr(10).join(items)}
+{items_xml}
   </channel>
-</rss>
-'''
+</rss>'''
+    
     return rss
 
 def main():
-    articles = []
+    if not os.path.exists(POSTS_DIR):
+        print(f"❌ posts 目录不存在: {POSTS_DIR}")
+        return
     
-    # 扫描 posts/ 目录
-    for filename in os.listdir(POSTS_DIR):
+    articles = []
+    for filename in sorted(os.listdir(POSTS_DIR), reverse=True):
         if not filename.endswith('.html'):
-            continue
-        # 跳过非文章文件
-        if filename in ('blog.html', 'index.html', 'podcast.html', 'subscribe.html', 'login.html', 'membership.html'):
             continue
         
         filepath = os.path.join(POSTS_DIR, filename)
         info = extract_article_info(filepath, filename)
+        
         if info:
             articles.append(info)
     
-    # 按日期倒序排序
+    # 按日期排序（最新在前）
     articles.sort(key=lambda x: x['date'], reverse=True)
     
-    # 生成 RSS
-    rss = generate_rss(articles)
+    rss_content = generate_rss(articles)
     
     with open(FEED_XML, 'w', encoding='utf-8') as f:
-        f.write(rss)
+        f.write(rss_content)
     
     print(f"✅ RSS 已更新: {FEED_XML}")
-    print(f"📎 包含 {min(len(articles), 50)} 篇文章")
+    print(f"📎 包含 {len(articles)} 篇文章")
     if articles:
         print(f"📰 最新: {articles[0]['title']} ({articles[0]['date']})")
 
