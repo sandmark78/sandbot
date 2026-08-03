@@ -66,6 +66,41 @@ def generate_article(config_path):
         config.get('source_note', '<strong>⚑ 来源</strong>：来源说明')
     )
     
+    # 处理 sections（核心修复）
+    sections = config.get('sections', [])
+    if sections:
+        # 找到模板中的 sections 区域并替换
+        # 模板结构：<div class="section-block">...</div> 重复多次
+        # 我们需要找到第一个 section-block 并替换所有
+        
+        # 构建新的 sections HTML
+        sections_html_parts = []
+        for i, section in enumerate(sections):
+            section_title = section.get('title', f'章节 {i+1}')
+            section_content = section.get('content', '<p>正文内容...</p>')
+            
+            section_html = f'''  <div class="section-block">
+    <h2 class="section-title">
+      <span class="section-number">{i+1}</span>
+      <span class="section-text">{section_title}</span>
+    </h2>
+    <div class="section-content">
+      {section_content}
+    </div>
+  </div>'''
+            sections_html_parts.append(section_html)
+        
+        new_sections_html = '\n\n'.join(sections_html_parts)
+        
+        # 用正则替换所有 section-block
+        # 找到所有 section-block 并替换为新的
+        content = re.sub(
+            r'(?:<div class="section-block">.*?</div>\s*)+',
+            new_sections_html + '\n',
+            content,
+            flags=re.DOTALL
+        )
+    
     # 输出文件
     output_path = config.get('output_path', os.path.join(BLOG_ROOT, 'posts/article.html'))
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
