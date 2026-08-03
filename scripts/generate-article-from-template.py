@@ -115,7 +115,7 @@ def generate_article(config_path):
             print("⚠️  警告: 无法定位正文区域，sections 未替换")
     
     # ========== 4. 音频路径替换 ==========
-    article_filename = config.get('output_filename', 'article.html')
+    article_filename = os.path.basename(output_path)
     article_base = os.path.splitext(article_filename)[0]
     audio_path = f'audio/{article_base}.mp3'
     content = content.replace('AUDIO_FILE_PLACEHOLDER', audio_path)
