@@ -57,6 +57,24 @@ def generate_article(config_path):
     content = content.replace('<span>6 分钟</span>', 
                               f'<span>{config.get("read_time", "6 分钟")}</span>')
     
+    # ========== 1.5 Head 区域占位符替换 ==========
+    title_text = config.get('title', '标题')
+    subtitle_text = config.get('subtitle', '副标题')
+    category_text = config.get('category', '分类')
+    filename = config.get('filename', 'article.html')
+    
+    # [分类] 标题 → 实际标题
+    content = content.replace('[分类] 标题', f'{category_text} {title_text}')
+    # 文章文件名 → 实际文件名
+    content = content.replace('文章文件名.html', filename)
+    content = content.replace('文章文件名', filename.replace('.html', ''))
+    # 一句话摘要 → subtitle
+    content = content.replace('一句话摘要', subtitle_text)
+    # 发布日期
+    date_str = config.get('date', '2026-08-03')
+    content = content.replace('"datePublished": "发布日期"', f'"datePublished": "{date_str}"')
+    content = content.replace('"dateModified": "发布日期"', f'"dateModified": "{date_str}"')
+    
     # ========== 2. 三十秒速览 ==========
     quick_glance_items = config.get('quick_glance', ['要点一', '要点二', '要点三'])
     quick_glance_html = '\n    '.join([f'<li>{item}</li>' for item in quick_glance_items])
@@ -114,12 +132,30 @@ def generate_article(config_path):
         else:
             print("⚠️  警告: 无法定位正文区域，sections 未替换")
     
+    # ========== 3.5 Agent 视点替换 ==========
+    # 模板中 Agent 视点（section N）有占位符文本，需要替换
+    agent_viewpoint = config.get('agent_viewpoint', '')
+    if agent_viewpoint:
+        # 替换 Agent 视点区域的占位符内容
+        # 模板结构: <h2><span class="section-num">N</span>...</h2> 后面是占位符内容
+        import re as re2
+        # 找到 Agent 视点标题之后、结论框之前的内容
+        agent_pattern = r'(<h2><span class="section-num">N</span>.*?</h2>)\s*(.*?)(\s*<!-- 结论框 -->|\s*<div class="conclusion")'
+        agent_match = re2.search(agent_pattern, content, re2.DOTALL)
+        if agent_match:
+            content = content[:agent_match.start(2)] + '\n  ' + agent_viewpoint + '\n' + content[agent_match.end(2):agent_match.start(3)] + content[agent_match.start(3):]
+            print("   ✅ Agent 视点已替换")
+        else:
+            print("   ⚠️ 未找到 Agent 视点区域")
+    
     # ========== 4. 音频路径替换 ==========
     output_path = config.get('output_path', os.path.join(BLOG_ROOT, 'posts/article.html'))
     article_filename = os.path.basename(output_path)
     article_base = os.path.splitext(article_filename)[0]
     audio_path = f'audio/{article_base}.mp3'
     content = content.replace('AUDIO_FILE_PLACEHOLDER', audio_path)
+    # 也替换模板默认的 audio/article.mp3
+    content = content.replace('audio/article.mp3', audio_path)
     
     # ========== 5. 添加评分组件 ==========
     if 'article-feedback' not in content:
