@@ -27,7 +27,7 @@ class ArticleTextExtractor(HTMLParser):
             'tip-jar', 'subscribe-banner', 'author-sign', 'back-link',
             'bottom-quote', 'bottom-source', 'data-cards', 'compare-box',
             'capability-box', 'metaphor-box', 'conclusion', 'info-bar',
-            'site-header', 'site-footer', 'featured', 'icon-list'
+            'site-header', 'site-footer', 'featured', 'icon-list', 'article-feedback'
         }
         
     def handle_starttag(self, tag, attrs):
