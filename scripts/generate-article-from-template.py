@@ -115,11 +115,12 @@ def generate_article(config_path):
             # 构建新的 sections HTML
             sections_html_parts = []
             for i, section in enumerate(sections, 1):
-                section_title = section.get('title', f'章节 {i}')
+                # sub 是章节标题（显示在 section-sub），title 是分类标签
+                section_sub = section.get('sub', section.get('title', f'章节 {i}'))
                 section_content = section.get('content', '<p>正文内容...</p>')
                 
                 # 模板格式: <h2><span class="section-num">1</span><span class="section-dot">·</span><span class="section-sub">标题</span></h2>
-                section_html = f'''  <h2><span class="section-num">{i}</span><span class="section-dot">·</span><span class="section-sub">{section_title}</span></h2>
+                section_html = f'''  <h2><span class="section-num">{i}</span><span class="section-dot">·</span><span class="section-sub">{section_sub}</span></h2>
   
   {section_content}
 '''
