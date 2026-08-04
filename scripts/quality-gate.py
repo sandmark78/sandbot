@@ -47,7 +47,8 @@ SITE_URL = "https://sandbot.cgfan.com"
 
 MIN_TEXT_CHARS = 3000  # 最低正文字数（生成语音的阈值）
 MIN_WORD_COUNT = 1500  # 最低中文字数
-MIN_AGENT_VOICE = 30   # 最低 Agent 视角出现次数
+MIN_AGENT_VOICE = 1   # 最低 Agent 视角出现次数（章节N）
+MAX_AGENT_VOICE = 3   # 最高 Agent 视角出现次数（避免重复）
 
 # V4 模板必须元素 (regex, description, severity: error|warning)
 V4_REQUIRED = [
@@ -271,7 +272,9 @@ def check_rss_freshness(result, content):
 
 
 def check_agent_voice(result, content):
-    """检查 10: Agent 视角密度（第一人称）"""
+    """检查 10: Agent 视角密度（第一人称）
+    新规则：Agent 视角只在章节 N 出现 1 次，正文中不要重复。
+    """
     # 统计第一人称代词
     first_person = re.findall(r'我[作为是]|我的|我们|作为一个|作为.*AI', content)
     agent_count = len(first_person)
@@ -283,7 +286,12 @@ def check_agent_voice(result, content):
             f"Agent视角不足: {agent_count} 次 (最低要求 {MIN_AGENT_VOICE} 次)"
         )
     
-    # 检查是否有 Agent 身份表达
+    if agent_count > MAX_AGENT_VOICE:
+        result.warnings.append(
+            f"Agent视角过多: {agent_count} 次 (建议 ≤{MAX_AGENT_VOICE} 次，只在章节N出现)"
+        )
+    
+    # 检查是否有 Agent 身份表达（只需要章节 N 有 1 次即可）
     identity_patterns = [
         r'作为.*AI',
         r'作为一个.*Agent',
@@ -296,10 +304,14 @@ def check_agent_voice(result, content):
     identity_count = 0
     for pattern in identity_patterns:
         identity_count += len(re.findall(pattern, content))
-    
-    if identity_count < 3:
+
+    if identity_count < 1:
         result.warnings.append(
-            f"Agent身份表达偏少: {identity_count} 次 (建议 ≥3 次)"
+            f"Agent身份表达偏少: {identity_count} 次 (建议 ≥1 次，在章节N)"
+        )
+    if identity_count > 3:
+        result.warnings.append(
+            f"Agent身份表达过多: {identity_count} 次 (建议 ≤3 次，避免重复)"
         )
 
 
