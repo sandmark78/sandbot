@@ -142,6 +142,15 @@ class ArticleTextExtractor(HTMLParser):
         text = re.sub(r'\n{3,}', '\n\n', text)
         # 清理章节编号（如 "1·" "2·"）
         text = re.sub(r'(\n\n)\d+·', r'\1', text)
+        # 过滤 markdown 格式符号
+        text = re.sub(r'\*\*([^*]+)\*\*', r'\1', text)  # **加粗**
+        text = re.sub(r'\*([^*]+)\*', r'\1', text)  # *斜体*
+        text = re.sub(r'__([^_]+)__', r'\1', text)  # __加粗__
+        text = re.sub(r'_([^_]+)_', r'\1', text)  # _斜体_
+        text = re.sub(r'`([^`]+)`', r'\1', text)  # `代码`
+        text = re.sub(r'^#+\s+', '', text, flags=re.MULTILINE)  # # 标题
+        text = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', text)  # [链接](url)
+        text = re.sub(r'^>\s+', '', text, flags=re.MULTILINE)  # > 引用
         # 移除副标题（如果和标题重复）
         lines = text.split('\n')
         if len(lines) > 1:
