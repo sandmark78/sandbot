@@ -150,19 +150,7 @@ def generate_article(config_path):
             print("   ⚠️ 未找到 Agent 视点区域")
     
     # ========== 4. 音频路径替换 ==========
-    # 自动生成带日期的文件名（如果没指定 output_path）
-    output_path = config.get('output_path')
-    if not output_path:
-        # 自动格式: posts/YYYY-MM-DD-<slot>-<slug>.html
-        date_str = config.get('date', datetime.now().strftime('%Y-%m-%d'))
-        slot = config.get('slot', 'article')  # early/noon/afternoon/evening/hot
-        title_slug = config.get('title', 'article')[:20].replace(' ', '-').lower()
-        # 清理非 ASCII 字符
-        title_slug = re.sub(r'[^\w\-]', '', title_slug)
-        auto_filename = f"{date_str}-{slot}-{title_slug}.html"
-        output_path = os.path.join(BLOG_ROOT, 'posts', auto_filename)
-        print(f"   📝 自动生成文件名: {auto_filename}")
-    
+    output_path = config.get('output_path', os.path.join(BLOG_ROOT, 'posts/article.html'))
     article_filename = os.path.basename(output_path)
     article_base = os.path.splitext(article_filename)[0]
     audio_path = f'audio/{article_base}.mp3'
