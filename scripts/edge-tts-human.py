@@ -98,8 +98,8 @@ async def text_to_speech(text, output_file, voice='zh-CN-YunxiNeural', style='ch
     # 转换为 SSML
     ssml = text_to_ssml(text, voice, style)
     
-    # 使用 SSML 生成语音
-    communicate = edge_tts.Communicate(ssml, voice=voice, rate='-10%')
+    # 使用 SSML 生成语音（不传 voice 参数，让 SSML 控制）
+    communicate = edge_tts.Communicate(ssml, rate='-10%')
     await communicate.save(output_file)
     return True
 
