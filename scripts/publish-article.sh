@@ -2,11 +2,9 @@
 # 一键发布文章脚本（带 TTS 语音）
 # 用法: ./publish-article.sh <article-file> <blog-html>
 #
-# 修复记录 (2026-08-03):
-# - 添加文件位置验证（必须在 posts/ 目录）
-# - 添加音频文件复制（articles/audio/ → posts/audio/）
-# - 添加占位符检查
-# - 添加最终验证步骤
+# 修复记录:
+# - 2026-08-03: 添加文件位置验证、音频文件复制、占位符检查、最终验证
+# - 2026-08-05: 添加音频路径验证、播放器显示验证、来源验证、TTS参数修复
 
 ARTICLE_FILE=$1
 BLOG_HTML=$2
@@ -58,6 +56,46 @@ if [ "$AUDIO_PLACEHOLDER" -gt 0 ]; then
 fi
 
 echo "   ✅ 无占位符残留"
+
+# ========== 1.5 音频路径验证（2026-08-05新增）==========
+echo "🔍 验证音频路径..."
+
+# 修正错误的音频路径（article.mp3 → 正确文件名）
+WRONG_AUDIO=$(grep -c 'src="audio/article.mp3"' "$ARTICLE_FILE" 2>/dev/null || echo "0")
+if [ "$WRONG_AUDIO" -gt 0 ]; then
+  echo "   ⚠️  修正: audio/article.mp3 → audio/$ARTICLE_BASE.mp3"
+  sed -i "s|src=\"audio/article.mp3\"|src=\"audio/$ARTICLE_BASE.mp3\"|g" "$ARTICLE_FILE"
+fi
+
+# 同时修正模板中的 AUDIO_FILE_PLACEHOLDER 残留
+if grep -q "AUDIO_FILE_PLACEHOLDER" "$ARTICLE_FILE" 2>/dev/null; then
+  echo "   ⚠️  修正: AUDIO_FILE_PLACEHOLDER → audio/$ARTICLE_BASE.mp3"
+  sed -i "s|AUDIO_FILE_PLACEHOLDER|audio/$ARTICLE_BASE.mp3|g" "$ARTICLE_FILE"
+fi
+
+echo "   ✅ 音频路径已验证"
+
+# ========== 1.6 播放器显示验证（2026-08-05新增）==========
+echo "🔍 验证播放器显示..."
+
+# 检查播放器是否被隐藏（模板默认 display: none）
+HIDDEN_PLAYER=$(grep -c 'id="audioPlayer" style="display: none;"' "$ARTICLE_FILE" 2>/dev/null || echo "0")
+if [ "$HIDDEN_PLAYER" -gt 0 ]; then
+  echo "   ⚠️  修正: 播放器 display:none → 移除隐藏样式"
+  sed -i 's|id="audioPlayer" style="display: none;"|id="audioPlayer"|g' "$ARTICLE_FILE"
+fi
+
+echo "   ✅ 播放器显示已验证"
+
+# ========== 1.7 来源验证（2026-08-05新增）==========
+echo "🔍 验证来源信息..."
+
+PLACEHOLDER_SOURCE=$(grep -c "来源说明" "$ARTICLE_FILE" 2>/dev/null || echo "0")
+if [ "$PLACEHOLDER_SOURCE" -gt 0 ]; then
+  echo "   ⚠️  来源显示'来源说明'占位符（建议手动补充，不阻塞发布）"
+else
+  echo "   ✅ 来源信息完整"
+fi
 
 # ========== 2. 去重检查 ==========
 echo "🔍 执行强制去重检查..."
@@ -126,7 +164,8 @@ if [ "$GENERATE_AUDIO" = true ]; then
     python3 "$SCRIPT_DIR/edge-tts-human.py" \
       /tmp/tts-input.txt \
       "$AUDIO_DIR/$ARTICLE_BASE.mp3" \
-      zh-CN-YunxiNeural
+      zh-CN-YunxiNeural \
+      -10%
     
     # 给文章添加音频播放器
     python3 "$SCRIPT_DIR/add-audio-player.py" "$ARTICLE_FILE"
@@ -282,7 +321,7 @@ else:
 PYEOF
 fi
 
-# ========== 9. 最终验证 ==========
+# ========== 9. 最终验证（2026-08-05 增强）==========
 echo ""
 echo "🔍 最终验证..."
 
@@ -312,6 +351,30 @@ if grep -q "article-feedback" "$ARTICLE_FILE"; then
   echo "   ✅ 评分组件已添加"
 else
   echo "   ⚠️  缺少评分组件"
+fi
+
+# 检查音频路径是否正确（2026-08-05新增）
+CORRECT_AUDIO=$(grep -c "src=\"audio/$ARTICLE_BASE.mp3\"" "$ARTICLE_FILE" 2>/dev/null || echo "0")
+if [ "$CORRECT_AUDIO" -gt 0 ]; then
+  echo "   ✅ 音频路径正确"
+else
+  echo "   ⚠️  音频路径可能有问题"
+fi
+
+# 检查播放器是否可见（2026-08-05新增）
+PLAYER_HIDDEN=$(grep -c 'style="display: none;"' "$ARTICLE_FILE" 2>/dev/null || echo "0")
+if [ "$PLAYER_HIDDEN" -eq 0 ]; then
+  echo "   ✅ 播放器可见"
+else
+  echo "   ⚠️  播放器可能被隐藏"
+fi
+
+# 检查来源是否完整（2026-08-05新增）
+BAD_SOURCE=$(grep -c "来源说明" "$ARTICLE_FILE" 2>/dev/null || echo "0")
+if [ "$BAD_SOURCE" -eq 0 ]; then
+  echo "   ✅ 来源信息完整"
+else
+  echo "   ⚠️  来源显示占位符"
 fi
 
 echo ""
