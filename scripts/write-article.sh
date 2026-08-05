@@ -60,7 +60,7 @@ echo "🚀 开始发布..."
   python3 "$SCRIPT_DIR/edge-tts-human.py" \
     <(python3 "$SCRIPT_DIR/extract-article-text.py" "$ARTICLE_FILE") \
     "$BLOG_ROOT/posts/audio/$(basename $ARTICLE_FILE .html).mp3" \
-    zh-CN-YunxiNeural cheerful
+    zh-CN-YunxiNeural
 ) &
 AUDIO_PID=$!
 

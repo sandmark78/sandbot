@@ -126,8 +126,7 @@ if [ "$GENERATE_AUDIO" = true ]; then
     python3 "$SCRIPT_DIR/edge-tts-human.py" \
       /tmp/tts-input.txt \
       "$AUDIO_DIR/$ARTICLE_BASE.mp3" \
-      zh-CN-YunxiNeural \
-      cheerful
+      zh-CN-YunxiNeural
     
     # 给文章添加音频播放器
     python3 "$SCRIPT_DIR/add-audio-player.py" "$ARTICLE_FILE"
