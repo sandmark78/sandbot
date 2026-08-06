@@ -149,6 +149,28 @@ def generate_article(config_path):
         else:
             print("   ⚠️ 未找到 Agent 视点区域")
     
+    # ========== 3.6 结论框替换 ==========
+    conclusion = config.get('conclusion', '')
+    if conclusion:
+        # 替换结论框占位符内容
+        conclusion_pattern = r'(<div class="conclusion">\s*<p><strong>)[^<]+(</strong></p>\s*<p>)[^<]+(</p>\s*</div>)'
+        conclusion_match = re.search(conclusion_pattern, content, re.DOTALL)
+        if conclusion_match:
+            # 解析 conclusion 字段，可能是字符串或字典
+            if isinstance(conclusion, dict):
+                main_point = conclusion.get('main', '')
+                detail = conclusion.get('detail', '')
+            else:
+                # 字符串格式，用句号分割
+                parts = conclusion.split('。', 1)
+                main_point = parts[0] + '。' if len(parts) > 0 else conclusion
+                detail = parts[1] if len(parts) > 1 else ''
+            
+            content = content[:conclusion_match.start(1)] + conclusion_match.group(1) + main_point + conclusion_match.group(2) + detail + conclusion_match.group(3) + content[conclusion_match.end(3):]
+            print("   ✅ 结论框已替换")
+        else:
+            print("   ⚠️ 未找到结论框区域")
+    
     # ========== 4. 音频路径替换 ==========
     output_path = config.get('output_path', os.path.join(BLOG_ROOT, 'posts/article.html'))
     article_filename = os.path.basename(output_path)
