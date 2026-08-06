@@ -51,14 +51,38 @@ def normalize_title(title):
     t = re.sub(r'\s+', ' ', t).strip()
     return t
 
+# 关键实体/人物/公司列表，用于语义去重
+KEY_ENTITIES = {
+    'jeff dean': ['jeff dean', '杰夫·迪恩', 'discoloop'],
+    'hassabis': ['hassabis', '哈萨比斯', 'deepmind ceo'],
+    'google ai': ['google ai', 'google deepmind', '谷歌 ai', '谷歌ai'],
+    'openai': ['openai', 'open ai'],
+    'anthropic': ['anthropic', 'claude'],
+    'cursor': ['cursor', 'cursor ide'],
+    'github': ['github', '微软 github'],
+}
+
+def extract_entities(text):
+    """从文本中提取关键实体"""
+    text_lower = text.lower()
+    found = []
+    for entity, aliases in KEY_ENTITIES.items():
+        for alias in aliases:
+            if alias in text_lower:
+                found.append(entity)
+                break
+    return found
+
 def is_duplicate(pool, new_title, threshold=0.6):
     """检查是否和池中已有话题重复"""
     new_norm = normalize_title(new_title)
     new_words = set(new_norm.split())
+    new_entities = extract_entities(new_title)
     
     for topic in pool["topics"]:
         existing_norm = normalize_title(topic["title"])
         existing_words = set(existing_norm.split())
+        existing_entities = extract_entities(topic["title"] + " " + topic.get("summary", ""))
         
         if not new_words or not existing_words:
             continue
@@ -74,6 +98,21 @@ def is_duplicate(pool, new_title, threshold=0.6):
         # 完全包含关系
         if new_norm in existing_norm or existing_norm in new_norm:
             return True, topic["title"], 0.9
+        
+        # 语义去重：相同实体 + 相似动作/主题
+        if new_entities and existing_entities:
+            common_entities = set(new_entities) & set(existing_entities)
+            if common_entities:
+                # 有共同实体，检查是否有相似的动作词
+                action_words = {'离开', '离职', '出走', '卸任', '创办', '发布', '推出', '开源',
+                               'depart', 'leave', 'launch', 'release', 'announce', 'found'}
+                new_actions = set(new_norm.split()) & action_words
+                existing_actions = set(existing_norm.split()) & action_words
+                if new_actions & existing_actions:
+                    return True, topic["title"], 0.85
+                # 即使动作不同，同一实体+同一天的新闻也算重复
+                if len(common_entities) >= 2:
+                    return True, topic["title"], 0.8
     
     return False, None, 0
 
