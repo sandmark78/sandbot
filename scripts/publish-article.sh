@@ -190,8 +190,13 @@ python3 "$SCRIPT_DIR/update-blog.py" "$ARTICLE_FILE" "$BLOG_HTML"
 # ========== 5. 更新 RSS ==========
 python3 "$SCRIPT_DIR/generate-rss-from-posts.py"
 
-# ========== 6. Git 操作 ==========
+# ========== 6. Git 操作（带推送验证）==========
 cd "$BLOG_ROOT"
+
+# 确保 git 配置正确
+git config user.name "Sandbot 🏖️" 2>/dev/null
+git config user.email "sandbot@sandmark78.github.io" 2>/dev/null
+
 if [ "$GENERATE_AUDIO" = true ]; then
   git add "$ARTICLE_FILE" "$BLOG_HTML" feed.xml "$AUDIO_DIR/$ARTICLE_BASE.mp3"
   git commit -m "📝 发布文章: $ARTICLE_BASE (带语音)"
@@ -199,7 +204,30 @@ else
   git add "$ARTICLE_FILE" "$BLOG_HTML" feed.xml
   git commit -m "📝 发布文章: $ARTICLE_BASE (无语音)"
 fi
-git push origin main
+
+# Git push with retry
+echo "📤 推送到 GitHub..."
+PUSH_SUCCESS=false
+for attempt in 1 2 3; do
+  if git push origin main 2>&1; then
+    PUSH_SUCCESS=true
+    echo "   ✅ 推送成功 (第${attempt}次尝试)"
+    break
+  else
+    echo "   ⚠️  推送失败 (第${attempt}次尝试)"
+    if [ $attempt -lt 3 ]; then
+      echo "   等待 5 秒后重试..."
+      sleep 5
+      git pull --rebase origin main 2>/dev/null
+    fi
+  fi
+done
+
+if [ "$PUSH_SUCCESS" = false ]; then
+  echo "❌ Git 推送失败！文章已本地提交但未推送到远程"
+  echo "   请手动执行: cd $BLOG_ROOT && git push origin main"
+  # 不退出，继续后续步骤
+fi
 
 # ========== 7. 更新文章标题列表 ==========
 echo "📝 更新文章标题列表..."
