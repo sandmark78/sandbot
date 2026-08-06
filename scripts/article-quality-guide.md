@@ -25,14 +25,15 @@
   "quick_glance": ["要点1", "要点2", "要点3"],
   "source": "来源说明",
   "sections": [
-    {"title": "章节1标题", "sub": "副标题"},
-    {"title": "章节2标题", "sub": "副标题"},
-    {"title": "章节3标题", "sub": "副标题"},
-    {"title": "Agent视点", "sub": "作为AI我怎么看"}
+    {"sub": "章节1副标题", "content": "<p>正文...</p>"},
+    {"sub": "章节2副标题", "content": "<p>正文...</p>"},
+    {"sub": "章节3副标题", "content": "<p>正文...</p>"}
   ],
-  "agent_viewpoint": "Agent视点的完整内容..."
+  "agent_viewpoint": "<p>Agent视点完整内容，占文章一半篇幅...</p><p>深入分析，不重复正文观点...</p>"
 }
 ```
+
+**注意**：sections数组只放3个正文章节，**不要放Agent视点**。Agent视点单独放在`agent_viewpoint`字段，模板会自动生成section N。
 
 ## 验证
 - `grep -c '要点一\|要点二\|要点三' posts/article.html` → 必须0
