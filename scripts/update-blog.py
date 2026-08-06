@@ -54,13 +54,62 @@ def extract_article_info(article_file):
             date = datetime.now().strftime('%Y-%m-%d')
         tag = '热点'
     
+    # 推断内容分类（P1 分类标签）
+    category = infer_category(title, subtitle, content)
+    
     return {
         'title': f'[{tag}] {title}',
         'subtitle': subtitle,
         'filename': filename,
         'date': date,
-        'tag': tag
+        'tag': tag,
+        'category': category
     }
+
+def infer_category(title, subtitle, content):
+    """从标题+副标题+内容推断文章分类"""
+    text = (title + ' ' + subtitle).lower()
+    
+    # 产品发布类关键词
+    product_keywords = ['发布', '推出', '上线', 'launch', 'release', '开源', 'open source',
+                        '模型', 'model', 'api', 'sdk', '框架', 'framework', '工具', 'tool',
+                        'app', '应用', '平台', 'platform', '服务', 'service']
+    # 深度分析类关键词
+    deep_keywords = ['深度', '分析', '解读', '复盘', '拆解', '为什么', 'how', 'why',
+                     '机制', '原理', '架构', 'architecture', '对比', '比较', '趋势',
+                     '分水岭', '转折', '变革', '影响', '意味着']
+    # 工具教程类关键词
+    tool_keywords = ['教程', '手把手', '指南', 'guide', 'tutorial', 'how to', '怎么用',
+                     '实操', '配置', '部署', '安装', '使用', '技巧', '工作流', 'workflow',
+                     '提示词', 'prompt', 'skill', '技能']
+    # 研究论文类关键词
+    research_keywords = ['论文', 'paper', '研究', 'research', '实验', 'experiment',
+                         'benchmark', '评测', '跑分', '数据集', 'dataset', '算法',
+                         'arxiv', '学术', '形式化', '证明']
+    
+    # 计分
+    scores = {'产品': 0, '深度': 0, '工具': 0, '研究': 0}
+    for kw in product_keywords:
+        if kw in text: scores['产品'] += 2
+    for kw in deep_keywords:
+        if kw in text: scores['深度'] += 2
+    for kw in tool_keywords:
+        if kw in text: scores['工具'] += 2
+    for kw in research_keywords:
+        if kw in text: scores['研究'] += 2
+    
+    # 文件名也提供参考
+    filename_lower = content[:500].lower() if content else ''
+    if 'launch' in filename_lower or 'product' in filename_lower:
+        scores['产品'] += 1
+    if 'deep' in filename_lower or 'analysis' in filename_lower:
+        scores['深度'] += 1
+    
+    # 取最高分，默认深度
+    best = max(scores, key=scores.get)
+    if scores[best] == 0:
+        return '深度'
+    return best
 
 def escape_js_string(text):
     """转义 JavaScript 字符串中的特殊字符"""
@@ -103,11 +152,14 @@ def update_blog_html(blog_file, article_info):
     }
     article_type, type_label = type_map.get(article_info['tag'], ('hot', '热点'))
     
+    category = article_info.get('category', '深度')
+    
     new_entry = f'''  {{
     title: "{title_escaped}",
     type: "{article_type}",
     typeLabel: "{type_label}",
     tag: "{article_info['tag']}",
+    category: "{category}",
     date: "{article_info['date']}",
     url: "posts/{url_filename}",
     excerpt: "{subtitle_escaped}",
