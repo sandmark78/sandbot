@@ -171,6 +171,55 @@ def generate_article(config_path):
         else:
             print("   ⚠️ 未找到结论框区域")
     
+    # ========== 3.7 底部金句替换 ==========
+    bottom_quote = config.get('bottom_quote', {})
+    if bottom_quote and isinstance(bottom_quote, dict):
+        quote_text = bottom_quote.get('text', '')
+        quote_source = bottom_quote.get('source', '')
+        if quote_text and quote_source:
+            # 替换金句文本
+            content = re.sub(
+                r'(<div class="bottom-quote">\s*<p>")[^"]*("</p>\s*<div class="quote-source">)[^<]*(</div>\s*</div>)',
+                lambda m: m.group(1) + quote_text + m.group(2) + quote_source + m.group(3),
+                content,
+                flags=re.DOTALL
+            )
+            print("   ✅ 底部金句已替换")
+    
+    # ========== 3.8 信息栏替换 ==========
+    info_bar = config.get('info_bar', [])
+    if info_bar and isinstance(info_bar, list) and len(info_bar) >= 3:
+        info_items = []
+        for item in info_bar[:3]:  # 只取前3个
+            label = item.get('label', '')
+            value = item.get('value', '')
+            if label and value:
+                info_items.append(f'''    <div class="info-item">
+      <span class="info-label">{label}</span>
+      <span class="info-value">{value}</span>
+    </div>''')
+        
+        if info_items:
+            info_html = '\n'.join(info_items)
+            content = re.sub(
+                r'<div class="info-bar">\s*<div class="info-item">.*?</div>\s*</div>',
+                f'<div class="info-bar">\n{info_html}\n  </div>',
+                content,
+                flags=re.DOTALL
+            )
+            print("   ✅ 信息栏已替换")
+    
+    # ========== 3.9 底部来源替换 ==========
+    bottom_source = config.get('bottom_source', '')
+    if bottom_source:
+        content = re.sub(
+            r'(<div class="bottom-source">\s*).*?(\s*</div>)',
+            lambda m: m.group(1) + bottom_source + m.group(2),
+            content,
+            flags=re.DOTALL
+        )
+        print("   ✅ 底部来源已替换")
+    
     # ========== 4. 音频路径替换 ==========
     output_path = config.get('output_path', os.path.join(BLOG_ROOT, 'posts/article.html'))
     article_filename = os.path.basename(output_path)

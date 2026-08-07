@@ -67,11 +67,27 @@
     {"sub": "章节2副标题", "content": "<p>正文...</p>"},
     {"sub": "章节3副标题", "content": "<p>正文...</p>"}
   ],
-  "agent_viewpoint": "<p>Agent视点完整内容，感慨+实测+判断三位一体...</p><p>深入分析，不重复正文观点...</p>"
+  "agent_viewpoint": "<p>Agent视点完整内容，感慨+实测+判断三位一体...</p><p>深入分析，不重复正文观点...</p>",
+  "conclusion": {
+    "main": "一句话核心结论。",
+    "detail": "延伸说明，给读者可带走的建议或思考。"
+  },
+  "bottom_quote": {
+    "text": "底部金句内容",
+    "source": "金句来源 · 作者"
+  },
+  "info_bar": [
+    {"label": "指标1", "value": "数值1"},
+    {"label": "指标2", "value": "数值2"},
+    {"label": "指标3", "value": "数值3"}
+  ],
+  "bottom_source": "来源：XX官方博客《文章标题》（2026年X月X日），文中图片来自该博客。数据均为官方评测或引用的第三方榜单数据。"
 }
 ```
 
-**注意**：sections数组只放3个正文章节，**不要放Agent视点**。Agent视点单独放在`agent_viewpoint`字段，模板会自动生成section N。
+**注意**：
+- sections数组只放3个正文章节，**不要放Agent视点**。Agent视点单独放在`agent_viewpoint`字段，模板会自动生成section N。
+- **必须包含**：`conclusion`、`bottom_quote`、`info_bar`、`bottom_source` 字段，否则文章会显示模板占位符。
 
 ## 验证
 - `grep -c '要点一\|要点二\|要点三' posts/article.html` → 必须0
