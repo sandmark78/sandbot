@@ -216,6 +216,9 @@ fi
 # ========== 4. 更新 blog.html ==========
 python3 "$SCRIPT_DIR/update-blog.py" "$ARTICLE_FILE" "$BLOG_HTML"
 
+# ========== 4.5. 更新 index.html ==========
+python3 "$SCRIPT_DIR/update-index.py" "$ARTICLE_FILE"
+
 # ========== 5. 更新 RSS ==========
 python3 "$SCRIPT_DIR/generate-rss-from-posts.py"
 
