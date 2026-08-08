@@ -5,9 +5,19 @@
 # 修复记录:
 # - 2026-08-03: 添加文件位置验证、音频文件复制、占位符检查、最终验证
 # - 2026-08-05: 添加音频路径验证、播放器显示验证、来源验证、TTS参数修复
+# - 2026-08-07: 发布前自动读取质量指南
 
 ARTICLE_FILE=$1
 BLOG_HTML=$2
+
+# ========== 0. 发布前读取质量指南（2026-08-07 新增）==========
+QUALITY_GUIDE="/home/node/.openclaw/workspace/sandbot-blog/scripts/article-quality-guide.md"
+if [ -f "$QUALITY_GUIDE" ]; then
+  echo "📖 读取质量指南..."
+  # 提取 P0 检查清单
+  grep -A 10 "P0 发布前审计清单" "$QUALITY_GUIDE" | head -15
+  echo ""
+fi
 
 if [ -z "$ARTICLE_FILE" ] || [ -z "$BLOG_HTML" ]; then
   echo "用法: $0 <article-file> <blog-html>"
@@ -90,12 +100,31 @@ echo "   ✅ 播放器显示已验证"
 # ========== 1.7 来源验证（2026-08-05新增）==========
 echo "🔍 验证来源信息..."
 
+# 来源占位符检查（阻塞）
 PLACEHOLDER_SOURCE=$(grep -c "来源说明" "$ARTICLE_FILE" 2>/dev/null || echo "0")
 if [ "$PLACEHOLDER_SOURCE" -gt 0 ]; then
-  echo "   ⚠️  来源显示'来源说明'占位符（建议手动补充，不阻塞发布）"
-else
-  echo "   ✅ 来源信息完整"
+  echo "   ❌ 来源显示'来源说明'占位符，拒绝发布"
+  echo "      请在 JSON 配置中填写 source_note 字段"
+  exit 1
 fi
+
+# XX 官方占位符检查（阻塞）
+PLACEHOLDER_XX=$(grep -c "XX 官方博客" "$ARTICLE_FILE" 2>/dev/null || echo "0")
+if [ "$PLACEHOLDER_XX" -gt 0 ]; then
+  echo "   ❌ 来源显示'XX 官方博客'占位符，拒绝发布"
+  echo "      请在 JSON 配置中填写 bottom_source 字段"
+  exit 1
+fi
+
+# 要点占位符检查（阻塞）
+PLACEHOLDER_POINTS=$(grep -c "要点一\|要点二\|要点三" "$ARTICLE_FILE" 2>/dev/null || echo "0")
+if [ "$PLACEHOLDER_POINTS" -gt 0 ]; then
+  echo "   ❌ 发现'要点一/二/三'占位符，拒绝发布"
+  echo "      模板 sections 替换失败"
+  exit 1
+fi
+
+echo "   ✅ 来源信息完整，无占位符"
 
 # ========== 2. 去重检查 ==========
 echo "🔍 执行强制去重检查..."
@@ -403,6 +432,18 @@ if [ "$BAD_SOURCE" -eq 0 ]; then
   echo "   ✅ 来源信息完整"
 else
   echo "   ⚠️  来源显示占位符"
+fi
+
+# ========== 9. 质量评分（2026-08-07 新增）==========
+echo ""
+echo "📊 质量评分..."
+python3 "$SCRIPT_DIR/article-quality-score.py" "$ARTICLE_FILE"
+QUALITY_EXIT_CODE=$?
+
+if [ $QUALITY_EXIT_CODE -ne 0 ]; then
+  echo ""
+  echo "⚠️  质量评分低于70分，建议检查后重新发布"
+  echo "   但允许继续（不阻塞）"
 fi
 
 echo ""
