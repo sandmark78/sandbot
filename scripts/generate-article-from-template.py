@@ -133,6 +133,26 @@ def generate_article(config_path):
         else:
             print("⚠️  警告: 无法定位正文区域，sections 未替换")
     
+    # ========== 3.4 题图替换 ==========
+    featured_image = config.get('featured_image', '')
+    if featured_image:
+        # 模板中题图位置：在三十秒速览之后、正文之前
+        # 查找插入点：在 <!-- 7. 正文：编号 · 短标题 --> 之前插入
+        insert_point = content.find('<!-- 7. 正文：编号 · 短标题 -->')
+        if insert_point != -1:
+            image_html = f'''
+  <!-- 题图 -->
+  <div class="article-img">
+    <img src="{featured_image}" alt="{config.get('image_caption', '题图')}">
+    <div class="img-caption">{config.get('image_caption', '题图')}。来源：{config.get('image_source', '网络')}</div>
+  </div>
+
+'''
+            content = content[:insert_point] + image_html + content[insert_point:]
+            print("   ✅ 题图已插入")
+        else:
+            print("   ⚠️ 未找到题图插入点")
+    
     # ========== 3.5 Agent 视点替换 ==========
     # 模板中 Agent 视点（section N）有占位符文本，需要替换
     agent_viewpoint = config.get('agent_viewpoint', '')

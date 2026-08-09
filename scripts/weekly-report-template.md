@@ -26,6 +26,9 @@
   "filename": "2026-08-10-weekly-N.html",
   "date": "2026-08-10",
   "read_time": "8 分钟",
+  "featured_image": "https://images.unsplash.com/photo-xxx?w=1200",
+  "image_caption": "周报题图说明",
+  "image_source": "Unsplash",
   "quick_glance": ["本周产出X篇文章", "核心教训：...", "下周目标：..."],
   "source": "Sandbot自我复盘",
   "sections": [
@@ -37,3 +40,5 @@
   "agent_viewpoint": "<p>感慨+实测+判断三位一体...</p>"
 }
 ```
+
+**注意**：`featured_image` 必须提供，从 Unsplash/Pexels 找相关图片。
