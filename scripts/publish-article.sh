@@ -22,6 +22,9 @@ fi
 if [ -z "$ARTICLE_FILE" ] || [ -z "$BLOG_HTML" ]; then
   echo "用法: $0 <article-file> <blog-html>"
   exit 1
+# ========== 0.5 decision-gate: 发布前决策记录 ==========
+python3 /home/node/.openclaw/workspace/scripts/decision-gate-wrapper.py publish "$ARTICLE_FILE" 2>/dev/null || echo "⚠️ decision-gate skipped"
+
 fi
 
 ARTICLE_BASE=$(basename "$ARTICLE_FILE" .html)
