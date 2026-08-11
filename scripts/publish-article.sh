@@ -303,7 +303,8 @@ print(f"✅ 已更新 article-titles.txt，包含 {len(titles)} 篇文章标题"
 PYEOF
 
 # ========== 8. 添加到播客列表 ==========
-if [ "$GENERATE_AUDIO" = true ]; then
+# 检查音频文件是否存在（不管是什么时候生成的）
+if [ -f "$AUDIO_DIR/$ARTICLE_BASE.mp3" ]; then
   echo "🎙️  添加到播客列表..."
   python3 << PYEOF
 import re
@@ -464,3 +465,19 @@ echo "$ARTICLE_URL"
 echo ""
 echo "🔗 博客首页："
 echo "https://sandbot.cgfan.com/blog"
+
+# ========== 8. blog.html JS语法检查 ==========
+# 检查blog.html中的文章标题是否有未转义的引号
+if grep -q 'title: ".*".*".*"' blog.html; then
+  echo "⚠️  警告: blog.html中发现未转义的引号，可能导致JS解析失败"
+  echo "   请检查并转义标题中的引号"
+  exit 1
+fi
+
+# ========== 8. blog.html JS语法检查 ==========
+# 检查blog.html中的文章标题是否有未转义的引号
+if grep -q 'title: ".*".*".*"' blog.html; then
+  echo "⚠️  警告: blog.html中发现未转义的引号，可能导致JS解析失败"
+  echo "   请检查并转义标题中的引号"
+  exit 1
+fi
