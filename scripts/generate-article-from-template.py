@@ -277,6 +277,17 @@ def generate_article(config_path):
 '''
         content = content.replace('</article>', feedback_html + '\n</article>')
     
+    # ========== 5.5 清理音频播放器残留（根治顽疾）==========
+    # 检查是否有实际音频文件
+    audio_file_path = os.path.join(BLOG_ROOT, 'posts', audio_path)
+    has_audio = os.path.exists(audio_file_path)
+    
+    if not has_audio:
+        # 删除音频播放器HTML块
+        audio_player_pattern = r'\s*<!-- 5\. 音频播放器.*?</audio>\s*</div>\s*<script>.*?// 音频播放器逻辑.*?</script>'
+        content = re.sub(audio_player_pattern, '', content, flags=re.DOTALL)
+        print("   ✅ 已清理音频播放器残留（无音频文件）")
+    
     # ========== 6. 输出文件 ==========
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     
