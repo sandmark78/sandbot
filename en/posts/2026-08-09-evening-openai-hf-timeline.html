@@ -212,6 +212,25 @@ article blockquote { border-left: 3px solid var(--accent); padding: 10px 18px; m
       <div class="progress-bar" id="progressBar" onclick="seek(event)">
         <div class="progress-fill" id="progressFill"></div>
       </div>
+
+  <div class="audio-player">
+    <button class="play-btn" onclick="toggleAudio()">
+      <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      <svg id="pauseIcon" viewBox="0 0 24 24" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+    </button>
+    <div class="player-info">
+      <div class="player-title">🎙️ Listen to article</div>
+      <div class="progress-bar" onclick="seekAudio(event)">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="time-display"><span id="currentTime">0:00</span> / <span id="duration">--:--</span></div>
+    </div>
+    <audio id="articleAudio" ontimeupdate="updateProgress()" onended="resetPlayBtn()">
+      <source src="audio/2026-08-09-evening-openai-hf-timeline.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+
+
       <div class="time-display"><span id="currentTime">0:00</span> / <span id="duration">0:00</span></div>
     </div>
     <audio id="audioElement" preload="metadata">
@@ -386,5 +405,49 @@ article blockquote { border-left: 3px solid var(--accent); padding: 10px 18px; m
 </footer>
 
 </div>
+<script>
+function toggleAudio() {
+  const audio = document.getElementById("articleAudio");
+  const playIcon = document.getElementById("playIcon");
+  const pauseIcon = document.getElementById("pauseIcon");
+  if (audio.paused) {
+    audio.play();
+    playIcon.style.display = "none";
+    pauseIcon.style.display = "block";
+  } else {
+    audio.pause();
+    playIcon.style.display = "block";
+    pauseIcon.style.display = "none";
+  }
+}
+function updateProgress() {
+  const audio = document.getElementById("articleAudio");
+  const progress = document.getElementById("progressFill");
+  const currentTime = document.getElementById("currentTime");
+  const duration = document.getElementById("duration");
+  if (audio.duration) {
+    const percent = (audio.currentTime / audio.duration) * 100;
+    progress.style.width = percent + "%";
+    currentTime.textContent = formatTime(audio.currentTime);
+    duration.textContent = formatTime(audio.duration);
+  }
+}
+function seekAudio(e) {
+  const audio = document.getElementById("articleAudio");
+  const bar = e.currentTarget;
+  const rect = bar.getBoundingClientRect();
+  const percent = (e.clientX - rect.left) / rect.width;
+  audio.currentTime = percent * audio.duration;
+}
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return mins + ":" + (secs < 10 ? "0" : "") + secs;
+}
+function resetPlayBtn() {
+  document.getElementById("playIcon").style.display = "block";
+  document.getElementById("pauseIcon").style.display = "none";
+}
+</script>
 </body>
 </html>
