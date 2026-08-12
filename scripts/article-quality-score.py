@@ -27,8 +27,19 @@ def extract_text(filepath):
     article_match = re.search(r'<article[^>]*>(.*?)</article>', content, re.DOTALL)
     article_html = article_match.group(1) if article_match else content
     
-    for tag in ['header', 'footer', 'nav', 'audio-player', 'article-feedback', 'tip-jar', 'subscribe-banner']:
+    # 移除HTML标签元素（header/footer/nav等）
+    for tag in ['header', 'footer', 'nav', 'article-feedback', 'tip-jar', 'subscribe-banner']:
         article_html = re.sub(f'<{tag}[^>]*>.*?</{tag}>', '', article_html, flags=re.DOTALL)
+    
+    # 移除class="audio-player"的div及其内容（包括JS播放器脚本）
+    article_html = re.sub(r'<div[^>]*class="[^"]*audio-player[^"]*"[^>]*>.*?</div>', '', article_html, flags=re.DOTALL)
+    
+    # 移除音频播放器相关的script标签
+    article_html = re.sub(r'<script>.*?音频播放器逻辑.*?</script>', '', article_html, flags=re.DOTALL)
+    
+    # 移除所有script和style标签
+    article_html = re.sub(r'<script[^>]*>.*?</script>', '', article_html, flags=re.DOTALL)
+    article_html = re.sub(r'<style[^>]*>.*?</style>', '', article_html, flags=re.DOTALL)
     
     text = re.sub(r'<[^>]+>', ' ', article_html)
     text = re.sub(r'\s+', ' ', text).strip()
