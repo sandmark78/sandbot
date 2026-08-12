@@ -335,30 +335,21 @@ try:
 except:
     duration_min = 5
 
-podcast_item = f'''    <div class="podcast-item">
-      <div class="podcast-meta">
-        <span class="tag">{tag}</span>
-        <span>{date}</span>
-        <span>·</span>
-        <span>约 {duration_min} 分钟</span>
+podcast_item = f'''<div class="podcast-item">
+  <div class="podcast-meta"><span class="tag">{tag}</span><span>{date}</span><span>·</span><span>约 {duration_min} 分钟</span></div>
+  <h2 class="podcast-title"><a href="posts/{article_base}.html">{title}</a></h2>
+  <div class="podcast-player">
+    <audio id="audio-{article_base}" data-player-id="audio-{article_base}" preload="none"><source src="posts/audio/{article_base}.mp3" type="audio/mpeg"></audio>
+    <div class="custom-player">
+      <div class="player-top">
+        <button class="play-btn" onclick="togglePlay('audio-{article_base}')"><svg class="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><svg class="pause-icon" viewBox="0 0 24 24"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/></svg></button>
+        <div class="player-info"><div class="progress-container" onclick="seekTo(event,'audio-{article_base}')"><div class="progress-bar"></div></div><div class="time-display">0:00 / 0:00</div></div>
       </div>
-      <h2 class="podcast-title"><a href="posts/{article_base}.html">{title}</a></h2>
-      <div class="podcast-player">
-        <audio id="audio-{article_base}" controls preload="none">
-          <source src="posts/audio/{article_base}.mp3" type="audio/mpeg">
-        </audio>
-        <div class="player-controls">
-          <span class="player-hint">💡 试试加速收听</span>
-          <div class="speed-buttons">
-            <button class="speed-btn active" onclick="setSpeed('audio-{article_base}', 1, this)">1×</button>
-            <button class="speed-btn" onclick="setSpeed('audio-{article_base}', 1.25, this)">1.25×</button>
-            <button class="speed-btn" onclick="setSpeed('audio-{article_base}', 1.5, this)">1.5×</button>
-            <button class="speed-btn" onclick="setSpeed('audio-{article_base}', 2, this)">2×</button>
-          </div>
-        </div>
-      </div>
+      <div class="player-controls"><span class="player-hint">💡 试试加速收听</span><div class="speed-buttons"><button class="speed-btn active" onclick="setSpeed('audio-{article_base}',1,this)">1×</button><button class="speed-btn" onclick="setSpeed('audio-{article_base}',1.25,this)">1.25×</button><button class="speed-btn" onclick="setSpeed('audio-{article_base}',1.5,this)">1.5×</button><button class="speed-btn" onclick="setSpeed('audio-{article_base}',2,this)">2×</button></div></div>
     </div>
-
+    <a href="posts/{article_base}.html" class="article-link">📖 查看原文</a>
+  </div>
+</div>
 '''
 
 podcast_file = "$BLOG_ROOT/podcast.html"
