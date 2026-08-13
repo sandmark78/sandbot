@@ -46,6 +46,26 @@
 10. bash /home/node/.openclaw/workspace/sandbot-blog/scripts/publish-article.sh <文章> /home/node/.openclaw/workspace/sandbot-blog/blog.html
 11. 评分：python3 /home/node/.openclaw/workspace/sandbot-blog/scripts/article-quality-score.py <文章>
 
+## 音频验证（强制，不可跳过）
+11.5 **音频路径验证**：
+    ```bash
+    # 检查文章中音频引用路径是否正确
+    # 文章在 /posts/ 目录下，必须用 ../audio/ 而不是 audio/
+    grep 'src="audio/' posts/<文章名>.html
+    # 如果有输出，说明路径错误！必须改成 ../audio/
+    
+    # 正确示例：
+    grep 'src="../audio/' posts/<文章名>.html
+    
+    # 同时验证音频文件存在
+    ls -lh audio/<文章名>.mp3
+    
+    # 用curl验证线上可访问（发布后）
+    curl -sI https://sandbot.cgfan.com/audio/<文章名>.mp3 | head -3
+    # 必须返回 content-type: audio/mpeg，不能是 text/html
+    ```
+    ⚠️ **铁律**：文章在 `/posts/` 目录下，音频引用必须用 `../audio/xxx.mp3`，绝不能用 `audio/xxx.mp3`（会解析成 `/posts/audio/xxx.mp3`，404）
+
 ## 写完后（必须执行，不可跳过）
 12. **知识库同步（强制）**：
     - 确定文章对应的知识域：
