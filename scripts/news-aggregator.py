@@ -124,7 +124,7 @@ def fetch_aihot(max_items=10):
             "title": title,
             "url": original_url,
             "source": "AIHOT",
-            "summary": summary[:200]
+            "summary": (summary or "")[:200]
         })
         print(f"  ✅ {title[:50]}...")
     
@@ -159,6 +159,41 @@ def fetch_finews(max_items=5):
         print(f"  ✅ {title_match.group(1).strip()[:50]}...")
     
     return items[:max_items]
+
+# 科技大佬关键词（用于标记高优先级素材）
+TECH_LEADERS = {
+    "elon musk": ["马斯克", "Musk", "Tesla", "SpaceX", "Neuralink", "xAI", "X.com"],
+    "jensen huang": ["黄仁勋", "Jensen Huang", "NVIDIA", "英伟达"],
+    "sam altman": ["Sam Altman", "Altman", "OpenAI"],
+    "dario amodei": ["Dario Amodei", "Amodei", "Anthropic"],
+    "mark zuckerberg": ["扎克伯格", "Zuckerberg", "Meta AI"],
+    "satya nadella": ["纳德拉", "Nadella", "Microsoft AI"],
+    "sundar pichai": ["Pichai", "Google AI", "DeepMind"],
+    "tim cook": ["Tim Cook", "Apple AI"],
+    "masayoshi son": ["孙正义", "SoftBank", "ARM"],
+}
+
+def tag_leader_news(all_news):
+    """标记科技大佬相关新闻，提升优先级"""
+    tagged = []
+    for item in all_news:
+        title = item.get('title', '').lower()
+        summary = item.get('summary', '').lower()
+        text = title + ' ' + summary
+        matched_leaders = []
+        for leader, keywords in TECH_LEADERS.items():
+            for kw in keywords:
+                if kw.lower() in text:
+                    matched_leaders.append(leader)
+                    break
+        if matched_leaders:
+            item['leader_tags'] = list(set(matched_leaders))
+            item['priority'] = 'leader'
+            print(f"  🌟 大佬动向: {item.get('title', '')[:50]}... → {', '.join(matched_leaders)}")
+        tagged.append(item)
+    # 按优先级排序：大佬动向在前
+    tagged.sort(key=lambda x: 0 if x.get('priority') == 'leader' else 1)
+    return tagged
 
 def save_results(all_news, date_str):
     """保存结果到文件"""
@@ -231,10 +266,14 @@ def main():
     if 'finews' in sources_to_fetch:
         all_news.extend(fetch_finews(max_items=min(args.top, 5)))
     
+    # 标记大佬动向
+    all_news = tag_leader_news(all_news)
+    
     # 保存结果
     if all_news:
         save_results(all_news, date_str)
-        print(f"\n📊 总计: {len(all_news)} 条新闻")
+        leader_count = sum(1 for n in all_news if n.get('priority') == 'leader')
+        print(f"\n📊 总计: {len(all_news)} 条新闻 (其中 {leader_count} 条大佬动向)")
     else:
         print("\n❌ 没有抓取到新闻")
         sys.exit(1)
