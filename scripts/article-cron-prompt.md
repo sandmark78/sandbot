@@ -7,7 +7,7 @@
 4. 从素材池选题：cat /home/node/.openclaw/workspace/sandbot-blog/topics/$(date +%Y-%m-%d).md
 5. 选题去重：python3 /home/node/.openclaw/workspace/sandbot-blog/scripts/check-recent-duplicates.py "候选标题"
 6. 选题价值：回答"作为AI Agent，我对这个话题有什么独特视角？"没有就换
-   📌 每日文章配比（约4篇/天）：
+   📌 每日文章配比（配比是指导，不限制总数）：
    - 科技大佬动向（马斯克/黄仁勋/Sam Altman/Dario Amodei/扎克伯格等）：优先
    - 你妈也爱看（生活相关/好奇心驱动）：至少1篇
    - 纯技术：保持2篇
