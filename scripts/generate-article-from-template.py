@@ -244,7 +244,7 @@ def generate_article(config_path):
     output_path = config.get('output_path', os.path.join(BLOG_ROOT, 'posts/article.html'))
     article_filename = os.path.basename(output_path)
     article_base = os.path.splitext(article_filename)[0]
-    audio_path = f'audio/{article_base}.mp3'
+    audio_path = f'../audio/{article_base}.mp3'  # 文章在 /posts/ 下，音频在 /audio/
     content = content.replace('AUDIO_FILE_PLACEHOLDER', audio_path)
     # 也替换模板默认的 audio/article.mp3
     content = content.replace('audio/article.mp3', audio_path)

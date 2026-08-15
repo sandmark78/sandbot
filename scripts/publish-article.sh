@@ -73,20 +73,20 @@ echo "   ✅ 无占位符残留"
 # ========== 1.5 音频路径验证（2026-08-05新增）==========
 echo "🔍 验证音频路径..."
 
-# 修正错误的音频路径（article.mp3 → 正确文件名）
+# 修正错误的音频路径（article.mp3 → 正确文件名，文章在 /posts/ 下，音频在 /audio/）
 WRONG_AUDIO=$(grep -c 'src="audio/article.mp3"' "$ARTICLE_FILE" 2>/dev/null || echo "0")
 if [ "$WRONG_AUDIO" -gt 0 ]; then
-  echo "   ⚠️  修正: audio/article.mp3 → audio/$ARTICLE_BASE.mp3"
-  sed -i "s|src=\"audio/article.mp3\"|src=\"audio/$ARTICLE_BASE.mp3\"|g" "$ARTICLE_FILE"
+  echo "   ⚠️  修正: audio/article.mp3 → ../audio/$ARTICLE_BASE.mp3"
+  sed -i "s|src=\"audio/article.mp3\"|src=\"../audio/$ARTICLE_BASE.mp3\"|g" "$ARTICLE_FILE"
 fi
 
 # 同时修正模板中的 AUDIO_FILE_PLACEHOLDER 残留
 if grep -q "AUDIO_FILE_PLACEHOLDER" "$ARTICLE_FILE" 2>/dev/null; then
-  echo "   ⚠️  修正: AUDIO_FILE_PLACEHOLDER → audio/$ARTICLE_BASE.mp3"
-  sed -i "s|AUDIO_FILE_PLACEHOLDER|audio/$ARTICLE_BASE.mp3|g" "$ARTICLE_FILE"
+  echo "   ⚠️  修正: AUDIO_FILE_PLACEHOLDER → ../audio/$ARTICLE_BASE.mp3"
+  sed -i "s|AUDIO_FILE_PLACEHOLDER|../audio/$ARTICLE_BASE.mp3|g" "$ARTICLE_FILE"
 fi
 
-echo "   ✅ 音频路径已验证"
+echo "   ✅ 音频路径已验证（使用 ../audio/ 相对路径）"
 
 # ========== 1.6 播放器显示验证（2026-08-05新增）==========
 echo "🔍 验证播放器显示..."
@@ -128,6 +128,40 @@ if [ "$PLACEHOLDER_POINTS" -gt 0 ]; then
 fi
 
 echo "   ✅ 来源信息完整，无占位符"
+
+# ========== 1.8 正文完整性检查（2026-08-15新增）==========
+echo "🔍 检查正文完整性..."
+
+# 检查是否有截断标记（短文本后面没内容）
+TRUNCATED=$(grep -cE '^\s*3\.\s*$' "$ARTICLE_FILE" 2>/dev/null || echo "0")
+if [ "$TRUNCATED" -gt 0 ]; then
+  # 检查第3点后面是否还有内容（至少200字符）
+  AFTER_POINT3=$(sed -n '/^\s*3\./,$ p' "$ARTICLE_FILE" | wc -c)
+  if [ "$AFTER_POINT3" -lt 200 ]; then
+    echo "   ❌ 正文疑似截断（第3点后内容不足200字符）"
+    exit 1
+  fi
+fi
+
+# 检查文章正文字数（不含HTML标签）
+BODY_CHARS=$(python3 -c "
+import re
+with open('$ARTICLE_FILE') as f:
+    html = f.read()
+# 提取正文区域
+body = re.search(r'<article[^>]*>(.*?)</article>', html, re.DOTALL)
+if body:
+    text = re.sub(r'<[^>]+>', '', body.group(1))
+    print(len(text.strip()))
+else:
+    print(0)
+")
+if [ "$BODY_CHARS" -lt 2000 ]; then
+  echo "   ❌ 正文太短（${BODY_CHARS}字符），可能截断"
+  exit 1
+fi
+
+echo "   ✅ 正文完整（${BODY_CHARS}字符）"
 
 # ========== 2. 去重检查 ==========
 echo "🔍 执行强制去重检查..."
@@ -408,12 +442,16 @@ else
   echo "   ⚠️  缺少评分组件"
 fi
 
-# 检查音频路径是否正确（2026-08-05新增）
-CORRECT_AUDIO=$(grep -c "src=\"audio/$ARTICLE_BASE.mp3\"" "$ARTICLE_FILE" 2>/dev/null || echo "0")
-if [ "$CORRECT_AUDIO" -gt 0 ]; then
-  echo "   ✅ 音频路径正确"
+# 检查音频路径是否正确（2026-08-15 修复：文章在 /posts/ 下，必须用 ../audio/）
+CORRECT_AUDIO=$(grep -c "src=\"../audio/$ARTICLE_BASE.mp3\"" "$ARTICLE_FILE" 2>/dev/null || echo "0")
+WRONG_AUDIO_PATH=$(grep -c 'src="audio/' "$ARTICLE_FILE" 2>/dev/null || echo "0")
+if [ "$CORRECT_AUDIO" -gt 0 ] && [ "$WRONG_AUDIO_PATH" -eq 0 ]; then
+  echo "   ✅ 音频路径正确（../audio/）"
 else
-  echo "   ⚠️  音频路径可能有问题"
+  echo "   ❌ 音频路径错误！文章在 /posts/ 下，必须用 ../audio/"
+  # 自动修正
+  sed -i "s|src=\"audio/|src=\"../audio/|g" "$ARTICLE_FILE"
+  echo "   🔧 已自动修正为 ../audio/"
 fi
 
 # 检查播放器是否可见（2026-08-05新增）
