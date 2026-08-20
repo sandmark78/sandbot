@@ -158,8 +158,8 @@ def generate_tts(text, output_path):
         cmd = [
             "edge-tts",
             "--voice", TTS_VOICE,
-            "--rate", TTS_RATE,
-            "--pitch", TTS_PITCH,
+            f"--rate={TTS_RATE}",
+            f"--pitch={TTS_PITCH}",
             "--text", text[:5000],  # Limit to 5000 chars (~5 min audio)
             "--write-media", output_path,
         ]
