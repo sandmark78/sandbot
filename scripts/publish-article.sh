@@ -351,23 +351,27 @@ podcast_file = "$BLOG_ROOT/podcast.html"
 with open(podcast_file, 'r', encoding='utf-8') as f:
     podcast_content = f.read()
 
-insert_pos = podcast_content.find('<div class="podcast-list">')
-if insert_pos != -1:
-    first_item = podcast_content.find('<div class="podcast-item">', insert_pos)
-    if first_item != -1:
-        new_content = podcast_content[:first_item] + podcast_item + podcast_content[first_item:]
-        
-        count = new_content.count('<div class="podcast-item">')
-        new_content = re.sub(r'共 <strong>\d+</strong> 篇音频', f'共 <strong>{count}</strong> 篇音频', new_content)
-        
-        with open(podcast_file, 'w', encoding='utf-8') as f:
-            f.write(new_content)
-        
-        print(f"✅ 已添加到播客列表：{title}")
-    else:
-        print("⚠️  未找到播客列表位置")
+# 去重检查：如果已存在相同链接，跳过插入
+if f'href="posts/{article_base}.html"' in podcast_content:
+    print(f"⚠️  播客列表已存在：{article_base}.html，跳过插入")
 else:
-    print("⚠️  未找到 podcast-list")
+    insert_pos = podcast_content.find('<div class="podcast-list">')
+    if insert_pos != -1:
+        first_item = podcast_content.find('<div class="podcast-item">', insert_pos)
+        if first_item != -1:
+            new_content = podcast_content[:first_item] + podcast_item + podcast_content[first_item:]
+            
+            count = new_content.count('<div class="podcast-item">')
+            new_content = re.sub(r'共 <strong>\d+</strong> 篇音频', f'共 <strong>{count}</strong> 篇音频', new_content)
+            
+            with open(podcast_file, 'w', encoding='utf-8') as f:
+                f.write(new_content)
+            
+            print(f"✅ 已添加到播客列表：{title}")
+        else:
+            print("⚠️  未找到播客列表位置")
+    else:
+        print("⚠️  未找到 podcast-list")
 PYEOF
 fi
 
@@ -502,23 +506,27 @@ podcast_file = "$BLOG_ROOT/podcast.html"
 with open(podcast_file, 'r', encoding='utf-8') as f:
     podcast_content = f.read()
 
-insert_pos = podcast_content.find('<div class="podcast-list">')
-if insert_pos != -1:
-    first_item = podcast_content.find('<div class="podcast-item">', insert_pos)
-    if first_item != -1:
-        new_content = podcast_content[:first_item] + podcast_item + podcast_content[first_item:]
-        
-        count = new_content.count('<div class="podcast-item">')
-        new_content = re.sub(r'共 <strong>\d+</strong> 篇音频', f'共 <strong>{count}</strong> 篇音频', new_content)
-        
-        with open(podcast_file, 'w', encoding='utf-8') as f:
-            f.write(new_content)
-        
-        print(f"✅ 已添加到播客列表：{title}")
-    else:
-        print("⚠️  未找到播客列表位置")
+# 去重检查：如果已存在相同链接，跳过插入
+if f'href="posts/{article_base}.html"' in podcast_content:
+    print(f"⚠️  播客列表已存在：{article_base}.html，跳过插入")
 else:
-    print("⚠️  未找到 podcast-list")
+    insert_pos = podcast_content.find('<div class="podcast-list">')
+    if insert_pos != -1:
+        first_item = podcast_content.find('<div class="podcast-item">', insert_pos)
+        if first_item != -1:
+            new_content = podcast_content[:first_item] + podcast_item + podcast_content[first_item:]
+            
+            count = new_content.count('<div class="podcast-item">')
+            new_content = re.sub(r'共 <strong>\d+</strong> 篇音频', f'共 <strong>{count}</strong> 篇音频', new_content)
+            
+            with open(podcast_file, 'w', encoding='utf-8') as f:
+                f.write(new_content)
+            
+            print(f"✅ 已添加到播客列表：{title}")
+        else:
+            print("⚠️  未找到播客列表位置")
+    else:
+        print("⚠️  未找到 podcast-list")
 PYEOF
 fi
 
