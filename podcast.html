@@ -2463,4 +2463,115 @@
   <p>每篇文章都有语音 · <a href="blog.html">返回首页</a></p>
 </footer>
 </body>
-</html>
+</html><script>
+// 播客播放器
+const players = {};
+function getAudio(id) {
+  if (!players[id]) {
+    players[id] = document.querySelector('#' + id);
+  }
+  return players[id];
+}
+function togglePlay(id) {
+  const audio = getAudio(id);
+  if (!audio) return;
+  const btn = document.querySelector('[onclick*="' + id + '"].play-btn') || 
+              audio.closest('.custom-player').querySelector('.play-btn');
+  if (audio.paused) {
+    // 暂停其他播放器
+    Object.values(players).forEach(a => { if (a && !a.paused) { a.pause(); } });
+    document.querySelectorAll('.play-btn').forEach(b => b.classList.remove('playing'));
+    audio.play();
+    if (btn) btn.classList.add('playing');
+  } else {
+    audio.pause();
+    if (btn) btn.classList.remove('playing');
+  }
+}
+function seekTo(e, id) {
+  const audio = getAudio(id);
+  if (!audio || !audio.duration) return;
+  const rect = e.currentTarget.getBoundingClientRect();
+  const pos = (e.clientX - rect.left) / rect.width;
+  audio.currentTime = pos * audio.duration;
+}
+function setSpeed(id, speed, btn) {
+  const audio = getAudio(id);
+  if (!audio) return;
+  audio.playbackRate = speed;
+  const container = btn.parentElement;
+  container.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function formatTime(s) {
+  if (!s || isNaN(s)) return '0:00';
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60);
+  return m + ':' + (sec < 10 ? '0' : '') + sec;
+}
+// 进度更新
+document.querySelectorAll('audio[data-player-id]').forEach(audio => {
+  const id = audio.getAttribute('data-player-id');
+  const player = audio.closest('.custom-player');
+  if (!player) return;
+  const bar = player.querySelector('.progress-bar');
+  const time = player.querySelector('.time-display');
+  const btn = player.querySelector('.play-btn');
+  
+  audio.addEventListener('timeupdate', () => {
+    if (!audio.duration) return;
+    const pct = (audio.currentTime / audio.duration) * 100;
+    if (bar) bar.style.width = pct + '%';
+    if (time) time.textContent = formatTime(audio.currentTime) + ' / ' + formatTime(audio.duration);
+  });
+  audio.addEventListener('ended', () => {
+    if (btn) btn.classList.remove('playing');
+    if (bar) bar.style.width = '0%';
+  });
+  audio.addEventListener('loadedmetadata', () => {
+    if (time) time.textContent = '0:00 / ' + formatTime(audio.duration);
+  });
+});
+// 播放全部
+let playAllQueue = [];
+let playAllIndex = -1;
+function playAll() {
+  const btn = document.getElementById('playAllBtn');
+  const audios = document.querySelectorAll('audio[data-player-id]');
+  if (playAllQueue.length > 0) {
+    // 停止
+    playAllQueue = [];
+    playAllIndex = -1;
+    audios.forEach(a => a.pause());
+    document.querySelectorAll('.play-btn').forEach(b => b.classList.remove('playing'));
+    if (btn) { btn.textContent = '▶ 播放全部'; btn.classList.remove('playing'); }
+    return;
+  }
+  playAllQueue = Array.from(audios);
+  playAllIndex = 0;
+  if (btn) { btn.textContent = '⏹ 停止播放'; btn.classList.add('playing'); }
+  playNext();
+}
+function playNext() {
+  if (playAllIndex >= playAllQueue.length) {
+    playAllQueue = [];
+    playAllIndex = -1;
+    const btn = document.getElementById('playAllBtn');
+    if (btn) { btn.textContent = '▶ 播放全部'; btn.classList.remove('playing'); }
+    return;
+  }
+  const audio = playAllQueue[playAllIndex];
+  document.querySelectorAll('.play-btn').forEach(b => b.classList.remove('playing'));
+  const player = audio.closest('.custom-player');
+  if (player) {
+    const b = player.querySelector('.play-btn');
+    if (b) b.classList.add('playing');
+  }
+  audio.play();
+  audio.addEventListener('ended', function once() {
+    audio.removeEventListener('ended', once);
+    playAllIndex++;
+    playNext();
+  });
+}
+</script>
