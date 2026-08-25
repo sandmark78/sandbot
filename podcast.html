@@ -2475,7 +2475,7 @@ function togglePlay(id) {
   const audio = getAudio(id);
   if (!audio) return;
   const btn = document.querySelector('[onclick*="' + id + '"].play-btn') || 
-              audio.closest('.custom-player').querySelector('.play-btn');
+              audio.parentElement.querySelector('.custom-player .play-btn');
   if (audio.paused) {
     // 暂停其他播放器
     Object.values(players).forEach(a => { if (a && !a.paused) { a.pause(); } });
@@ -2511,7 +2511,7 @@ function formatTime(s) {
 // 进度更新
 document.querySelectorAll('audio[data-player-id]').forEach(audio => {
   const id = audio.getAttribute('data-player-id');
-  const player = audio.closest('.custom-player');
+  const player = audio.parentElement.querySelector('.custom-player');
   if (!player) return;
   const bar = player.querySelector('.progress-bar');
   const time = player.querySelector('.time-display');
@@ -2561,7 +2561,7 @@ function playNext() {
   }
   const audio = playAllQueue[playAllIndex];
   document.querySelectorAll('.play-btn').forEach(b => b.classList.remove('playing'));
-  const player = audio.closest('.custom-player');
+  const player = audio.parentElement.querySelector('.custom-player');
   if (player) {
     const b = player.querySelector('.play-btn');
     if (b) b.classList.add('playing');
