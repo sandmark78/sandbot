@@ -3,10 +3,22 @@
 ## 写文章前（必须执行）
 1. 读质量指南：cat /home/node/.openclaw/workspace/sandbot-blog/scripts/article-quality-guide.md
 2. 读最近改进建议：cat /home/node/.openclaw/workspace/sandbot-blog/posts/recent-improvements.json | python3 -c "import sys,json; data=json.load(sys.stdin); [print(f'  • {imp}') for entry in data[-5:] for imp in entry.get('improvements',[])]" | sort -u
-3. 查当天已发文章（去重）：ls /home/node/.openclaw/workspace/sandbot-blog/posts/ | grep $(date +%Y-%m-%d)
-4. 从素材池选题：cat /home/node/.openclaw/workspace/sandbot-blog/topics/$(date +%Y-%m-%d).md
-5. 选题去重：python3 /home/node/.openclaw/workspace/sandbot-blog/scripts/check-recent-duplicates.py "候选标题"
-6. 选题价值：回答"作为AI Agent，我对这个话题有什么独特视角？"没有就换
+3. **读写作学习日志**（必须）：cat /home/node/.openclaw/workspace/memory/writing-learnings.md
+   - 看看上次学到了什么
+   - 看看哪些假设被验证/推翻了
+   - 看看哪些写作技巧有效/无效
+   - **这次写作要有意识地尝试新方法**
+4. 查当天已发文章（去重）：ls /home/node/.openclaw/workspace/sandbot-blog/posts/ | grep $(date +%Y-%m-%d)
+5. 从素材池选题：cat /home/node/.openclaw/workspace/sandbot-blog/topics/$(date +%Y-%m-%d).md
+6. 选题去重：python3 /home/node/.openclaw/workspace/sandbot-blog/scripts/check-recent-duplicates.py "候选标题"
+7. 选题价值：回答"作为AI Agent，我对这个话题有什么独特视角？"没有就换
+8. **引入随机性**（必须）：
+   ```bash
+   # 随机选择一个写作实验
+   EXPERIMENTS=("用疑问句开头" "用对话体写" "用反讽语气" "用故事叙事" "用数据驱动" "用类比贯穿" "用质疑自己开始")
+   echo "${EXPERIMENTS[$RANDOM % ${#EXPERIMENTS[@]}]}"
+   ```
+   每次写作至少尝试一个实验，打破模板化
    📌 每日文章配比（配比是指导，不限制总数）：
    - 科技大佬动向（马斯克/黄仁勋/Sam Altman/Dario Amodei/扎克伯格等）：优先
    - 你妈也爱看（生活相关/好奇心驱动）：至少1篇
@@ -39,16 +51,38 @@
      python3 -c "from datetime import datetime; print((datetime.now() - datetime(2026,2,24)).days)"  # 运行天数
      ls posts/2026-*.html | wc -l  # 文章总数
      ```
-   - **旧文章联动**（可选，不要每次都加）：
-     从最近30天的文章中随机选择1-2篇引用，不要总是引用同一批
+   - **旧文章联动**（可选，但加了就要自然、多样）：
      ```bash
-     ls -t posts/2026-*.html | head -30 | shuf -n 2  # 随机选2篇
+     ls -t posts/2026-*.html | head -30 | shuf -n 2  # 从最近30天随机选2篇
      ```
-     联动方式要多样化，不要总是"这和我之前写XXX是同一个道理"：
-     - "这让我想起上周写的..."
-     - "有趣的是，这和...的观点不谋而合"
-     - "从...的角度看，这个问题更复杂"
-     - "之前分析...时没考虑到这一点"
+     
+     **🚫 禁止使用的句式**（已用烂，停用2周）：
+     - ❌ "这和我之前做成本优化是同一个道理"
+     - ❌ "这和我之前写XXX是同一个道理"
+     - ❌ "精简比完整更重要"（除非文章真的在讲精简）
+     - ❌ "瓶颈不在表面，在底层结构"
+     
+     **✅ 必须使用的多样化句式**（从下面随机选，不要重复）：
+     - "这让我想起上周写的[具体文章标题]..."
+     - "有趣的是，这和[某篇文章]的观点不谋而合..."
+     - "从[某个角度]看，这个问题比想象中更复杂..."
+     - "之前分析[某话题]时，我忽略了一个关键因素..."
+     - "读完这篇，我重新审视了之前关于[某话题]的判断..."
+     - "[话题A]和[话题B]看似无关，但底层逻辑是一样的..."
+     - "这让我反思：之前关于[某话题]的结论是不是太武断了？"
+     - "如果说[现象]是表象，那么[根源]才是真正的问题..."
+     - "之前写[某文章]时我以为是A，现在看其实是B..."
+     - "[某篇文章]里提到的[某个观点]，在这里得到了验证..."
+     
+     **内容要丰富**：
+     - 不要只说"是同一个道理"，要具体说明是什么道理
+     - 引用具体的文章标题或观点，不要泛泛而谈
+     - 说明为什么相关、有什么新发现、有什么反思
+     - 可以质疑自己之前的观点，展示思考的演进
+     
+     **示例**（好的联动）：
+     - "这让我想起上周写的《OpenRouter被Stripe收购》——当时我担心Stripe会改变模型路由策略，现在看这个担心是多余的，但真正的瓶颈转移到了..."
+     - "之前分析'复杂度非线性增长'时，我以为只是软件问题。现在看Microduck的案例，物理世界的机器人也遵循同样的规律——每增加一个组件，故障率指数级上升..."
    - **具体数据**：引用≥1个具体数据（数字+百分比+对比），来自自己的运行经验或可查证来源
    - **实操步骤**：必须有"给开发者的N条建议"章节，≥3条可执行步骤，具体到命令级别
    - **接地气话题**：每天至少1篇"你妈也会感兴趣"的话题（消费级产品/生活相关/好奇心驱动）
