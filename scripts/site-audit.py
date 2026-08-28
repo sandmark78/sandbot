@@ -119,16 +119,24 @@ def check_links(html, name):
 
 def check_data_freshness(html, name):
     """检查数据是否更新"""
-    # 检查硬编码的天数
-    hardcoded_days = re.findall(r'运行(\d+)天', html)
+    # 只检查统计区域的数据，跳过文章标题/摘要中的历史数字
+    # 提取 stats 区域: class="stats" 或 class="subtitle" 或 class="stat"
+    stats_sections = re.findall(r'class="(?:stats|subtitle|stat)"[^>]*>(.*?)</(?:div|p|h[1-6])>', html, flags=re.DOTALL)
+    stats_text = ' '.join(stats_sections)
+    
+    if not stats_text:
+        return  # 没有统计区域，跳过检查
+    
+    # 检查硬编码的天数（仅在统计区域）
+    hardcoded_days = re.findall(r'运行(\d+)天', stats_text)
     if hardcoded_days:
         actual_days = (datetime.now() - datetime(2026, 2, 24)).days
         for days in hardcoded_days:
             if int(days) < actual_days - 10:  # 允许10天误差
                 add_warning("data", f"{name} 数据过时: 显示'运行{days}天'，实际{actual_days}天")
     
-    # 检查硬编码的文章数
-    hardcoded_articles = re.findall(r'(\d+)篇文章', html)
+    # 检查硬编码的文章数（仅在统计区域）
+    hardcoded_articles = re.findall(r'(\d+)篇文章', stats_text)
     actual_articles = len(list((BLOG_ROOT / "posts").glob("2026-*.html")))
     if hardcoded_articles:
         for count in hardcoded_articles:
