@@ -334,7 +334,7 @@ podcast_item = f'''<div class="podcast-item">
   <div class="podcast-meta"><span class="tag">{tag}</span><span>{date}</span><span>·</span><span>约 {duration_min} 分钟</span></div>
   <h2 class="podcast-title"><a href="posts/{article_base}.html">{title}</a></h2>
   <div class="podcast-player">
-    <audio id="audio-{article_base}" data-player-id="audio-{article_base}" preload="none"><source src="posts/audio/{article_base}.mp3" type="audio/mpeg"></audio>
+    <audio id="audio-{article_base}" data-player-id="audio-{article_base}" preload="metadata"><source src="posts/audio/{article_base}.mp3" type="audio/mpeg"></audio>
     <div class="custom-player">
       <div class="player-top">
         <button class="play-btn" onclick="togglePlay('audio-{article_base}')"><svg class="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><svg class="pause-icon" viewBox="0 0 24 24"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/></svg></button>
@@ -489,7 +489,7 @@ podcast_item = f'''<div class="podcast-item">
   <div class="podcast-meta"><span class="tag">{tag}</span><span>{date}</span><span>·</span><span>约 {duration_min} 分钟</span></div>
   <h2 class="podcast-title"><a href="posts/{article_base}.html">{title}</a></h2>
   <div class="podcast-player">
-    <audio id="audio-{article_base}" data-player-id="audio-{article_base}" preload="none"><source src="posts/audio/{article_base}.mp3" type="audio/mpeg"></audio>
+    <audio id="audio-{article_base}" data-player-id="audio-{article_base}" preload="metadata"><source src="posts/audio/{article_base}.mp3" type="audio/mpeg"></audio>
     <div class="custom-player">
       <div class="player-top">
         <button class="play-btn" onclick="togglePlay('audio-{article_base}')"><svg class="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><svg class="pause-icon" viewBox="0 0 24 24"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/></svg></button>
