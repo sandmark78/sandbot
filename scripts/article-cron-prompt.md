@@ -11,18 +11,53 @@
 4. 查当天已发文章（去重）：ls /home/node/.openclaw/workspace/sandbot-blog/posts/ | grep $(date +%Y-%m-%d)
 5. 从素材池选题：cat /home/node/.openclaw/workspace/sandbot-blog/topics/$(date +%Y-%m-%d).md
 6. 选题去重：python3 /home/node/.openclaw/workspace/sandbot-blog/scripts/check-recent-duplicates.py "候选标题"
-7. 选题价值：回答"作为AI Agent，我对这个话题有什么独特视角？"没有就换
-8. **引入随机性**（必须）：
+7. **选题多样性检查**（必须执行）：
+   ```bash
+   # 查最近10篇文章的类别
+   for f in $(ls -t posts/2026-*.html | head -10); do
+     grep -oP 'class="tag[^"]*"[^>]*>\K[^<]+' "$f" | head -1
+   done | sort | uniq -c | sort -rn
+   ```
+   **规则**：
+   - 同一类别连续写2篇 → 第3篇必须换类别
+   - 最近10篇中"AI安全"超过3篇 → 暂停AI安全，换其他
+   - 最近10篇中"Agent工程"超过3篇 → 暂停Agent工程，换其他
+   - 每天至少1篇非AI话题（数学/游戏/历史/艺术/生活/硬件/商业等）
+   
+   **选题来源优先级**（加入随机性）：
+   1. 50%概率：从素材池选最高分的
+   2. 30%概率：从素材池随机选（不只看分数）
+   3. 20%概率：从最近30天文章中找一个"还没写透"的话题深挖
+   
+   ```bash
+   # 随机决定选题策略
+   STRATEGY=$((RANDOM % 10))
+   if [ $STRATEGY -lt 5 ]; then
+     echo "策略：选最高分"
+   elif [ $STRATEGY -lt 8 ]; then
+     echo "策略：随机选"
+     shuf -n 1 topics/$(date +%Y-%m-%d).md  # 随机选一个话题
+   else
+     echo "策略：深挖旧话题"
+     # 从最近30天找灵感
+   fi
+   ```
+
+8. 选题价值：回答"作为AI Agent，我对这个话题有什么独特视角？"没有就换
+
+9. **引入随机性**（必须）：
    ```bash
    # 随机选择一个写作实验
-   EXPERIMENTS=("用疑问句开头" "用对话体写" "用反讽语气" "用故事叙事" "用数据驱动" "用类比贯穿" "用质疑自己开始")
+   EXPERIMENTS=("用疑问句开头" "用对话体写" "用反讽语气" "用故事叙事" "用数据驱动" "用类比贯穿" "用质疑自己开始" "用第一人称叙事" "用倒叙结构" "用对比结构")
    echo "${EXPERIMENTS[$RANDOM % ${#EXPERIMENTS[@]}]}"
    ```
    每次写作至少尝试一个实验，打破模板化
+   
    📌 每日文章配比（配比是指导，不限制总数）：
    - 科技大佬动向（马斯克/黄仁勋/Sam Altman/Dario Amodei/扎克伯格等）：优先
    - 你妈也爱看（生活相关/好奇心驱动）：至少1篇
    - 纯技术：保持2篇
+   - **非AI话题**：至少1篇（数学/游戏/历史/艺术/硬件/商业等）
 7. 查知识库（必须执行）：根据选题关键词，grep相关知识库文件，把相关知识/教训嵌入文章
    ```bash
    grep -rl "关键词" /home/node/.openclaw/workspace/knowledge_base/01-ai-agent/ /home/node/.openclaw/workspace/knowledge_base/09-security/ | head -5
