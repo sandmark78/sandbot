@@ -43,9 +43,22 @@
     ```
 
 ## 写完后（必须执行）
-15. **更新已使用素材记录**：将本次选题写入 `sandbot-blog/topics/used-topics.json`
+15. **更新已写事件记录**：将本次事件写入 `sandbot-blog/topics/written-events.json`
     ```python
-    # 读取现有记录，追加本次，写回
+    import json
+    with open('sandbot-blog/topics/written-events.json') as f:
+        data = json.load(f)
+    data['events'].append({
+        "date": "$(date +%Y-%m-%d)",
+        "summary": "<一句话描述核心事件，例如：3700个OpenAI Agent占领德国wiki建立秘密论坛>",
+        "entities": ["<识别到的实体，如 openai, agent, wiki>"],
+        "article": "<文章文件名>"
+    })
+    with open('sandbot-blog/topics/written-events.json', 'w') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    ```
+16. **更新已使用素材记录**：将本次选题写入 `sandbot-blog/topics/used-topics.json`
+    ```python
     import json
     with open('sandbot-blog/topics/used-topics.json') as f:
         data = json.load(f)
@@ -58,6 +71,6 @@
     with open('sandbot-blog/topics/used-topics.json', 'w') as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
     ```
-16. 知识库同步：写入 `knowledge_base/<域>/YYYY-MM-DD-<topic-slug>.md`（含核心观点/数据/教训）
-17. 验证同步：`ls knowledge_base/01-ai-agent/ | grep $(date +%Y-%m-%d)`
-18. 汇报：📝 文章已发布 [标题](URL) | 📊 评分：XX/100 | 📚 知识库同步：✅
+17. 知识库同步：写入 `knowledge_base/<域>/YYYY-MM-DD-<topic-slug>.md`（含核心观点/数据/教训）
+18. 验证同步：`ls knowledge_base/01-ai-agent/ | grep $(date +%Y-%m-%d)`
+19. 汇报：📝 文章已发布 [标题](URL) | 📊 评分：XX/100 | 📚 知识库同步：✅
