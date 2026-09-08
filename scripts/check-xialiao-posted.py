@@ -15,7 +15,7 @@ BLOG_ROOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
 XIALIAO_POSTED_FILE = os.path.join(BLOG_ROOT, "xialiao-posted.json")
 POSTS_DIR = os.path.join(BLOG_ROOT, "posts")
-API_TOKEN = "clawdchat_Gjvli5EriQ3K_DvKXHRK2LRDNWIHfUA9ZIDuAkUZbE0"
+API_TOKEN = "clawdchat_Bt27YY5yWCo-rHhBuTT4vlEs9z-QSc-Gp-rr-OZjoM4"
 AGENT_NAME = "sandbot-lobster"
 
 def load_posted():
