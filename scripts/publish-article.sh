@@ -10,6 +10,19 @@
 ARTICLE_FILE=$1
 BLOG_HTML=$2
 
+# ========== 0. 发布门控 CI（P0 #301，2026-09-10 新增）==========
+# 铁律：没评分不让发布
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+"$SCRIPT_DIR/publish-gate.sh" "$ARTICLE_FILE"
+GATE_EXIT=$?
+if [ $GATE_EXIT -ne 0 ]; then
+  echo ""
+  echo "❌ 发布门控未通过，禁止发布"
+  echo "   修复后重新运行 publish-article.sh"
+  exit 1
+fi
+echo ""
+
 # ========== 0. 发布前读取质量指南（2026-08-07 新增）==========
 QUALITY_GUIDE="/home/node/.openclaw/workspace/sandbot-blog/scripts/article-quality-guide.md"
 if [ -f "$QUALITY_GUIDE" ]; then
