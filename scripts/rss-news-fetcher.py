@@ -13,6 +13,11 @@ from pathlib import Path
 RSS_FEEDS = {
     "google_news_ai": "https://news.google.com/atom/search?q=AI+Internet+Developer&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
     "tophub_news": "https://tophub.today/c/news",
+    # Horizon 项目策展源 (2026-09-26 新增)
+    "simon_willison": "https://simonwillison.net/atom/everything/",
+    "vllm_blog": "https://vllm.ai/blog/rss.xml",
+    "nvidia_cuda": "https://developer.nvidia.com/blog/tag/cuda/feed/",
+    "cnbc_finance": "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10000664",
 }
 
 def fetch_rss(url, max_entries=20):
