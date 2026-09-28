@@ -148,6 +148,11 @@ body { font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-seri
   <div class="book-files">
     <h3 class="files-title">📂 蒸馏文件</h3>
     <div class="file-list">
+      <a href="posts/books/2026-09-28-evil-science-full-summary.md" class="file-item">
+        <span class="file-icon">📝</span>
+        <span class="file-name">深度总结.md</span>
+        <span class="file-desc">1万字完整版（30KB）</span>
+      </a>
       <a href="knowledge_base/books/恶的科学/00-元数据.md" class="file-item">
         <span class="file-icon">📋</span>
         <span class="file-name">00-元数据.md</span>
@@ -190,49 +195,56 @@ body { font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-seri
 </footer>
 
 <script>
-// 音频播放器（复用播客逻辑）
+// 音频播放器
+function getAudio(id) { return document.getElementById(id); }
 function togglePlay(id) {
-  const audio = document.getElementById(id);
-  const btn = audio.closest('.custom-player').querySelector('.play-btn');
+  const audio = getAudio(id);
+  if (!audio) return;
+  const btn = document.querySelector('.play-btn[onclick*="' + id + '"]');
   if (audio.paused) {
-    // 暂停其他播放器
     document.querySelectorAll('audio').forEach(a => {
-      if (a.id !== id && !a.paused) { a.pause(); a.closest('.custom-player').querySelector('.play-btn').classList.remove('playing'); }
+      if (a.id !== id && !a.paused) a.pause();
     });
-    audio.play(); btn.classList.add('playing');
-  } else { audio.pause(); btn.classList.remove('playing'); }
+    document.querySelectorAll('.play-btn').forEach(b => b.classList.remove('playing'));
+    audio.play();
+    if (btn) btn.classList.add('playing');
+  } else {
+    audio.pause();
+    if (btn) btn.classList.remove('playing');
+  }
 }
 function setSpeed(id, rate, btn) {
-  document.getElementById(id).playbackRate = rate;
+  const audio = getAudio(id);
+  if (!audio) return;
+  audio.playbackRate = rate;
   btn.closest('.speed-buttons').querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 }
 function seekTo(e, id) {
-  const audio = document.getElementById(id);
-  const bar = e.currentTarget;
-  const rect = bar.getBoundingClientRect();
+  const audio = getAudio(id);
+  if (!audio || !audio.duration) return;
+  const rect = e.currentTarget.getBoundingClientRect();
   audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
 }
-// 进度条更新
 document.querySelectorAll('audio').forEach(audio => {
   audio.addEventListener('timeupdate', () => {
-    const player = audio.closest('.custom-player');
+    const player = audio.parentElement;
     if (!player) return;
     const bar = player.querySelector('.progress-bar');
     const time = player.querySelector('.time-display');
     if (bar && audio.duration) bar.style.width = (audio.currentTime / audio.duration * 100) + '%';
     if (time) {
-      const cur = formatTime(audio.currentTime);
-      const dur = formatTime(audio.duration || 0);
+      const cur = fmt(audio.currentTime);
+      const dur = fmt(audio.duration || 0);
       time.textContent = cur + ' / ' + dur;
     }
   });
   audio.addEventListener('ended', () => {
-    const btn = audio.closest('.custom-player').querySelector('.play-btn');
+    const btn = audio.parentElement.querySelector('.play-btn');
     if (btn) btn.classList.remove('playing');
   });
 });
-function formatTime(s) { const m = Math.floor(s/60); const sec = Math.floor(s%60); return m + ':' + (sec<10?'0':'') + sec; }
+function fmt(s) { const m = Math.floor(s/60); const sec = Math.floor(s%60); return m + ':' + (sec<10?'0':'') + sec; }
 </script>
 </body>
 </html>
