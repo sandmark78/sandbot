@@ -83,7 +83,7 @@ def call_llm(text, api_key):
 文章内容：
 {text}"""
     
-    url = "https://coding.dashscope.aliyuncs.com/v1/chat/completions"
+    url = "https://api.fen123.xyz/v1/chat/completions"
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json"
